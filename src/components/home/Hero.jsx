@@ -1,3 +1,5 @@
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Typewriter } from "react-simple-typewriter";
 import Container from "../common/Container";
@@ -14,7 +16,7 @@ export default function Hero() {
                             <span className="text-indigo-600">
                                 <Typewriter
                                     words={["Your Potential", "Your Skills", "Your Career", "Your Future"]}
-                                    loop={0} // 0 = infinite
+                                    loop={0} // infinite
                                     cursor
                                     cursorStyle=""
                                     typeSpeed={110}
@@ -26,7 +28,8 @@ export default function Hero() {
                         </h1>
 
                         <p className="text-gray-700 text-lg mb-8 max-w-md mx-auto md:mx-0">
-                            Join thousands of learners mastering new skills and advancing their careers with our top courses, resources, and practice tests.
+                            Join thousands of learners mastering new skills and advancing their careers
+                            with our top courses, resources, and practice tests.
                         </p>
 
                         <div className="flex justify-center md:justify-start gap-4">
@@ -45,14 +48,20 @@ export default function Hero() {
                         </div>
                     </div>
 
-                    {/* Right image */}
-                    <div className="flex-1 max-w-md md:max-w-lg mx-auto">
+                    {/* Right image with animation */}
+                    <motion.div
+                        className="flex-1 max-w-md md:max-w-lg mx-auto"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        whileHover={{ scale: 1.05 }}
+                    >
                         <img
                             src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80"
                             alt="Learning illustration"
                             className="w-full h-auto rounded-lg shadow-lg"
                         />
-                    </div>
+                    </motion.div>
                 </div>
             </Container>
         </section>
