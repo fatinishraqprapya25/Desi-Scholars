@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Container from "./Container";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [isSticky, setIsSticky] = useState(false);
 
     const navItems = [
         { name: "Home", path: "/" },
@@ -14,8 +15,22 @@ export default function Header() {
         { name: "Shop", path: "/shop" },
     ];
 
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsSticky(window.scrollY > 150); // Change scroll threshold here
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     return (
-        <header className="bg-white py-6">
+        <header
+            className={`z-50 w-full bg-white transition-all duration-300 ${isSticky
+                ? "fixed top-0 shadow-md py-3"
+                : "relative py-6"
+                }`}
+        >
             <Container>
                 <div className="flex items-center justify-between">
                     {/* Logo */}

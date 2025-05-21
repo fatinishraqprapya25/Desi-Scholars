@@ -1,6 +1,7 @@
 import Header from "../components/common/Header";
 import AboutDSATScholars from "../components/home/AbouDsatScholars";
 import Hero from "../components/home/Hero";
+import OurTeam from "../components/home/OurTeam";
 
 export default function Home() {
     return (
@@ -8,6 +9,7 @@ export default function Home() {
             <Header />
             <Hero />
             <AboutDSATScholars />
+            <OurTeam />
         </>
     );
 }
