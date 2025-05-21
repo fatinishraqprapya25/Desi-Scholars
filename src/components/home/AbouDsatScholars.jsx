@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Container from "../common/Container";
 
 export default function AboutDSATScholars() {
@@ -5,14 +6,20 @@ export default function AboutDSATScholars() {
         <section className="bg-gray-50 py-16">
             <Container>
                 <div className="flex flex-col md:flex-row items-center gap-10">
-                    {/* Left - Image */}
-                    <div className="flex-1">
+                    {/* Left - Animated Image */}
+                    <motion.div
+                        className="flex-1"
+                        initial={{ opacity: 0, x: -100 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                    >
                         <img
                             src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80"
                             alt="About DSAT Scholars"
                             className="rounded-lg shadow-lg w-full h-auto"
                         />
-                    </div>
+                    </motion.div>
 
                     {/* Right - Text content */}
                     <div className="flex-1 text-center md:text-left">

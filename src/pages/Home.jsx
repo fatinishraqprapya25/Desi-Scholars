@@ -1,4 +1,5 @@
 import Header from "../components/common/Header";
+import AboutDSATScholars from "../components/home/AbouDsatScholars";
 import Hero from "../components/home/Hero";
 
 export default function Home() {
@@ -6,6 +7,7 @@ export default function Home() {
         <>
             <Header />
             <Hero />
+            <AboutDSATScholars />
         </>
     );
 }
