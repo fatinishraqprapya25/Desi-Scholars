@@ -3,6 +3,7 @@ import AboutDSATScholars from "../components/home/AbouDsatScholars";
 import FreeResourcesPreview from "../components/home/FreeResources";
 import Hero from "../components/home/Hero";
 import OurTeam from "../components/home/OurTeam";
+import PracticeTestPromo from "../components/home/PracticeDemo";
 import TopCoursesCarousel from "../components/home/TopCourses";
 
 export default function Home() {
@@ -13,7 +14,9 @@ export default function Home() {
             <AboutDSATScholars />
             <OurTeam />
             <TopCoursesCarousel />
+            <PracticeTestPromo />
             <FreeResourcesPreview />
+
         </>
     );
 }
