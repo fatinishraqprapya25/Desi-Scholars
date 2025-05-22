@@ -1,7 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+// Assuming Container is a component that sets max-width and padding
 import Container from "../common/Container";
+
+// Import social icons from react-icons (install if you haven't: npm install react-icons)
+import { FaFacebookF, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 
 const teamMembers = [
     {
@@ -57,66 +61,65 @@ const cardVariants = {
         y: 0,
         transition: {
             duration: 0.6,
-            delay: i * 0.2,
+            delay: i * 0.15, // Slightly reduced delay for snappier animation
             ease: "easeOut",
         },
     }),
 };
 
 export default function OurTeam() {
+    // useEffect is not strictly necessary here unless you have side effects to manage
+    // related to scroll animations or other DOM manipulations that need cleanup.
+    // For simple reveal animations with Framer Motion, it's often not needed.
     useEffect(() => {
-        // Reset scroll animations if needed
+        // No specific side effects or cleanup needed for this setup
     }, []);
 
     return (
-        <section className="bg-white py-16">
+        <section className="bg-gradient-to-br from-blue-50 to-indigo-100 py-20 overflow-hidden"> {/* Added gradient background and overflow-hidden for animation safety */}
             <Container>
-                <h2 className="text-4xl font-bold text-center text-gray-900 mb-5">
-                    Our Team
+                <h2 className="text-5xl font-extrabold text-center text-gray-900 mb-6 drop-shadow-sm leading-tight">
+                    Meet Our <span className="text-indigo-700">Exceptional Team</span>
                 </h2>
-                <p className="text-center text-gray-600 max-w-2xl mx-auto mt-4 mb-12">
-                    Meet the passionate individuals behind our mission to empower learners worldwide. Our dedicated team brings expertise, creativity, and heart to everything we do.
+                <p className="text-center text-gray-700 text-lg max-w-3xl mx-auto mt-4 mb-16 px-4">
+                    Committed to empowering learners, our diverse team blends expertise, passion, and innovation to craft an unparalleled educational experience.
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 mb-16"> {/* Increased gap */}
                     {teamMembers.map(({ name, position, bio, photo, socials }, index) => (
                         <motion.div
                             key={name}
-                            className="group relative rounded-lg shadow-lg overflow-hidden bg-white"
+                            className="group relative rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden bg-white cursor-pointer transform hover:-translate-y-2" // Added rounded-2xl, stronger shadow, hover translate-y
                             custom={index}
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, amount: 0.3 }}
                             variants={cardVariants}
                         >
-                            <div className="p-6 text-center h-80 flex flex-col items-center justify-start">
-                                <img
-                                    src={photo}
-                                    alt={name}
-                                    className="w-24 h-24 rounded-full object-cover mb-4 border-4 border-indigo-600"
-                                />
-                                <h3 className="text-xl font-semibold text-gray-900">{name}</h3>
-                                <p className="text-indigo-600 font-medium mb-2">{position}</p>
-                                <p className="text-gray-700 text-sm">{bio}</p>
+                            <div className="p-8 text-center flex flex-col items-center justify-start"> {/* Increased padding */}
+                                <div className="relative w-32 h-32 rounded-full overflow-hidden mb-5 border-4 border-indigo-500 shadow-md"> {/* Larger image, stronger border */}
+                                    <img
+                                        src={photo}
+                                        alt={name}
+                                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300" // Image scales on hover
+                                    />
+                                </div>
+                                <h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight">{name}</h3> {/* Larger name, bolder */}
+                                <p className="text-indigo-600 font-semibold mb-3 text-base">{position}</p> {/* Bolder position */}
+                                <p className="text-gray-700 text-sm line-clamp-3">{bio}</p> {/* Consistent bio height */}
                             </div>
 
-                            {/* Slide-down overlay */}
-                            <div className="absolute inset-0 bg-indigo-600 bg-opacity-95 text-white flex items-center justify-center transform -translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-in-out">
-                                <div className="flex space-x-6">
-                                    <a href={socials.twitter} target="_blank" rel="noopener noreferrer" className="hover:text-indigo-300">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M23 3a10.9 10.9 0 01-3.14 1.53A4.48 4.48 0 0012 8v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
-                                        </svg>
+                            {/* Slide-down overlay for social icons */}
+                            <div className="absolute inset-0 bg-indigo-700 bg-opacity-90 text-white flex items-center justify-center transform -translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out rounded-2xl"> {/* Smoother transition, rounded corners */}
+                                <div className="flex space-x-7"> {/* Increased spacing */}
+                                    <a href={socials.twitter} target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-300 transition-colors duration-300">
+                                        <FaTwitter className="h-7 w-7" /> {/* Using React Icons */}
                                     </a>
-                                    <a href={socials.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-indigo-300">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 3a2 2 0 110 4 2 2 0 010-4z" />
-                                        </svg>
+                                    <a href={socials.linkedin} target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-300 transition-colors duration-300">
+                                        <FaLinkedinIn className="h-7 w-7" /> {/* Using React Icons */}
                                     </a>
-                                    <a href={socials.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-indigo-300">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M22 12a10 10 0 10-11 9.95V14.9h-3v-3h3v-2.3c0-3 1.79-4.7 4.53-4.7 1.31 0 2.69.23 2.69.23v3h-1.53c-1.5 0-1.97.93-1.97 1.88V12h3.36l-.54 3h-2.82v7.05A10 10 0 0022 12z" />
-                                        </svg>
+                                    <a href={socials.facebook} target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-300 transition-colors duration-300">
+                                        <FaFacebookF className="h-7 w-7" /> {/* Using React Icons */}
                                     </a>
                                 </div>
                             </div>
@@ -125,8 +128,8 @@ export default function OurTeam() {
                 </div>
 
                 <div className="flex justify-center">
-                    <button className="border border-indigo-600 text-indigo-600 px-8 py-3 rounded-md font-semibold hover:bg-indigo-600 hover:text-white transition">
-                        All of our Team Members
+                    <button className="bg-gradient-to-r from-purple-600 to-indigo-700 text-white px-10 py-4 rounded-full font-semibold text-lg hover:from-purple-700 hover:to-indigo-800 transition-all duration-300 transform hover:scale-105 shadow-lg"> {/* Gradient button, rounded, larger padding, hover effects */}
+                        All of Our Team Members
                     </button>
                 </div>
             </Container>
