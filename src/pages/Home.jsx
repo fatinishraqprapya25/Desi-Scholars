@@ -4,6 +4,7 @@ import FreeResourcesPreview from "../components/home/FreeResources";
 import Hero from "../components/home/Hero";
 import OurTeam from "../components/home/OurTeam";
 import PracticeTestPromo from "../components/home/PracticeDemo";
+import Testimonials from "../components/home/Testimonials";
 import TopCoursesCarousel from "../components/home/TopCourses";
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
             <TopCoursesCarousel />
             <PracticeTestPromo />
             <FreeResourcesPreview />
+            <Testimonials />
 
         </>
     );
