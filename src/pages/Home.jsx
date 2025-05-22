@@ -6,6 +6,7 @@ import OurTeam from "../components/home/OurTeam";
 import PracticeTestPromo from "../components/home/PracticeDemo";
 import Testimonials from "../components/home/Testimonials";
 import TopCoursesCarousel from "../components/home/TopCourses";
+import CountdownTimer from "../components/home/CountDownTimer";
 
 export default function Home() {
     return (
@@ -18,7 +19,7 @@ export default function Home() {
             <PracticeTestPromo />
             <FreeResourcesPreview />
             <Testimonials />
-
+            <CountdownTimer />
         </>
     );
 }
