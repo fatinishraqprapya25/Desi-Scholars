@@ -42,23 +42,23 @@ const FilterSidebar = () => {
         }
       `}</style>
 
-            {/* Hamburger Button - No Background */}
+            {/* Animated Hamburger Button */}
             <button
-                className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md focus:outline-none"
+                className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-indigo-600 shadow-md focus:outline-none"
                 onClick={toggleSidebar}
                 aria-label="Toggle Filters"
             >
                 <div className="relative w-6 h-6">
                     <span
-                        className={`absolute left-0 h-0.5 w-full bg-black transform transition duration-300 ease-in-out ${isOpen ? "rotate-45 top-2.5" : "top-1"
+                        className={`absolute left-0 h-0.5 w-full bg-white transform transition duration-300 ease-in-out ${isOpen ? "rotate-45 top-2.5" : "top-1"
                             }`}
                     />
                     <span
-                        className={`absolute left-0 h-0.5 w-full bg-black transition-all duration-300 ${isOpen ? "opacity-0" : "top-2.5"
+                        className={`absolute left-0 h-0.5 w-full bg-white transition-all duration-300 ${isOpen ? "opacity-0" : "top-2.5"
                             }`}
                     />
                     <span
-                        className={`absolute left-0 h-0.5 w-full bg-black transform transition duration-300 ease-in-out ${isOpen ? "-rotate-45 top-2.5" : "top-4"
+                        className={`absolute left-0 h-0.5 w-full bg-white transform transition duration-300 ease-in-out ${isOpen ? "-rotate-45 top-2.5" : "top-4"
                             }`}
                     />
                 </div>
