@@ -42,29 +42,18 @@ const FilterSidebar = () => {
         }
       `}</style>
 
-            {/* Animated Hamburger Button */}
+            {/* Hamburger Button for Mobile */}
             <button
-                className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-indigo-600 shadow-md focus:outline-none"
+                className="md:hidden fixed top-1% left-4 z-50 p-2 rounded-md bg-indigo-600 shadow-md focus:outline-none"
                 onClick={toggleSidebar}
                 aria-label="Toggle Filters"
             >
-                <div className="relative w-6 h-6">
-                    <span
-                        className={`absolute left-0 h-0.5 w-full bg-white transform transition duration-300 ease-in-out ${isOpen ? "rotate-45 top-2.5" : "top-1"
-                            }`}
-                    />
-                    <span
-                        className={`absolute left-0 h-0.5 w-full bg-white transition-all duration-300 ${isOpen ? "opacity-0" : "top-2.5"
-                            }`}
-                    />
-                    <span
-                        className={`absolute left-0 h-0.5 w-full bg-white transform transition duration-300 ease-in-out ${isOpen ? "-rotate-45 top-2.5" : "top-4"
-                            }`}
-                    />
+                <div className="relative w-12 h-6 text-white">
+                    Filters
                 </div>
             </button>
 
-            {/* Overlay */}
+            {/* Overlay on mobile when open */}
             {isOpen && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-40 z-40 md:hidden"
@@ -72,16 +61,16 @@ const FilterSidebar = () => {
                 />
             )}
 
-            {/* Sidebar */}
-            <aside
+            {/* Sidebar - FIXED on all screen sizes */}
+            <aside style={{ top: "10%" }}
                 className={`
-          filter-sidebar
-          fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50
+          filter-sidebar md:left-[2%]
+          fixed top-0 left-0 h-screen w-64 bg-white z-50
           transform transition-transform duration-300 ease-in-out
-          ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          md:translate-x-0 md:static md:shadow-none md:w-64
+          ${isOpen ? "translate-x-0" : "-translate-x-full"} 
           flex flex-col justify-between p-6
-          overflow-y-auto max-h-[calc(100vh-2rem)]
+          overflow-y-auto
+          md:translate-x-0
         `}
                 aria-label="Filter Sidebar"
             >

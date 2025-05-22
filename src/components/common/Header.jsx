@@ -26,7 +26,7 @@ export default function Header() {
 
     return (
         <header
-            className={`shadow-sm z-50 w-full bg-white transition-all duration-500 ${isSticky
+            className={`z-50 w-full bg-white transition-all duration-500 ${isSticky
                 ? "fixed top-0 py-3"
                 : "relative py-6"
                 }`}
