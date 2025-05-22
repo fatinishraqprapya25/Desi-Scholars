@@ -6,7 +6,14 @@ import Container from "../common/Container";
 
 export default function Hero() {
     return (
-        <section className="bg-white py-16">
+        <section
+            className="py-18"  // increased padding here
+            style={{
+                background: `radial-gradient(circle at top left, rgba(99, 102, 241, 0.3), transparent 70%), 
+                             radial-gradient(circle at top right, rgba(99, 102, 241, 0.3), transparent 70%), 
+                             radial-gradient(circle at bottom right, rgba(99, 102, 241, 0.3), transparent 70%)`,
+            }}
+        >
             <Container>
                 <div className="flex flex-col md:flex-row items-center gap-10 px-4 md:px-0">
                     {/* Left content */}
