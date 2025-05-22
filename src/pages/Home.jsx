@@ -6,7 +6,6 @@ import FAQSection from "../components/home/Faq";
 import FreeResourcesPreview from "../components/home/FreeResources";
 import Hero from "../components/home/Hero";
 import OurTeam from "../components/home/OurTeam";
-import PracticeTestPromo from "../components/home/PracticeDemo";
 import Testimonials from "../components/home/Testimonials";
 import TopCoursesCarousel from "../components/home/TopCourses";
 
@@ -18,7 +17,7 @@ export default function Home() {
             <AboutDSATScholars />
             <OurTeam />
             <TopCoursesCarousel />
-            <PracticeTestPromo />
+            {/* <PracticeTestPromo /> */}
             <FreeResourcesPreview />
             <Testimonials />
             <CountdownTimer />

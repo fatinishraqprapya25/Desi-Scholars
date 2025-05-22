@@ -1,126 +1,56 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import {
-    FaCode,
-    FaExternalLinkAlt,
-    FaJs,
-    FaLaptopCode,
-    FaNodeJs,
-    FaReact,
-} from "react-icons/fa";
-import { SiTailwindcss } from "react-icons/si";
 
-const resources = [
-    {
-        id: 1,
-        icon: <FaJs className="text-yellow-500 text-4xl" />,
-        title: "JavaScript for Beginners",
-        description: "A complete free JavaScript series for absolute beginners.",
-        link: "#",
-    },
-    {
-        id: 2,
-        icon: <FaCode className="text-orange-500 text-4xl" />,
-        title: "DOM Explained",
-        description: "Free course that explains DOM clearly and visually.",
-        link: "#",
-    },
-    {
-        id: 3,
-        icon: <FaLaptopCode className="text-yellow-400 text-4xl" />,
-        title: "Modern JavaScript Series",
-        description: "Up-to-date JavaScript practices for frontend devs.",
-        link: "#",
-    },
-    {
-        id: 4,
-        icon: <FaReact className="text-blue-500 text-4xl" />,
-        title: "React Fundamentals",
-        description: "A full React.js playlist to get started with frontend.",
-        link: "#",
-    },
-    {
-        id: 5,
-        icon: <FaNodeJs className="text-green-500 text-4xl" />,
-        title: "Node.js in Bangla",
-        description: "Express, Node & MongoDB tutorial series in Bangla.",
-        link: "#",
-    },
-    {
-        id: 6,
-        icon: <SiTailwindcss className="text-teal-500 text-4xl" />,
-        title: "Tailwind CSS Guide",
-        description: "A complete free Tailwind CSS design series.",
-        link: "#",
-    },
-];
-
-// Animation variants
-const container = {
-    hidden: {},
-    show: {
-        transition: {
-            staggerChildren: 0.15,
-        },
-    },
-};
-
-const cardVariant = {
-    hidden: { opacity: 0, y: 40 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
-
-export default function FreeResources() {
+export default function PracticeTestPromo() {
     return (
-        <motion.section
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.2 }}
-            className="py-16 mt-12 bg-gray-50"
-        >
-            <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
-                {/* Sidebar */}
-                <motion.div
-                    variants={cardVariant}
-                    className="lg:col-span-1"
-                >
-                    <img
-                        src="https://cdn-icons-png.flaticon.com/512/4712/4712034.png"
-                        alt="Illustration"
-                        className="w-40 h-auto mb-6"
-                    />
-                    <h3 className="text-2xl font-bold text-gray-900 mb-4">Awesome Tutorials</h3>
-                    <p className="text-gray-600 text-base leading-relaxed">
-                        Dive into well-structured series covering JavaScript, React, Node.js, Tailwind CSS, and more — perfect for learners and self-taught developers.
-                    </p>
-                </motion.div>
+        <section className="relative py-20 overflow-hidden bg-gradient-to-br from-indigo-700 to-purple-800">
+            {/* Background decorative elements - Simplified for reliability */}
+            <div className="absolute top-0 left-0 w-64 h-64 bg-white opacity-10 rounded-full mix-blend-overlay transform -translate-x-1/2 -translate-y-1/2 animate-blob"></div>
+            <div className="absolute bottom-0 right-0 w-80 h-80 bg-white opacity-10 rounded-full mix-blend-overlay transform translate-x-1/2 translate-y-1/2 animate-blob animation-delay-2000"></div>
 
-                {/* Animated Resource Cards */}
+            <div className="max-w-4xl mx-auto px-6 relative z-10"> {/* Ensure content is above background */}
                 <motion.div
-                    className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
-                    variants={container}
+                    className="bg-white/10 backdrop-blur-md rounded-3xl p-8 sm:p-12 shadow-2xl border border-white/20 text-center text-white"
+                    initial={{ opacity: 0, y: 50, scale: 0.95 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
                 >
-                    {resources.map(({ id, icon, title, description, link }) => (
-                        <motion.div
-                            key={id}
-                            variants={cardVariant}
-                            className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between hover:shadow-lg transition"
-                        >
-                            <div className="mb-4">{icon}</div>
-                            <h4 className="text-lg font-semibold text-gray-800 mb-2">{title}</h4>
-                            <p className="text-sm text-gray-600 mb-4">{description}</p>
-                            <a
-                                href={link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium"
-                            >
-                                View Details <FaExternalLinkAlt className="ml-2 text-sm" />
-                            </a>
-                        </motion.div>
-                    ))}
+                    <motion.h2
+                        className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4 leading-tight drop-shadow-md"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3, duration: 0.6 }}
+                    >
+                        Ready to <span className="text-yellow-300">Ace Your Exams</span>?
+                    </motion.h2>
+                    <motion.p
+                        className="text-base sm:text-lg mb-8 max-w-2xl mx-auto text-indigo-100/90"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.5, duration: 0.6 }}
+                    >
+                        Dive into our **free practice tests** and pinpoint your strengths and areas for growth. Whether it's **JavaScript, React**, or any other core subject, we've got you covered. It's quick, insightful, and absolutely free!
+                    </motion.p>
+                    <motion.a
+                        href="/practice-tests" // Changed to a more meaningful link
+                        className="inline-flex items-center justify-center bg-white text-indigo-700 font-bold px-8 py-4 rounded-full shadow-xl hover:bg-gray-100 hover:scale-105 transition-all duration-300 ease-in-out transform"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.7, duration: 0.6 }}
+                        whileHover={{ y: -3, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }} // Subtle lift and shadow on hover
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                        </svg>
+                        Start a Free Test
+                    </motion.a>
                 </motion.div>
             </div>
-        </motion.section>
+        </section>
     );
 }
