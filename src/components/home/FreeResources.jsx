@@ -1,3 +1,5 @@
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 import {
     FaCode,
     FaExternalLinkAlt,
@@ -53,12 +55,35 @@ const resources = [
     },
 ];
 
+// Animation variants
+const container = {
+    hidden: {},
+    show: {
+        transition: {
+            staggerChildren: 0.15,
+        },
+    },
+};
+
+const cardVariant = {
+    hidden: { opacity: 0, y: 40 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
+
 export default function FreeResources() {
     return (
-        <section className="py-16 bg-slate-100 mt-12">
+        <motion.section
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+            className="py-16 mt-12 bg-gray-50"
+        >
             <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
-                {/* Left Sidebar */}
-                <div className="lg:col-span-1">
+                {/* Sidebar */}
+                <motion.div
+                    variants={cardVariant}
+                    className="lg:col-span-1"
+                >
                     <img
                         src="https://cdn-icons-png.flaticon.com/512/4712/4712034.png"
                         alt="Illustration"
@@ -68,13 +93,17 @@ export default function FreeResources() {
                     <p className="text-gray-600 text-base leading-relaxed">
                         Dive into well-structured series covering JavaScript, React, Node.js, Tailwind CSS, and more — perfect for learners and self-taught developers.
                     </p>
-                </div>
+                </motion.div>
 
-                {/* Resource Cards */}
-                <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {/* Animated Resource Cards */}
+                <motion.div
+                    className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
+                    variants={container}
+                >
                     {resources.map(({ id, icon, title, description, link }) => (
-                        <div
+                        <motion.div
                             key={id}
+                            variants={cardVariant}
                             className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between hover:shadow-lg transition"
                         >
                             <div className="mb-4">{icon}</div>
@@ -88,10 +117,10 @@ export default function FreeResources() {
                             >
                                 View Details <FaExternalLinkAlt className="ml-2 text-sm" />
                             </a>
-                        </div>
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
-        </section>
+        </motion.section>
     );
 }
