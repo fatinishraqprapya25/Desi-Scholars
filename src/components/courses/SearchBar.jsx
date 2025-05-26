@@ -1,14 +1,38 @@
 const SearchBar = () => {
+    // Define the accent color for consistency with other components
+    const accentPurple = '#8A4AF8';
+
     return (
-        <form className="mb-4 flex items-center space-x-2">
+        <form
+            className={`
+                mb-4 flex items-center
+                bg-white rounded-full shadow-md overflow-hidden border border-gray-200
+                focus-within:ring-2 focus-within:ring-[${accentPurple}] focus-within:border-transparent /* Adds a ring on focus */
+                transition-all duration-200 /* Smooth transition for focus effect */
+            `}
+        >
             <input
                 type="text"
                 placeholder="Search courses..."
-                className="flex-grow px-3 pb-2 border-b-2 border-gray-300 bg-transparent placeholder-gray-400 focus:outline-none focus:border-indigo-600 focus:placeholder-transparent transition"
+                className="
+                    flex-grow h-10 /* Fixed height for alignment with button */
+                    px-4 py-2.5 /* Padding inside the input field */
+                    bg-transparent
+                    placeholder-gray-500 text-gray-800 /* Placeholder and text color */
+                    focus:outline-none /* Remove default input focus outline, parent handles ring */
+                "
             />
             <button
                 type="submit"
-                className="p-3 bg-indigo-600 rounded-xl text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 flex items-center justify-center shadow-md transition"
+                className={`
+                    h-10 px-4 py-2.5 /* Fixed height and padding for the button */
+                    bg-[${accentPurple}] rounded-full /* Accent color background and full rounding */
+                    text-white hover:bg-[#7A3BD5] /* Text color and hover effect */
+                    focus:outline-none focus:ring-2 focus:ring-[${accentPurple}] focus:ring-opacity-75 /* Focus ring for the button itself */
+                    flex items-center justify-center
+                    shadow-md transition-all duration-200 /* Smooth transitions and shadow */
+                    -ml-2 /* Slightly overlaps the input for a more integrated look */
+                `}
                 aria-label="Search"
             >
                 <svg
