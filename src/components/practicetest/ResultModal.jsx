@@ -1,3 +1,5 @@
+import { motion } from "framer-motion"
+
 const ResultModal = ({ score, totalQuestions, onClose, questions, selectedAnswers }) => {
   return (
     <motion.div

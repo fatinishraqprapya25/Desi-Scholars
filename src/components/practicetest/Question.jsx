@@ -1,3 +1,5 @@
+import {motion} from "framer-motion";
+
 const Question = ({ question, questionNumber, selectedAnswer, onOptionSelect }) => {
   return (
     <motion.div
