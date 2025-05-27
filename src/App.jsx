@@ -7,12 +7,14 @@ import FreeResourcesPage from "./pages/Resources"
 import FreePracticeTest from "./pages/FreePracticeTest";
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
+import AboutUs from "./pages/About";
 
 function App() {
   return (
     <>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<AboutUs />} />
         <Route path="/courses" element={<CourseListingPage />} />
         <Route path="courses/:id" element={<CourseDetailsPage />} />
         <Route path="/login" element={<AuthPage />} />
@@ -20,9 +22,9 @@ function App() {
         <Route path="/signup" element={<AuthPage />} />
         <Route path="/resources" element={<FreeResourcesPage />} />
         <Route path="/practice-test" element={<>
-          <Header/>
+          <Header />
           <FreePracticeTest />
-          <Footer/>
+          <Footer />
         </>} />
       </Routes>
     </>
