@@ -1,37 +1,30 @@
 import React from 'react';
-import { FaBookmark, FaStar, FaUser, FaClock, FaPlay } from 'react-icons/fa'; // Changed FaShoppingCart to FaPlay
+import { FaBookmark, FaStar, FaUser, FaClock, FaPlay } from 'react-icons/fa';
 
 const CourseCard = ({
     title,
     imageUrl,
     instructorName,
-    instructorAvatarUrl, // New prop for instructor's image URL
-    ratingValue,         // e.g., 5.00 (number)
-    reviewCount,         // e.g., 18 (number)
-    studentCount,        // e.g., 1177 (number)
-    durationText,        // e.g., "10h" (string)
-    tags,                // e.g., "No Code, WordPress" (string)
-    priceText            // e.g., "999.00৳" (string)
+    instructorAvatarUrl,
+    ratingValue,
+    reviewCount,
+    studentCount,
+    durationText,
+    tags,
+    priceText
 }) => {
-    const accentPurple = '#8A4AF8'; // Define accent color for consistency
-
-    // Placeholder for instructor avatar if not provided
-    const defaultAvatar = 'https://via.placeholder.com/40'; // A generic placeholder image
+    const accentPurple = '#8A4AF8';
+    const defaultAvatar = 'https://via.placeholder.com/40';
 
     return (
-        <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 transform hover:-translate-y-1 border-2 border-purple-500 hover:border-white">
             {/* Course Image Section */}
             <div className="relative">
                 <img src={imageUrl} alt={title} className="w-full h-48 object-cover" />
-                {/* Image Overlay (visible in the reference image) */}
                 <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                    {/* Placeholder for the Bengali text overlay "ওয়ার্ডপ্রেস কাস্টমাইজেশন" (WordPress Customization) */}
-                    {/* If this text is dynamic, pass it as a prop (e.g., overlayText) */}
                     <span className="text-white text-xl font-bold p-2 text-center [text-shadow:_0_1px_5px_rgb(0_0_0_/_40%)]">
-                        {/* "ওয়ার্ডপ্রেস কাস্টমাইজেশন" (Example: replace with dynamic prop if needed) */}
                     </span>
                 </div>
-                {/* Bookmark Icon */}
                 <button
                     className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md text-gray-700 hover:text-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-200"
                     aria-label="Bookmark Course"
@@ -89,13 +82,25 @@ const CourseCard = ({
                 <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-gray-900">{priceText}</span>
                     <button
-                        className={`flex items-center px-4 py-2 bg-white text-[${accentPurple}] border border-[${accentPurple}] rounded-lg
-                                hover:bg-[${accentPurple}] hover:text-white transition-all duration-200 shadow-sm
-                                focus:outline-none focus:ring-2 focus:ring-[${accentPurple}] focus:ring-opacity-75`}
-                        aria-label="Enroll now" // Updated aria-label
+                        style={{
+                            color: accentPurple,
+                            borderColor: accentPurple,
+                            backgroundColor: 'white'
+                        }}
+                        className="flex items-center px-4 py-2 border rounded-md transition-all duration-200 shadow-sm
+                                   focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-75"
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = accentPurple;
+                            e.currentTarget.style.color = 'white';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'white';
+                            e.currentTarget.style.color = accentPurple;
+                        }}
+                        aria-label="Enroll now"
                     >
-                        <FaPlay className="w-4 h-4 mr-2" /> {/* Changed icon to FaPlay */}
-                        Enroll now {/* Changed button text */}
+                        <FaPlay className="w-4 h-4 mr-2" />
+                        Enroll now
                     </button>
                 </div>
             </div>
