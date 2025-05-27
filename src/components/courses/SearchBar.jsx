@@ -6,7 +6,7 @@ const SearchBar = () => {
         <form
             className={`
                 mb-4 flex items-center
-                bg-white rounded-full shadow-md overflow-hidden border border-gray-200
+                bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 /* Changed from rounded-full to rounded-lg */
                 focus-within:ring-2 focus-within:ring-[${accentPurple}] focus-within:border-transparent /* Adds a ring on focus */
                 transition-all duration-200 /* Smooth transition for focus effect */
             `}
@@ -26,7 +26,7 @@ const SearchBar = () => {
                 type="submit"
                 className={`
                     h-10 px-4 py-2.5 /* Fixed height and padding for the button */
-                    bg-[${accentPurple}] rounded-full /* Accent color background and full rounding */
+                    bg-[${accentPurple}] rounded-full /* Accent color background and full rounding for the button itself */
                     text-white hover:bg-[#7A3BD5] /* Text color and hover effect */
                     focus:outline-none focus:ring-2 focus:ring-[${accentPurple}] focus:ring-opacity-75 /* Focus ring for the button itself */
                     flex items-center justify-center

@@ -83,7 +83,7 @@ const CourseGrid = () => {
     ];
 
     return (
-        <div className="px-4 py-8">
+        <div className="px-4 py-3">
             <h2 className="text-2xl font-bold mb-6">Available Courses</h2>
             {/* Grid layout adjusted for 3 columns on medium screens and up */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

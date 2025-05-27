@@ -1,17 +1,17 @@
 import React from 'react';
-import { FaBookmark, FaStar, FaUser, FaClock, FaShoppingCart } from 'react-icons/fa'; // Importing necessary icons
+import { FaBookmark, FaStar, FaUser, FaClock, FaPlay } from 'react-icons/fa'; // Changed FaShoppingCart to FaPlay
 
 const CourseCard = ({
     title,
     imageUrl,
     instructorName,
     instructorAvatarUrl, // New prop for instructor's image URL
-    ratingValue,        // e.g., 5.00 (number)
-    reviewCount,        // e.g., 18 (number)
-    studentCount,       // e.g., 1177 (number)
-    durationText,       // e.g., "10h" (string)
-    tags,               // e.g., "No Code, WordPress" (string)
-    priceText           // e.g., "999.00৳" (string)
+    ratingValue,         // e.g., 5.00 (number)
+    reviewCount,         // e.g., 18 (number)
+    studentCount,        // e.g., 1177 (number)
+    durationText,        // e.g., "10h" (string)
+    tags,                // e.g., "No Code, WordPress" (string)
+    priceText            // e.g., "999.00৳" (string)
 }) => {
     const accentPurple = '#8A4AF8'; // Define accent color for consistency
 
@@ -25,10 +25,10 @@ const CourseCard = ({
                 <img src={imageUrl} alt={title} className="w-full h-48 object-cover" />
                 {/* Image Overlay (visible in the reference image) */}
                 <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                    {/* Placeholder for the Bengali text overlay "ওয়ার্ডপ্রেস কাস্টমাইজেশন" (WordPress Customization) */}
+                    {/* Placeholder for the Bengali text overlay "ওয়ার্ডপ্রেস কাস্টমাইজেশন" (WordPress Customization) */}
                     {/* If this text is dynamic, pass it as a prop (e.g., overlayText) */}
                     <span className="text-white text-xl font-bold p-2 text-center [text-shadow:_0_1px_5px_rgb(0_0_0_/_40%)]">
-                        {/* "ওয়ার্ডপ্রেস কাস্টমাইজেশন" (Example: replace with dynamic prop if needed) */}
+                        {/* "ওয়ার্ডপ্রেস কাস্টমাইজেশন" (Example: replace with dynamic prop if needed) */}
                     </span>
                 </div>
                 {/* Bookmark Icon */}
@@ -85,17 +85,17 @@ const CourseCard = ({
                     </div>
                 </div>
 
-                {/* Price and Add to Cart Button */}
+                {/* Price and Enroll now Button */}
                 <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-gray-900">{priceText}</span>
                     <button
                         className={`flex items-center px-4 py-2 bg-white text-[${accentPurple}] border border-[${accentPurple}] rounded-lg
-                                   hover:bg-[${accentPurple}] hover:text-white transition-all duration-200 shadow-sm
-                                   focus:outline-none focus:ring-2 focus:ring-[${accentPurple}] focus:ring-opacity-75`}
-                        aria-label="Add to cart"
+                                hover:bg-[${accentPurple}] hover:text-white transition-all duration-200 shadow-sm
+                                focus:outline-none focus:ring-2 focus:ring-[${accentPurple}] focus:ring-opacity-75`}
+                        aria-label="Enroll now" // Updated aria-label
                     >
-                        <FaShoppingCart className="w-4 h-4 mr-2" />
-                        Add to cart
+                        <FaPlay className="w-4 h-4 mr-2" /> {/* Changed icon to FaPlay */}
+                        Enroll now {/* Changed button text */}
                     </button>
                 </div>
             </div>

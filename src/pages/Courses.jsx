@@ -14,7 +14,7 @@ const CourseListingPage = () => {
                         <FilterSidebar />
                     </div>
                     <div className="w-full md:w-4/5 p-4">
-                        <SearchBar />
+                        {/* <SearchBar /> */}
                         <CourseGrid />
                     </div>
                 </div>

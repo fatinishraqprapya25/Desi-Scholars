@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
+import SearchBar from "./SearchBar"; // Import the SearchBar component
 
 const FilterSidebar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -32,8 +33,6 @@ const FilterSidebar = () => {
                     scrollbar-width: thin;
                     scrollbar-color: ${accentPurple} #f0f3f8;
                 }
-
-                /* REMOVED: @media (min-width: 768px) { display: none; } to always show scrollbar */
             `}</style>
 
             {/* Hamburger Button for Mobile */}
@@ -99,6 +98,9 @@ const FilterSidebar = () => {
                             <FaTimes className="w-6 h-6" />
                         </button>
                     </div>
+
+                    {/* SearchBar added here */}
+                    <SearchBar />
 
                     {/* Filter Group: Type */}
                     <div>
@@ -178,7 +180,7 @@ const FilterSidebar = () => {
 
                 {/* Clear Filters Button */}
                 <button
-                    className={`mt-6 w-full bg-[${accentPurple}] hover:bg-[#7A3BD5] text-white font-medium py-2.5 px-4 rounded-full transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[${accentPurple}] focus:ring-opacity-75`}
+                    className={`mt-6 w-full bg-[${accentPurple}] hover:bg-[#7A3BD5] text-white font-medium py-2.5 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[${accentPurple}] focus:ring-opacity-75`} /* Changed rounded-full to rounded-lg */
                     onClick={() => console.log("Clear all filters")}
                 >
                     Clear Filters
