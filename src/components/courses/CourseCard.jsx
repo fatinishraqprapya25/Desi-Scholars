@@ -16,6 +16,11 @@ const CourseCard = ({
     const accentPurple = '#8A4AF8';
     const defaultAvatar = 'https://via.placeholder.com/40';
 
+    const handleEnrollClick = () => {
+        // Navigate to the course details page
+        window.location.href = "/courses/1221";
+    };
+
     return (
         <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 transform hover:-translate-y-1 border-2 border-purple-500 hover:border-white">
             {/* Course Image Section */}
@@ -88,7 +93,7 @@ const CourseCard = ({
                             backgroundColor: 'white'
                         }}
                         className="flex items-center px-4 py-2 border rounded-md transition-all duration-200 shadow-sm
-                                   focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-75"
+                                   focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-75 cursor-pointer"
                         onMouseEnter={(e) => {
                             e.currentTarget.style.backgroundColor = accentPurple;
                             e.currentTarget.style.color = 'white';
@@ -97,6 +102,7 @@ const CourseCard = ({
                             e.currentTarget.style.backgroundColor = 'white';
                             e.currentTarget.style.color = accentPurple;
                         }}
+                        onClick={handleEnrollClick} // Added onClick handler for navigation
                         aria-label="Enroll now"
                     >
                         <FaPlay className="w-4 h-4 mr-2" />
