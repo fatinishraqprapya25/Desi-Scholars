@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-const WhatWeDo = ({ icon, title, description }) => (
+const WhatWeDoCard = ({ icon, title, description }) => (
   <motion.div
     className="bg-white p-10 rounded-3xl shadow-2xl border border-blue-100 flex flex-col items-center text-center transform hover:scale-105 transition-transform duration-300"
     variants={itemVariants}
@@ -12,4 +12,4 @@ const WhatWeDo = ({ icon, title, description }) => (
   </motion.div>
 );
 
-export default WhatWeDo;
+export default WhatWeDoCard;
