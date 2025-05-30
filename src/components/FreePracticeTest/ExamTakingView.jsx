@@ -1,9 +1,9 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react"; // Import useEffect
+import { motion, AnimatePresence } from "framer-motion"; // AnimatePresence for transitions between questions
 import { COLORS } from "./constants";
 import QuestionItem from "./QuestionItem";
-import ResultsDisplay from "./ResultDisplay"; // Assuming this is the correct import name
-import AnimatedButton from "./AnimatedButton";
+import ResultsDisplay from "./ResultDisplay";
+import AnimatedButton from "./AnimatedButton"; // Assuming this is used for navigation buttons as well
 
 const ExamTakingView = ({
     selectedExam,
@@ -17,10 +17,15 @@ const ExamTakingView = ({
     totalQuestions,
     percentage,
 }) => {
-    // Add this check at the beginning of the component
+    // State to manage the current question being displayed
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+    // Reset currentQuestionIndex when a new exam is selected or when the exam is submitted/retaken
+    useEffect(() => {
+        setCurrentQuestionIndex(0);
+    }, [selectedExam, submitted]); // Reset when selectedExam changes or submitted status changes
+
     if (!selectedExam) {
-        // If selectedExam is undefined or null, display a message or return null.
-        // This prevents the component from crashing.
         return (
             <motion.div
                 key="exam-error"
@@ -36,7 +41,24 @@ const ExamTakingView = ({
         );
     }
 
-    // Rest of your component logic remains the same
+    const totalExamQuestions = selectedExam.questions.length;
+    const currentQuestion = selectedExam.questions[currentQuestionIndex];
+
+    const handleNextQuestion = () => {
+        if (currentQuestionIndex < totalExamQuestions - 1) {
+            setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+        }
+    };
+
+    const handlePreviousQuestion = () => {
+        if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
+        }
+    };
+
+    const isLastQuestion = currentQuestionIndex === totalExamQuestions - 1;
+    const isFirstQuestion = currentQuestionIndex === 0;
+
     return (
         <motion.div
             key="exam-detail"
@@ -50,7 +72,7 @@ const ExamTakingView = ({
                 className={`flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 pb-6 border-b-2 border-${COLORS.primaryLight.replace("#", "")}`}
             >
                 <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 flex items-center gap-3 mb-4 sm:mb-0">
-                    {selectedExam.icon} {selectedExam.title} {/* This line is now safe */}
+                    {selectedExam.icon} {selectedExam.title}
                 </h2>
                 <motion.button
                     onClick={handleRetakeOrNewTest}
@@ -90,34 +112,60 @@ const ExamTakingView = ({
                 </div>
             ) : (
                 <div className="space-y-6 sm:space-y-8">
-                    {/* This is also now safer because selectedExam is guaranteed to be an object here */}
-                    {selectedExam.questions.map((q, index) => (
-                        <QuestionItem
-                            key={index}
-                            q={q}
-                            index={index}
-                            answers={answers}
-                            submitted={submitted}
-                            handleAnswer={handleAnswer}
-                        />
-                    ))}
-
-                    {!submitted && (
-                        <AnimatedButton
-                            onClick={handleSubmit}
-                            className="mt-8 w-full text-lg py-4"
-                        >
-                            Submit Your Answers!
-                        </AnimatedButton>
-                    )}
-
-                    {submitted && (
+                    {!submitted ? (
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={currentQuestionIndex} // Key changes to trigger exit/enter animations
+                                initial={{ opacity: 0, x: 50 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -50 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                <QuestionItem
+                                    q={currentQuestion}
+                                    index={currentQuestionIndex}
+                                    answers={answers}
+                                    submitted={submitted}
+                                    handleAnswer={handleAnswer}
+                                />
+                            </motion.div>
+                        </AnimatePresence>
+                    ) : (
+                        // Display results if submitted
                         <ResultsDisplay
                             score={score}
                             totalQuestions={totalQuestions}
                             percentage={percentage}
                             onRetakeOrNewTest={handleRetakeOrNewTest}
                         />
+                    )}
+
+                    {/* Navigation Buttons for Questions */}
+                    {!submitted && (
+                        <div className="flex justify-between mt-8 gap-4">
+                            <AnimatedButton
+                                onClick={handlePreviousQuestion}
+                                disabled={isFirstQuestion}
+                                className={`flex-1 text-lg py-4 ${isFirstQuestion ? "opacity-50 cursor-not-allowed" : ""}`}
+                            >
+                                Previous
+                            </AnimatedButton>
+                            {isLastQuestion ? (
+                                <AnimatedButton
+                                    onClick={handleSubmit}
+                                    className="flex-1 text-lg py-4"
+                                >
+                                    Submit Your Answers!
+                                </AnimatedButton>
+                            ) : (
+                                <AnimatedButton
+                                    onClick={handleNextQuestion}
+                                    className="flex-1 text-lg py-4"
+                                >
+                                    Next Question
+                                </AnimatedButton>
+                            )}
+                        </div>
                     )}
                 </div>
             )}
