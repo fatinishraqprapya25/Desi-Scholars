@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import LoginForm from './Login';
-import RegistrationForm from './Register';
+import LoginForm from './Login'; // Assuming Login.js is your LoginForm
+import RegistrationForm from './Register'; // Assuming Register.js is your RegistrationForm
 
 const AuthPage = () => {
   const [isRegisterMode, setIsRegisterMode] = useState(true); // true for Register, false for Login
@@ -79,7 +79,7 @@ const AuthPage = () => {
         transition={{ duration: 0.5 }}
       >
         {/* Left Panel (Content or Form) */}
-        <div className="relative w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center p-6 md:p-10">
+        <div className="relative w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center p-6 md:p-10 mb-8 md:mb-0">
           <AnimatePresence mode="wait">
             {isRegisterMode ? (
               <motion.div
@@ -89,7 +89,7 @@ const AuthPage = () => {
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                custom={true} // isLeft = true
+                custom={true}
               >
                 <RegistrationForm />
               </motion.div>
@@ -101,10 +101,10 @@ const AuthPage = () => {
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                custom={true} // isLeft = true
+                custom={true}
               >
                 <h2 className="text-4xl font-extrabold mb-4 text-purple-800">Welcome Back!</h2>
-                <p className="text-lg mb-6">
+                <p className="text-lg mb-[10px]">
                   To keep connected with us please login with your personal info.
                 </p>
                 <motion.button
@@ -121,7 +121,7 @@ const AuthPage = () => {
         </div>
 
         {/* Right Panel (Content or Form) */}
-        <div className="relative w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center p-6 md:p-10 bg-gradient-to-br from-purple-600 to-indigo-700 text-white">
+        <div className="relative md:mt-0 mt-[60px] w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center p-6 md:p-10 bg-gradient-to-br from-purple-600 to-indigo-700 text-white">
           <AnimatePresence mode="wait">
             {isRegisterMode ? (
               <motion.div
@@ -131,10 +131,10 @@ const AuthPage = () => {
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                custom={false} // isLeft = false
+                custom={false}
               >
                 <h2 className="text-4xl font-extrabold mb-4">Hello, Friend!</h2>
-                <p className="text-lg mb-6">
+                <p className="text-lg">
                   Enter your personal details and start your journey with us.
                 </p>
                 <motion.button
@@ -149,12 +149,12 @@ const AuthPage = () => {
             ) : (
               <motion.div
                 key="loginForm"
-                className="w-full h-full flex items-center justify-center"
+                className="w-full h-full flex mt-[-73px] items-center justify-center"
                 variants={formVariants}
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                custom={false} // isLeft = false
+                custom={false}
               >
                 <LoginForm />
               </motion.div>
