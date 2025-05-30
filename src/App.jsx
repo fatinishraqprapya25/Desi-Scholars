@@ -8,6 +8,7 @@ import FreePracticeTest from "./pages/FreePracticeTest";
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import AboutUs from "./pages/About";
+import QuizPage from "./components/FreePracticeTest/Quiz";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <FreePracticeTest />
           <Footer />
         </>} />
+        <Route path="practice-test/:examId" element={<QuizPage />} />
       </Routes>
     </>
   )
