@@ -1,18 +1,19 @@
+// In FreeResourcesPage.js
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaBook, FaFilePdf, FaPlayCircle } from 'react-icons/fa'; // Icons for categories
-import Header from '../components/common/Header'; // Assuming Header component exists at this path
-import Footer from '../components/common/Footer'; // Assuming Footer component exists at this path
-import ResourceCategoryTabs from '../components/resources/ResourceCategoryTabs'; // New component import
-import ResourceGrid from '../components/resources/ResourceGrid'; // New component import
+import { FaBook, FaFilePdf, FaPlayCircle } from 'react-icons/fa';
+import Header from '../components/common/Header';
+import Footer from '../components/common/Footer';
+import ResourceCategoryTabs from '../components/resources/ResourceCategoryTabs';
+import ResourceGrid from '../components/resources/ResourceGrid';
 
-// Mock Data for Resources
+// Mock Data for Resources (remain unchanged, or updated to text-blue-600 as per previous instructions)
 const resources = [
   {
     id: 'e1',
     category: 'e-books',
     title: 'React Fundamentals E-book',
-    icon: <FaBook className="text-purple-600" />,
+    icon: <FaBook className="text-blue-600" />,
     type: 'download',
     link: '#download-react-ebook',
     description: 'A comprehensive guide to getting started with React, covering JSX, components, and state management.'
@@ -21,7 +22,7 @@ const resources = [
     id: 'e2',
     category: 'e-books',
     title: 'Advanced JavaScript Patterns',
-    icon: <FaBook className="text-purple-600" />,
+    icon: <FaBook className="text-blue-600" />,
     type: 'download',
     link: '#download-js-patterns',
     description: 'Explore advanced JavaScript concepts like closures, prototypes, and async/await for robust applications.'
@@ -30,7 +31,7 @@ const resources = [
     id: 'e3',
     category: 'e-books',
     title: 'Tailwind CSS Mastery',
-    icon: <FaBook className="text-purple-600" />,
+    icon: <FaBook className="text-blue-600" />,
     type: 'download',
     link: '#download-tailwind-mastery',
     description: 'Learn to build beautiful, responsive UIs rapidly with the power of Tailwind CSS utility classes.'
@@ -39,7 +40,7 @@ const resources = [
     id: 'p1',
     category: 'pdfs',
     title: 'React Hooks Cheatsheet',
-    icon: <FaFilePdf className="text-red-600" />,
+    icon: <FaFilePdf className="text-blue-600" />,
     type: 'view',
     link: '#view-hooks-cheatsheet',
     description: 'A quick reference guide for all essential React Hooks and their usage examples.'
@@ -48,7 +49,7 @@ const resources = [
     id: 'p2',
     category: 'pdfs',
     title: 'Web Development Roadmap',
-    icon: <FaFilePdf className="text-red-600" />,
+    icon: <FaFilePdf className="text-blue-600" />,
     type: 'download',
     link: '#download-roadmap-pdf',
     description: 'A step-by-step roadmap for aspiring web developers, outlining key technologies and learning paths.'
@@ -57,7 +58,7 @@ const resources = [
     id: 'p3',
     category: 'pdfs',
     title: 'ES6+ Features Overview',
-    icon: <FaFilePdf className="text-red-600" />,
+    icon: <FaFilePdf className="text-blue-600" />,
     type: 'view',
     link: '#view-es6-features',
     description: 'An concise overview of modern JavaScript (ES6+) features, including arrow functions, destructuring, and modules.'
@@ -92,7 +93,7 @@ const resources = [
 ];
 
 const FreeResourcesPage = () => {
-  const [activeCategory, setActiveCategory] = useState('e-books'); // Default active category
+  const [activeCategory, setActiveCategory] = useState('e-books');
 
   const filteredResources = resources.filter(
     (resource) => resource.category === activeCategory
@@ -101,10 +102,33 @@ const FreeResourcesPage = () => {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50 font-sans antialiased text-gray-900 py-12">
-        <div className="max-w-7xl mx-auto px-6">
+      <div className="relative min-h-screen bg-gradient-to-br from-indigo-50 via-blue-100 to-purple-100 font-sans antialiased text-gray-900 py-12 overflow-hidden">
+        {/* Decorative background shapes for more visual interest */}
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.2 }}
+          transition={{ delay: 1, duration: 2 }}
+        ></motion.div>
+        <motion.div
+          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.2 }}
+          transition={{ delay: 1.2, duration: 2 }}
+        ></motion.div>
+        <motion.div
+          className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.2 }}
+          transition={{ delay: 1.4, duration: 2 }}
+        ></motion.div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6">
           <motion.h1
-            className="text-5xl md:text-6xl font-extrabold text-center text-purple-900 mb-12 drop-shadow-lg"
+            className="text-5xl md:text-6xl font-extrabold text-center mb-12 drop-shadow-lg bg-clip-text text-transparent"
+            style={{
+              backgroundImage: `linear-gradient(to right, #2563eb, #6366f1)`
+            }}
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}

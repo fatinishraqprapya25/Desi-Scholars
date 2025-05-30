@@ -23,7 +23,8 @@ const ResourceCard = ({ resource }) => {
       transition={{ duration: 0.3 }}
       variants={itemVariants} // Apply item variants for staggered entrance
     >
-      <div className="text-6xl mb-4">
+      {/* Icon color adjusted to a primary blue from your theme */}
+      <div className="text-6xl mb-4 text-blue-600">
         {resource.icon}
       </div>
       <h3 className="text-2xl font-bold text-gray-900 mb-3">{resource.title}</h3>
@@ -32,11 +33,9 @@ const ResourceCard = ({ resource }) => {
         href={resource.link}
         target="_blank"
         rel="noopener noreferrer"
-        className={`flex items-center px-8 py-3 rounded-full text-lg font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 ${
-          resource.type === 'download'
-            ? 'bg-green-600 text-white hover:bg-green-700'
-            : 'bg-blue-600 text-white hover:bg-blue-700'
-        }`}
+        // Both download and view buttons will now use the blue/indigo theme
+        className={`flex items-center px-8 py-3 rounded-full text-lg font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 text-white
+                           bg-blue-600 hover:bg-blue-700`} // Unified blue theme for both button types
         whileHover={{ y: -2 }}
         whileTap={{ scale: 0.95 }}
       >

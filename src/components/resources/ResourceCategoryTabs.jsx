@@ -8,11 +8,10 @@ const ResourceCategoryTabs = ({ activeCategory, setActiveCategory }) => {
         <motion.button
           key={category}
           onClick={() => setActiveCategory(category)}
-          className={`px-8 py-3 rounded-full text-lg font-semibold transition-all duration-300 shadow-md ${
-            activeCategory === category
-              ? 'bg-purple-700 text-white transform scale-105 shadow-xl'
-              : 'bg-white text-gray-700 hover:bg-purple-50 hover:text-purple-800'
-          }`}
+          className={`px-8 py-3 rounded-full text-lg font-semibold transition-all duration-300 shadow-md ${activeCategory === category
+            ? 'bg-blue-600 text-white transform scale-105 shadow-xl hover:bg-blue-700' // Active: Blue-600 with darker hover
+            : 'bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-800' // Inactive: White with light blue hover
+            }`}
           whileHover={{ scale: 1.05, y: -3 }}
           whileTap={{ scale: 0.95 }}
         >
