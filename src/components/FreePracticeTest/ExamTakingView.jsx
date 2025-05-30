@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"; // Import useEffect
 import { motion, AnimatePresence } from "framer-motion"; // AnimatePresence for transitions between questions
-import { COLORS } from "./constants";
+import { COLORS } from "./Constants";
 import QuestionItem from "./QuestionItem";
 import ResultsDisplay from "./ResultDisplay";
 import AnimatedButton from "./AnimatedButton"; // Assuming this is used for navigation buttons as well

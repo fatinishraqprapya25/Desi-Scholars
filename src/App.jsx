@@ -27,7 +27,6 @@ function App() {
           <FreePracticeTest />
           <Footer />
         </>} />
-        <Route path="practice-test/:examId" element={<QuizPage />} />
       </Routes>
     </>
   )
