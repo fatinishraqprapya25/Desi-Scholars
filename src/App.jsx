@@ -9,6 +9,7 @@ import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import AboutUs from "./pages/About";
 import QuizPage from "./components/FreePracticeTest/Quiz";
+import MockPage from "./pages/Mock";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <FreePracticeTest />
           <Footer />
         </>} />
+        <Route path="/mock" element={<MockPage />} />
       </Routes>
     </>
   )
