@@ -1,67 +1,8 @@
 import React, { useState } from 'react';
 import { BookOpen, FileText, FolderOpen, MessageSquare, User, LogOut, CheckCircle, Award, Compass } from 'lucide-react';
 
-// Main App Component
-export default function App() {
-    const [activeSection, setActiveSection] = useState('dashboard'); // 'dashboard' or 'profile'
-
-    return (
-        <div className="min-h-screen bg-gray-100 font-sans antialiased flex flex-col lg:flex-row">
-            {/* Sidebar Component */}
-            <Sidebar setActiveSection={setActiveSection} />
-
-            {/* Main Content Area */}
-            <div className="flex-1 p-4 sm:p-6 lg:p-8">
-                {activeSection === 'dashboard' ? (
-                    <UserDashboard />
-                ) : (
-                    <Profile />
-                )}
-            </div>
-        </div>
-    );
-}
-
-// Sidebar Component
-function Sidebar({ setActiveSection }) {
-    const navItems = [
-        { name: 'My Courses', icon: BookOpen, section: 'dashboard' },
-        { name: 'Practice Tests', icon: FileText, section: 'dashboard' },
-        { name: 'Resources', icon: FolderOpen, section: 'dashboard' },
-        { name: 'Messages', icon: MessageSquare, section: 'dashboard' },
-        { name: 'Profile', icon: User, section: 'profile' },
-        { name: 'Logout', icon: LogOut, section: 'logout' }, // Logout can be a simple action
-    ];
-
-    return (
-        <aside className="w-full lg:w-64 bg-gradient-to-br from-blue-700 to-blue-900 text-white shadow-lg p-4 rounded-b-lg lg:rounded-r-lg lg:rounded-bl-none flex flex-col justify-between">
-            <div>
-                <h1 className="text-3xl font-bold mb-8 text-center tracking-wide">Student Dashboard</h1>
-                <nav>
-                    <ul>
-                        {navItems.map((item) => (
-                            <li key={item.name} className="mb-3">
-                                <button
-                                    onClick={() => setActiveSection(item.section)}
-                                    className="w-full flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                >
-                                    <item.icon className="mr-3 h-5 w-5" />
-                                    <span className="text-lg font-medium">{item.name}</span>
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                </nav>
-            </div>
-            <div className="mt-8 text-center text-sm text-blue-200">
-                <p>&copy; 2024 Student Portal</p>
-            </div>
-        </aside>
-    );
-}
-
 // UserDashboard Component
-function UserDashboard() {
+export default function UserDashboardHome() {
     // Mock data for enrolled courses
     const enrolledCourses = [
         {
@@ -182,63 +123,5 @@ function UserDashboard() {
                 </div>
             </section>
         </main>
-    );
-}
-
-// Profile Component
-function Profile() {
-    // Mock user data
-    const user = {
-        name: 'Jane Doe',
-        studentId: 'S123456',
-        email: 'jane.doe@example.com',
-        major: 'Computer Science',
-        enrollmentDate: '2023-09-01',
-        bio: 'Passionate about coding and learning new technologies. Enjoys solving complex problems.',
-    };
-
-    const handleMessageInstructor = () => {
-        alert('Opening message composer to instructor...');
-        // In a real app, this would open a messaging interface
-    };
-
-    return (
-        <div className="bg-white p-6 rounded-lg shadow-xl max-w-2xl mx-auto">
-            <h2 className="text-4xl font-extrabold text-gray-800 mb-8 border-b-4 border-blue-500 pb-2 text-center">Your Profile</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div className="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg shadow-sm">
-                    <User className="h-12 w-12 text-blue-600" />
-                    <div>
-                        <p className="text-lg font-semibold text-gray-800">{user.name}</p>
-                        <p className="text-sm text-gray-600">Student ID: {user.studentId}</p>
-                    </div>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
-                    <p className="text-sm font-medium text-gray-700">Email:</p>
-                    <p className="text-base text-gray-800">{user.email}</p>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
-                    <p className="text-sm font-medium text-gray-700">Major:</p>
-                    <p className="text-base text-gray-800">{user.major}</p>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
-                    <p className="text-sm font-medium text-gray-700">Enrollment Date:</p>
-                    <p className="text-base text-gray-800">{user.enrollmentDate}</p>
-                </div>
-            </div>
-
-            <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-8">
-                <p className="text-sm font-medium text-gray-700 mb-2">About Me:</p>
-                <p className="text-base text-gray-800 leading-relaxed">{user.bio}</p>
-            </div>
-
-            <button
-                onClick={handleMessageInstructor}
-                className="w-full bg-blue-600 text-white py-3 px-5 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-lg font-medium flex items-center justify-center shadow-md"
-            >
-                <MessageSquare className="mr-2 h-5 w-5" /> Message Instructor
-            </button>
-        </div>
     );
 }

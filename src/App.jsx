@@ -8,8 +8,8 @@ import FreePracticeTest from "./pages/FreePracticeTest";
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import AboutUs from "./pages/About";
-import QuizPage from "./components/FreePracticeTest/Quiz";
 import MockPage from "./pages/Mock";
+import UserDashboard from "./pages/UserDashboard"
 
 function App() {
   return (
@@ -29,7 +29,7 @@ function App() {
           <Footer />
         </>} />
         <Route path="/mock" element={<MockPage />} />
-        <Route path="/dashboard" element={<MockPage />} />
+        <Route path="/dashbaord" element={<UserDashboard />} />
       </Routes>
     </>
   )
