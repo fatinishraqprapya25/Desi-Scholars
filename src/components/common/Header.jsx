@@ -11,6 +11,7 @@ export default function Header() {
         { name: "Courses", path: "/courses" },
         { name: "Resources", path: "/resources" },
         { name: "Practice Test", path: "/practice-test" },
+        { name: "Mock", path: "/mock" },
         { name: "About Us", path: "/about" },
         { name: "Shop", path: "/shop" },
     ];
