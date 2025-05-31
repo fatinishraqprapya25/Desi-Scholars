@@ -14,7 +14,7 @@ export default function UserDashboard() {
 
     return (
         <>
-            <UserDashboardHeader toggleSidebar={toggleSidebar} />
+            <UserDashboardHeader setActiveSection={setActiveSection} toggleSidebar={toggleSidebar} />
             <div className="min-h-screen bg-gray-100 font-sans antialiased flex flex-col lg:flex-row">
                 {/* Sidebar Component */}
 
