@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { BookOpen, FileText, FolderOpen, CheckCircle, Award, Compass } from 'lucide-react';
 import EnrolledCourses from './EnrolledCourses';
 import PracticeTest from './PracticeTest';
+import FreeResources from './FreeResource';
+import RecentTestScores from "./RecentTestScores"
 
 // UserDashboard Component
 export default function UserDashboardHome() {
@@ -24,11 +26,11 @@ export default function UserDashboardHome() {
             <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
                 <PracticeTest />
 
-
+                <FreeResources />
             </section>
 
             {/* Recent Test Scores Section */}
-
+            <RecentTestScores />
         </main>
     );
 }

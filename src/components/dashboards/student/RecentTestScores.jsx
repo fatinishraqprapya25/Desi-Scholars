@@ -1,6 +1,12 @@
 import { CheckCircle } from 'lucide-react';
 
 export default function recentTestScores() {
+    // Mock data for recent test scores
+    const recentTestScores = [
+        { id: 1, testName: 'Web Dev Basics Quiz', score: 85, date: '2024-05-20' },
+        { id: 2, testName: 'Algebra Midterm', score: 72, date: '2024-05-15' },
+        { id: 3, testName: 'Python Fundamentals', score: 92, date: '2024-05-10' },
+    ];
     return (
         <>
             <section>
