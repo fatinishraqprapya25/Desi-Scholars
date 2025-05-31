@@ -7,13 +7,18 @@ import UserDashboardHeader from "../components/dashboards/common/UserDashboardHe
 export default function UserDashboard() {
     const [activeSection, setActiveSection] = useState('dashboard');
 
+    const [isOpenSideBar, setIsOpenSideBar] = useState(false);
+    const toggleSidebar = () => {
+        setIsOpenSideBar(!isOpenSideBar);
+    }
+
     return (
         <>
-            <UserDashboardHeader />
+            <UserDashboardHeader toggleSidebar={toggleSidebar} />
             <div className="min-h-screen bg-gray-100 font-sans antialiased flex flex-col lg:flex-row">
                 {/* Sidebar Component */}
 
-                <Sidebar setActiveSection={setActiveSection} />
+                <Sidebar toggleSidebar={toggleSidebar} isOpenSideBar={isOpenSideBar} setActiveSection={setActiveSection} />
 
                 {/* Main Content Area */}
                 <div className="flex-1 p-4 sm:p-6 lg:p-8">
