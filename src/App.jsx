@@ -29,7 +29,7 @@ function App() {
           <Footer />
         </>} />
         <Route path="/mock" element={<MockPage />} />
-        <Route path="/dashbaord" element={<UserDashboard />} />
+        <Route path="/dashboard" element={<UserDashboard />} />
       </Routes>
     </>
   )

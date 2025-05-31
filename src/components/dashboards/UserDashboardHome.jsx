@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, FileText, FolderOpen, MessageSquare, User, LogOut, CheckCircle, Award, Compass } from 'lucide-react';
+import { BookOpen, FileText, FolderOpen, CheckCircle, Award, Compass } from 'lucide-react';
 
 // UserDashboard Component
 export default function UserDashboardHome() {

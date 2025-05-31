@@ -1,5 +1,7 @@
 import UserDashboardHome from "../components/dashboards/UserDashboardHome";
 import Profile from "../components/dashboards/Profile";
+import { useState } from "react";
+import Sidebar from "../components/dashboards/Sidebar";
 
 export default function UserDashboard() {
     const [activeSection, setActiveSection] = useState('dashboard');

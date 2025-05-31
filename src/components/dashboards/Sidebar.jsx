@@ -1,5 +1,6 @@
-// Sidebar Component
-function Sidebar({ setActiveSection }) {
+import { BookOpen, FileText, FolderOpen, MessageSquare, User, LogOut } from 'lucide-react';
+
+export default function Sidebar({ setActiveSection }) {
     const navItems = [
         { name: 'My Courses', icon: BookOpen, section: 'dashboard' },
         { name: 'Practice Tests', icon: FileText, section: 'dashboard' },

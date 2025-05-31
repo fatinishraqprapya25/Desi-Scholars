@@ -1,5 +1,7 @@
-function Profile() {
-    // Mock user data
+// import User from "./UserDashboardHome";
+import { MessageSquare, User } from 'lucide-react';
+
+export default function Profile() {
     const user = {
         name: 'Jane Doe',
         studentId: 'S123456',
@@ -11,7 +13,6 @@ function Profile() {
 
     const handleMessageInstructor = () => {
         alert('Opening message composer to instructor...');
-        // In a real app, this would open a messaging interface
     };
 
     return (
