@@ -9,7 +9,7 @@ import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import AboutUs from "./pages/About";
 import MockPage from "./pages/Mock";
-import UserDashboard from "./pages/UserDashboard"
+import UserDashboard from "./pages/UserDashboard";
 
 function App() {
   return (
