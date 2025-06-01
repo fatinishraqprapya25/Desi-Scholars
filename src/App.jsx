@@ -10,6 +10,7 @@ import Footer from "./components/common/Footer";
 import AboutUs from "./pages/About";
 import MockPage from "./pages/Mock";
 import UserDashboard from "./pages/UserDashboard";
+import UserDashboardProfile from "./components/dashboards/student/pages/UserDashboardProfile";
 
 function App() {
   return (
@@ -29,7 +30,8 @@ function App() {
           <Footer />
         </>} />
         <Route path="/mock" element={<MockPage />} />
-        <Route path="/dashboard" element={<UserDashboard />} />
+        <Route path="dashboard" element={<UserDashboard />} />
+        <Route path="/dashboard/profile" element={<UserDashboardProfile />} />
       </Routes>
     </>
   )
