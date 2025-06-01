@@ -21,9 +21,9 @@ export default function Sidebar({ isOpenSideBar, toggleSidebar }) {
     ];
 
     return (
-        <div
+        <div style={{ position: "fixed", top: "12%" }}
             className={`
-        fixed top-0 left-0 z-50 w-64 h-screen bg-gradient-to-br from-blue-700 to-blue-900 text-white shadow-lg
+         left-0 z-50 w-64 h-screen bg-gradient-to-br from-blue-700 to-blue-900 text-white shadow-lg
         transform transition-transform duration-300 ease-in-out
         ${isOpenSideBar ? 'translate-x-0' : '-translate-x-full'}
         lg:translate-x-0 lg:static
