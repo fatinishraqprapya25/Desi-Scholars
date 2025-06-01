@@ -1,14 +1,14 @@
+import { Link } from 'react-router-dom';
 import { BookOpen, FileText, FolderOpen, MessageSquare, User, LogOut, XCircle } from 'lucide-react';
 
-// Sidebar Component
-export default function Sidebar({ setActiveSection, isOpenSideBar, toggleSidebar }) {
+export default function Sidebar({ isOpenSideBar, toggleSidebar }) {
     const navItems = [
-        { name: 'My Courses', icon: BookOpen, section: 'dashboard' },
-        { name: 'Practice Tests', icon: FileText, section: 'dashboard' },
-        { name: 'Resources', icon: FolderOpen, section: 'dashboard' },
-        { name: 'Messages', icon: MessageSquare, section: 'dashboard' },
-        { name: 'Profile', icon: User, section: 'profile' },
-        { name: 'Logout', icon: LogOut, section: 'logout' }, // Logout can be a simple action
+        { name: 'My Courses', icon: BookOpen, path: '/dashboard' },
+        { name: 'Practice Tests', icon: FileText, path: '/dashboard/practice' },
+        { name: 'Resources', icon: FolderOpen, path: '/dashboard/resources' },
+        { name: 'Messages', icon: MessageSquare, path: '/dashboard/messages' },
+        { name: 'Profile', icon: User, path: '/dashboard/profile' },
+        { name: 'Logout', icon: LogOut, path: '/logout' },
     ];
 
     return (
@@ -29,13 +29,14 @@ export default function Sidebar({ setActiveSection, isOpenSideBar, toggleSidebar
                     <ul>
                         {navItems.map((item) => (
                             <li key={item.name} className="mb-3">
-                                <button
-                                    onClick={() => { setActiveSection(item.section); toggleSidebar(); }} // Close sidebar on navigation
+                                <Link
+                                    to={item.path}
+                                    onClick={toggleSidebar} // Optional: close sidebar on mobile
                                     className="w-full flex items-center p-3 rounded-lg hover:bg-blue-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                 >
                                     <item.icon className="mr-3 h-5 w-5" />
                                     <span className="text-lg font-medium">{item.name}</span>
-                                </button>
+                                </Link>
                             </li>
                         ))}
                     </ul>
