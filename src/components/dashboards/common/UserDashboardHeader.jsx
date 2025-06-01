@@ -2,7 +2,7 @@ import { Bell, User, Menu } from 'lucide-react';
 
 function UserDashboardHeader({ setActiveSection, toggleSidebar }) {
     return (
-        <header className="flex justify-between items-center py-4 px-6 bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg">
+        <header className="flex justify-between items-center py-4 px-6 bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg fixed w-full">
             {/* Hamburger Button */}
             <button
                 onClick={toggleSidebar}
