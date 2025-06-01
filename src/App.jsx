@@ -11,6 +11,7 @@ import AboutUs from "./pages/About";
 import MockPage from "./pages/Mock";
 import UserDashboard from "./pages/UserDashboard";
 import UserDashboardProfile from "./components/dashboards/student/pages/UserDashboardProfile";
+import UserEnrolledCourses from "./components/dashboards/student/pages/UserEnrolledCourses";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/mock" element={<MockPage />} />
         <Route path="dashboard" element={<UserDashboard />} />
         <Route path="/dashboard/profile" element={<UserDashboardProfile />} />
+        <Route path="/dashboard/mycourses" element={<UserEnrolledCourses />} />
       </Routes>
     </>
   )

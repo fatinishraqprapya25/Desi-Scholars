@@ -3,7 +3,7 @@ import { BookOpen, FileText, FolderOpen, MessageSquare, User, LogOut, XCircle } 
 
 export default function Sidebar({ isOpenSideBar, toggleSidebar }) {
     const navItems = [
-        { name: 'My Courses', icon: BookOpen, path: '/dashboard' },
+        { name: 'My Courses', icon: BookOpen, path: '/dashboard/mycourses' },
         { name: 'Practice Tests', icon: FileText, path: '/dashboard/practice' },
         { name: 'Resources', icon: FolderOpen, path: '/dashboard/resources' },
         { name: 'Messages', icon: MessageSquare, path: '/dashboard/messages' },
