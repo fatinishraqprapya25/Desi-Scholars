@@ -2,11 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Typewriter } from 'react-simple-typewriter';
 
-// Define the target date outside the component to avoid re-creation on every render
-// Target date: June 1, 2025, 9:00 AM (Bangladesh Standard Time, GMT+6)
-const TARGET_DATE = new Date('2025-06-01T09:00:00+06:00').getTime();
+const TARGET_DATE = new Date('2025-07-01T09:00:00+06:00').getTime();
 
-// Helper component for each time unit (Days, Hours, Minutes, Seconds)
 const TimeUnit = ({ value, label }) => {
   const formattedValue = String(value).padStart(2, '0');
 
