@@ -17,6 +17,7 @@ export default function Sidebar({ isOpenSideBar, toggleSidebar }) {
     const navItems = [
         { name: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' }, // Adjusted path for consistency
         { name: 'My Courses', icon: BookOpen, path: '/dashboard/mycourses' },
+        { name: 'Leader Board', icon: BookOpen, path: '/dashboard/leaderboard' },
         { name: 'Practice Tests', icon: FileText, path: '/dashboard/practice' },
         { name: 'My Progress', icon: BarChart2, path: '/dashboard/progress' }, // Added a new item
         { name: 'Resources', icon: FolderOpen, path: '/dashboard/resources' },
