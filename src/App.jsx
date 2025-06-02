@@ -13,6 +13,7 @@ import UserDashboard from "./pages/UserDashboard";
 import UserDashboardProfile from "./components/dashboards/student/pages/UserDashboardProfile";
 import UserEnrolledCourses from "./components/dashboards/student/pages/UserEnrolledCourses";
 import UserLeaderBoard from "./components/dashboards/student/pages/LeaderBoard";
+import PracticeTests from "./components/dashboards/student/pages/PracticeTests";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/dashboard/profile" element={<UserDashboardProfile />} />
         <Route path="/dashboard/mycourses" element={<UserEnrolledCourses />} />
         <Route path="/dashboard/leaderboard" element={<UserLeaderBoard />} />
+        <Route path="/dashboard/practicetest" element={<PracticeTests />} />
       </Routes>
     </>
   )
