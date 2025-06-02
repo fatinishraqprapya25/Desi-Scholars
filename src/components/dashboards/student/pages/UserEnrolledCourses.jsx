@@ -8,8 +8,6 @@ export default function UserEnrolledCourses() {
     return <>
         < UserDashboardContainer >
             <main className="bg-white p-6">
-                <h2 className="text-4xl font-extrabold text-gray-800 mb-8 border-b-4 border-blue-500 pb-2">Welcome Back, Student!</h2>
-
                 {/* Enrolled Courses Section */}
                 <EnrolledCourses />
 
