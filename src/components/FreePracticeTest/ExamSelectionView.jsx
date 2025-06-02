@@ -14,13 +14,14 @@ const ExamSelectionView = ({ onSelectExam, email, setEmail, handleNewsletterSubm
         className="space-y-16 md:space-y-20 flex-grow"
     >
         <HeroSection />
-        <FeaturesSection />
+
         <ExamListSection onSelectExam={onSelectExam} />
         <NewsletterSection
             email={email}
             setEmail={setEmail}
             handleNewsletterSubmit={handleNewsletterSubmit}
         />
+        <FeaturesSection />
     </motion.div>
 );
 
