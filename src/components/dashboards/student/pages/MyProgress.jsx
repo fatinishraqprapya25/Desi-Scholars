@@ -122,7 +122,7 @@ function MyProgressPage() {
                         {progressOverviewData.map(metric => (
                             <motion.div
                                 key={metric.id}
-                                className={`p-6 rounded-2xl shadow-md border border-gray-100 flex flex-col items-center text-center
+                                className={`p-6 rounded-md shadow-md border border-gray-100 flex flex-col items-center text-center
                                         bg-gradient-to-br ${metric.color}`}
                                 variants={itemVariants}
                             >
@@ -146,7 +146,7 @@ function MyProgressPage() {
                         {detailedCourseProgressData.map((course, index) => (
                             <motion.div
                                 key={course.id}
-                                className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden cursor-pointer
+                                className="bg-white rounded-md shadow-md border border-gray-100 overflow-hidden cursor-pointer
                                        hover:shadow-md hover:border-blue-200 transition-all duration-300 transform hover:-translate-y-2"
                                 variants={itemVariants}
                             >
@@ -163,9 +163,9 @@ function MyProgressPage() {
                                     <p className="text-sm text-gray-600 mb-3">Instructor: {course.instructor}</p>
 
                                     {/* Progress Bar */}
-                                    <div className="w-full bg-gray-200 rounded-full h-2.5 mb-2">
+                                    <div className="w-full bg-gray-200 rounded-md h-2.5 mb-2">
                                         <motion.div
-                                            className="h-2.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-700"
+                                            className="h-2.5 rounded-md bg-gradient-to-r from-blue-600 to-indigo-700"
                                             style={{ '--progress-width': `${course.progress}%` }}
                                             variants={progressBarVariants}
                                             initial="hidden"
@@ -180,7 +180,7 @@ function MyProgressPage() {
                                     </div>
 
                                     <button
-                                        className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-3 px-4 rounded-xl shadow-md
+                                        className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-3 px-4 rounded-md shadow-md
                                                hover:from-blue-700 hover:to-indigo-800 transition-all duration-300 ease-in-out
                                                flex items-center justify-center text-lg font-medium transform hover:scale-105 active:scale-95"
                                     >
@@ -198,7 +198,7 @@ function MyProgressPage() {
                         <Target className="mr-3 h-8 w-8 text-green-600" /> Skills Development
                     </h3>
                     <motion.div
-                        className="bg-white rounded-2xl shadow-md border border-gray-100 p-6"
+                        className="bg-white rounded-md shadow-md border border-gray-100 p-6"
                         variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
                     >
                         <ul className="space-y-5">
@@ -208,9 +208,9 @@ function MyProgressPage() {
                                         <span className="text-lg font-medium text-gray-800">{skill.name}</span>
                                         <span className="text-md font-semibold text-gray-700">{skill.proficiency}%</span>
                                     </div>
-                                    <div className="w-full bg-gray-200 rounded-full h-3">
+                                    <div className="w-full bg-gray-200 rounded-md h-3">
                                         <motion.div
-                                            className={`h-3 rounded-full ${skill.color}`}
+                                            className={`h-3 rounded-md ${skill.color}`}
                                             style={{ '--progress-width': `${skill.proficiency}%` }}
                                             variants={progressBarVariants}
                                             initial="hidden"
@@ -235,7 +235,7 @@ function MyProgressPage() {
                         {achievementsData.map(achievement => (
                             <motion.div
                                 key={achievement.id}
-                                className="bg-white rounded-2xl shadow-md border border-gray-100 p-6 flex flex-col items-center text-center
+                                className="bg-white rounded-md shadow-md border border-gray-100 p-6 flex flex-col items-center text-center
                                        transform hover:scale-105 transition-all duration-300"
                                 variants={itemVariants}
                             >
