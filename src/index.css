@@ -1,181 +1,28 @@
-import React from "react";
+@import "tailwindcss";
 
-import {
-  motion
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+body {
+  font-family: "Inter", sans-serif;
 }
 
-from "framer-motion";
-import AnimatedButton from "./AnimatedButton";
-
-import {
-  COLORS
-}
-
-from "./Constants"; // Assuming COLORS.primary is your button's background color
-
-const HeroSection=()=>(<motion.section // Ensure the section itself spans full width. No max-width here.
-  className="relative w-full min-h-[650px] flex items-center justify-center overflow-hidden" // Increased min-height for more vertical presence
-
-  initial= {
-      {
-      opacity: 0, y: 30
-    }
-  }
-
-  animate= {
-      {
-      opacity: 1, y: 0
-    }
-  }
-
-  transition= {
-      {
-      duration: 0.9, delay: 0.3, ease: "easeOut"
-    }
-  }
-
-  > {
-    /* Dynamic, flowing background spanning the full width */
-  }
-
-  <div className="absolute inset-0 z-0 opacity-90" // Slightly higher opacity for more vibrancy
-
-  style= {
-      {
-
-      // Enhanced gradient combination for a more captivating look
-      background: `linear-gradient(135deg, $ {
-          COLORS.primaryLight
-        }
-
-        0%, $ {
-          COLORS.primary
-        }
-
-        100%),
-      radial-gradient(circle at top left, #BFDBFE 0%, transparent 40%),
-      radial-gradient(circle at bottom right, #D1FAE5 0%, transparent 50%)`,
-      // Adding a subtle overlay texture (optional, but enhances richness)
-      backgroundImage: `url('data:image/svg+xml,%3Csvg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath fill="%23ffffff" fill-opacity="0.05" d="M0 0h16v16H0z" /%3E%3C/svg%3E'),
-      linear-gradient(135deg, $ {
-          COLORS.primaryLight
-        }
-
-        0%, $ {
-          COLORS.primary
-        }
-
-        100%),
-      radial-gradient(circle at top left, #BFDBFE 0%, transparent 40%),
-      radial-gradient(circle at bottom right, #D1FAE5 0%, transparent 50%)`,
-      backgroundBlendMode: 'overlay, normal, normal, normal', // How the textures blend
-    }
-  }
-
-  ></div> {
-    /* Abstract shapes / blobs - adjusted for full-width impact */
-  }
-
-  <div className="absolute -top-1/4 -left-[10%] w-[500px] h-[500px] bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob-alt animation-delay-2000" ></div> <div className="absolute -bottom-1/4 -right-[10%] w-[450px] h-[450px] bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob-alt animation-delay-4000" ></div> <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob-alt" ></div> {
-    /* Content remains centered, now with appropriate horizontal padding */
-  }
-
-  <div className="relative z-10 text-center max-w-5xl mx-auto px-6 md:px-12 lg:px-16 py-16" > {
-    /* Added more padding, increased max-width for content */
-  }
-
-  <motion.h2 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-white mb-6 leading-tight tracking-tight drop-shadow-lg"
-
-  initial= {
-      {
-      opacity: 0, y: -30
-    }
-  }
-
-  animate= {
-      {
-      opacity: 1, y: 0
-    }
-  }
-
-  transition= {
-      {
-      duration: 0.8, delay: 0.6, ease: "easeOut"
-    }
-  }
-
-  > Ignite Your Learning Journey </motion.h2> <motion.p className="text-xl sm:text-2xl md:text-3xl text-white text-opacity-95 mb-12 max-w-4xl mx-auto font-light drop-shadow-md" // Slightly increased opacity for better contrast
-
-  initial= {
-      {
-      opacity: 0, y: 30
-    }
-  }
-
-  animate= {
-      {
-      opacity: 1, y: 0
-    }
-  }
-
-  transition= {
-      {
-      duration: 0.8, delay: 0.8, ease: "easeOut"
-    }
-  }
-
-  > Discover your potential with free online tests. Pinpoint strengths, conquer challenges, and elevate your mastery, one question at a time. </motion.p> <motion.div initial= {
-      {
-      opacity: 0, scale: 0.9
-    }
-  }
-
-  animate= {
-      {
-      opacity: 1, scale: 1
-    }
-  }
-
-  transition= {
-      {
-      duration: 0.7, delay: 1, ease: "easeOut"
-    }
-  }
-
-  > <AnimatedButton onClick= {
-    ()=> window.scrollTo({
-      top: document.getElementById("exams-list-section")?.offsetTop - 100 || 0,
-      behavior: "smooth",
-    })
-}
-
-className="text-xl px-14 py-5 font-bold shadow-2xl hover:shadow-primary-lg transition-shadow duration-300 transform hover:scale-105"
-
-style= {
-    {
-    backgroundColor: COLORS.primary, color: 'white'
-  }
-}
-
-> Start Free Assessment </AnimatedButton> </motion.div> </div> </motion.section>);
-
-export default HeroSection;
-
-// Ensure these keyframe animations are in your global CSS (e.g., index.css or global.css)
-/*
 @keyframes blob-alt {
   0% {
     transform: translate(0px, 0px) scale(1);
   }
+
   25% {
     transform: translate(50px, -70px) scale(1.05);
   }
+
   50% {
     transform: translate(-30px, 40px) scale(0.95);
   }
+
   75% {
     transform: translate(60px, -20px) scale(1.1);
   }
+
   100% {
     transform: translate(0px, 0px) scale(1);
   }
@@ -192,4 +39,3 @@ export default HeroSection;
 .animation-delay-4000 {
   animation-delay: 4s;
 }
-*/

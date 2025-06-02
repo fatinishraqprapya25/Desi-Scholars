@@ -119,7 +119,7 @@ const NewsletterSection = () => {
                             })
                         }
                         // Enhanced button styling for a more lucrative look
-                        className="text-xl px-12 py-4 font-extrabold rounded-full shadow-2xl
+                        className="text-xl px-12 py-4 font-extrabold rounded-[50%] shadow-2xl
                                    bg-gradient-to-r from-blue-600 to-indigo-700 text-white
                                    hover:from-blue-700 hover:to-indigo-800
                                    hover:shadow-primary-3xl transition-all duration-300
