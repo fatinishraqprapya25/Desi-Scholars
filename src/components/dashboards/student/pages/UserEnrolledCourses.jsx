@@ -11,15 +11,15 @@ export default function UserEnrolledCourses() {
                 {/* Enrolled Courses Section */}
                 <EnrolledCourses />
 
+                {/* Recent Test Scores Section */}
+                <RecentTestScores />
+
                 {/* Practice Tests & Resources Section */}
-                <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
                     <PracticeTest />
 
                     <FreeResources />
                 </section>
-
-                {/* Recent Test Scores Section */}
-                <RecentTestScores />
             </main>
         </UserDashboardContainer >
     </>
