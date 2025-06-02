@@ -69,26 +69,11 @@ export default function FreeTestPage() {
 
   return (
     <div
-      className="min-h-screen p-6 md:p-8 flex flex-col"
+      className="min-h-screen flex flex-col"
       style={{
         background: `linear-gradient(to bottom right, ${COLORS.gradientStart}, ${COLORS.gradientEnd})`,
       }}
     >
-      <motion.h1
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="text-4xl sm:text-5xl font-extrabold text-center text-gray-900 mb-12 md:mb-16 drop-shadow-md"
-      >
-        <span
-          className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-500"
-          style={{
-            backgroundImage: `linear-gradient(to right, ${COLORS.primary}, #3B82F6)`,
-          }}
-        >
-          Ace Your Exams
-        </span>
-      </motion.h1>
 
       <AnimatePresence mode="wait">
         {!selectedExamId ? (
