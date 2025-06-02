@@ -5,7 +5,7 @@ import { featureItems } from "./Constants";
 
 const FeaturesSection = () => (
     <motion.section
-        className="max-w-7xl mx-auto"
+        className="max-w-7xl mx-auto mb-4"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}

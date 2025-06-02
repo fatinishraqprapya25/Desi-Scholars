@@ -1,9 +1,9 @@
-import React from "react";
 import { motion } from "framer-motion";
 import HeroSection from "./Hero";
 import FeaturesSection from "./Featured";
 import ExamListSection from "./ExamLists";
 import NewsletterSection from "./NewsletterSection";
+import Container from "../../components/common/Container"
 
 const ExamSelectionView = ({ onSelectExam, email, setEmail, handleNewsletterSubmit }) => (
     <motion.div
@@ -15,13 +15,17 @@ const ExamSelectionView = ({ onSelectExam, email, setEmail, handleNewsletterSubm
     >
         <HeroSection />
 
-        <ExamListSection onSelectExam={onSelectExam} />
+        <Container>
+            <ExamListSection onSelectExam={onSelectExam} />
+        </Container>
         <NewsletterSection
             email={email}
             setEmail={setEmail}
             handleNewsletterSubmit={handleNewsletterSubmit}
         />
-        <FeaturesSection />
+        <Container>
+            <FeaturesSection />
+        </Container>
     </motion.div>
 );
 
