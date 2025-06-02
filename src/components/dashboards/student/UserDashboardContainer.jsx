@@ -13,13 +13,13 @@ export default function UserDashboardContainer({ children }) {
     return (
         <>
             <UserDashboardHeader toggleSidebar={toggleSidebar} />
-            <div className="min-h-screen font-sans antialiased flex flex-col lg:flex-row lg:ml-64 m">
+            <div className="min-h-screen font-sans antialiased flex flex-col lg:flex-row lg:ml-64">
                 {/* Sidebar Component */}
 
                 <Sidebar toggleSidebar={toggleSidebar} isOpenSideBar={isOpenSideBar} />
 
                 {/* Main Content Area */}
-                <div className="flex-1 p-4 sm:p-6 lg:p-8">
+                <div className="flex-1 p-4 sm:p-6 lg:p-8 mt-[50px]">
                     {children}
                 </div>
             </div>

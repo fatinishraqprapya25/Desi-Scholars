@@ -4,7 +4,7 @@ function UserDashboardHeader({ setActiveSection, toggleSidebar, isSidebarOpen })
     // Determine header background based on sidebar state for a cohesive feel
     const headerBg = isSidebarOpen
         ? 'bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200' // Lighter when sidebar is open
-        : 'bg-gradient-to-r from-blue-100 to-indigo-100 shadow-lg'; // Slightly darker with shadow when sidebar is closed
+        : 'bg-gradient-to-r from-blue-100 to-indigo-100'; // Slightly darker with shadow when sidebar is closed
 
     return (
         <header className={`flex justify-between items-center py-4 px-6 fixed w-full z-30 transition-all duration-300 ${headerBg}`}>
@@ -70,8 +70,6 @@ function UserDashboardHeader({ setActiveSection, toggleSidebar, isSidebarOpen })
                     aria-label="Go to profile settings"
                 >
                     <User className="h-6 w-6" />
-                    {/* Optional: Add a small user avatar image instead of the icon */}
-                    {/* <img src="/path/to/user-avatar.jpg" alt="User Avatar" className="h-8 w-8 rounded-full object-cover" /> */}
                 </button>
             </div>
         </header>
