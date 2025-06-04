@@ -20,14 +20,9 @@ function UserDashboardHeader({ setActiveSection, toggleSidebar, isSidebarOpen })
                 </button>
 
                 {/* EduHub Logo */}
-                <div className="flex items-center">
-                    <button
-                        onClick={() => { setActiveSection('dashboard'); /* setIsSidebarOpen(false); // Only if you want to force close on desktop logo click */ }}
-                        className="flex items-center text-blue-700 hover:text-blue-900 transition-colors duration-200 focus:outline-none focus:ring-0"
-                        aria-label="Go to Dashboard"
-                    >
-                        <span className="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-700">EduHub</span>
-                    </button>
+                <div className="text-xl md:text-2xl font-bold tracking-tight">
+                    <span className="text-indigo-600">DESH</span>
+                    <span className="text-slate-700"> Scholar</span>
                 </div>
 
                 {/* Desktop Navigation Links */}
