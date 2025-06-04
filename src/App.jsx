@@ -23,7 +23,7 @@ import MyProgress from "./components/dashboards/student/pages/MyProgress";
 import ResourcesPage from "./components/dashboards/student/pages/Resources";
 
 // admin dashboard imports
-import AdminHome from "./components/dashboards/admin/AdminHome";
+import AdminHome from "./components/dashboards/admin/pages/AdminHome";
 
 function App() {
   return (

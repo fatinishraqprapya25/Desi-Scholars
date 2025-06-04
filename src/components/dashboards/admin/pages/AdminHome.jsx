@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Users, BookOpen, DollarSign, Package, LayoutDashboard, Activity, TrendingUp } from 'lucide-react'; // Import relevant icons, added TrendingUp
-import UserDashboardContainer from '../common/UserDashboardContainer'; // Ensure the path is correct
+import UserDashboardContainer from '../../common/UserDashboardContainer'; // Ensure the path is correct
 
 // Import Recharts components
 import {
