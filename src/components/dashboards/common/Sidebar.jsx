@@ -89,11 +89,11 @@ export default function Sidebar({ admin, isOpenSideBar, toggleSidebar }) {
                             {navItems.map((item) => {
                                 const isActive = location.pathname === item.path;
                                 return (
-                                    <li key={item.name} className="mb-2">
+                                    <li key={item.name} className="mb-1">
                                         <Link
                                             to={item.path}
                                             onClick={toggleSidebar} // Close sidebar on click for mobile
-                                            className={`w-full flex items-center p-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300
+                                            className={`w-full flex items-center p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300
                                                 ${isActive ? 'bg-blue-50 text-blue-700 font-semibold shadow-sm border-r-4 border-blue-600' : ''}
                                             `}
                                         >
