@@ -15,6 +15,7 @@ import UserEnrolledCourses from "./components/dashboards/student/pages/UserEnrol
 import UserLeaderBoard from "./components/dashboards/student/pages/LeaderBoard";
 import PracticeTests from "./components/dashboards/student/pages/PracticeTests";
 import MyProgress from "./components/dashboards/student/pages/MyProgress";
+import ResourcesPage from "./components/dashboards/student/pages/Resources";
 
 function App() {
   return (
@@ -40,6 +41,8 @@ function App() {
         <Route path="/dashboard/leaderboard" element={<UserLeaderBoard />} />
         <Route path="/dashboard/practicetest" element={<PracticeTests />} />
         <Route path="/dashboard/progress" element={<MyProgress />} />
+
+        <Route path="/dashboard/resources" element={<ResourcesPage />} />
       </Routes>
     </>
   )
