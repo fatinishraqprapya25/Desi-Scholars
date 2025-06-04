@@ -1,13 +1,13 @@
-import React, { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useMemo, useEffect } from 'react'; // Added useEffect
+import { motion, AnimatePresence } from 'framer-motion'; // Added AnimatePresence
 import {
     Users, UserPlus, Search, Edit, Trash2, SlidersHorizontal, ArrowDownUp,
-    ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Eye
+    ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Eye, X // Added X for close icon
 } from 'lucide-react';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
 
-// Mock data for students
-const studentsData = [
+// Initial mock data (will be moved to state)
+const initialStudentsData = [
     { id: 'S-001', name: 'Alice Johnson', email: 'alice.j@example.com', enrolledCourses: 3, status: 'Active', lastLogin: '2025-06-03', registrationDate: '2024-01-15' },
     { id: 'S-002', name: 'Bob Williams', email: 'bob.w@example.com', enrolledCourses: 1, status: 'Active', lastLogin: '2025-06-02', registrationDate: '2024-03-20' },
     { id: 'S-003', name: 'Charlie Brown', email: 'charlie.b@example.com', enrolledCourses: 0, status: 'Inactive', lastLogin: '2025-05-28', registrationDate: '2024-02-10' },
@@ -26,43 +26,44 @@ const studentsData = [
 ];
 
 export default function StudentsPage() {
+    const [students, setStudents] = useState(initialStudentsData); // Manage students in state
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [studentsPerPage] = useState(10);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
-    const sectionVariants = {
-        hidden: { opacity: 0, y: 30 },
-        visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100, damping: 15, when: 'beforeChildren', staggerChildren: 0.08 } }
+    // Modal State
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [newStudentName, setNewStudentName] = useState('');
+    const [newStudentEmail, setNewStudentEmail] = useState('');
+
+    const sectionVariants = { /* ... (same as before) ... */ };
+    const itemVariants = { /* ... (same as before) ... */ };
+    const modalVariants = {
+        hidden: { opacity: 0, scale: 0.9 },
+        visible: { opacity: 1, scale: 1, transition: { type: "spring", stiffness: 300, damping: 30 } },
+        exit: { opacity: 0, scale: 0.9, transition: { duration: 0.15 } }
     };
-    const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100, damping: 12 } }
-    };
+
 
     const sortedStudents = useMemo(() => {
-        let sortableStudents = [...studentsData];
+        let sortableStudents = [...students]; // Use students from state
         if (sortConfig.key) {
             sortableStudents.sort((a, b) => {
-                // Handling numeric and string comparisons
                 const valA = a[sortConfig.key];
                 const valB = b[sortConfig.key];
-
-                if (typeof valA === 'number' && typeof valB === 'number') {
-                    return sortConfig.direction === 'ascending' ? valA - valB : valB - valA;
-                }
+                if (typeof valA === 'number' && typeof valB === 'number') return sortConfig.direction === 'ascending' ? valA - valB : valB - valA;
                 if (typeof valA === 'string' && typeof valB === 'string') {
                     if (valA.toLowerCase() < valB.toLowerCase()) return sortConfig.direction === 'ascending' ? -1 : 1;
                     if (valA.toLowerCase() > valB.toLowerCase()) return sortConfig.direction === 'ascending' ? 1 : -1;
                 }
-                // Fallback for mixed types or other comparisons (dates can be compared directly if in YYYY-MM-DD)
                 if (valA < valB) return sortConfig.direction === 'ascending' ? -1 : 1;
                 if (valA > valB) return sortConfig.direction === 'ascending' ? 1 : -1;
                 return 0;
             });
         }
         return sortableStudents;
-    }, [studentsData, sortConfig]);
+    }, [students, sortConfig]); // IMPORTANT: Update dependency to students
 
     const filteredStudents = useMemo(() => {
         return sortedStudents.filter(student =>
@@ -78,36 +79,78 @@ export default function StudentsPage() {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
     const totalPages = Math.ceil(filteredStudents.length / studentsPerPage);
 
-    const requestSort = (key) => {
-        let direction = 'ascending';
-        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-            direction = 'descending';
+    const requestSort = (key) => { /* ... (same as before) ... */ };
+    const getClassNamesForSort = (key) => { /* ... (same as before) ... */ };
+
+    // --- Modal Action Handlers ---
+    const handleOpenModal = () => {
+        setNewStudentName('');
+        setNewStudentEmail('');
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleSaveNewStudent = () => {
+        if (!newStudentName.trim() || !newStudentEmail.trim()) {
+            alert('Please fill in both name and email.');
+            return;
         }
-        setSortConfig({ key, direction });
+        // Basic email validation (optional)
+        if (!/\S+@\S+\.\S+/.test(newStudentEmail)) {
+            alert('Please enter a valid email address.');
+            return;
+        }
+
+        const newIdNumber = students.length > 0 ? Math.max(...students.map(s => parseInt(s.id.split('-')[1]))) + 1 : 1;
+        const newStudent = {
+            id: `S-${String(newIdNumber).padStart(3, '0')}`,
+            name: newStudentName,
+            email: newStudentEmail,
+            enrolledCourses: 0,
+            status: 'Active',
+            lastLogin: new Date().toISOString().split('T')[0], // Today's date
+            registrationDate: new Date().toISOString().split('T')[0] // Today's date
+        };
+        setStudents(prevStudents => [newStudent, ...prevStudents]); // Add to the beginning of the list
+        handleCloseModal();
     };
 
-    const getClassNamesForSort = (key) => { // Renamed for clarity
-        if (!sortConfig.key) return null; // Return null if no sort key
-        return sortConfig.key === key ? sortConfig.direction : null; // Return direction or null
-    };
 
-    const handleAddStudent = () => alert('Add Student functionality would open a form/modal here!');
     const handleEditStudent = (studentId) => alert(`Edit Student with ID: ${studentId}`);
     const handleDeleteStudent = (studentId) => {
         if (window.confirm(`Are you sure you want to delete student ID: ${studentId}?`)) {
-            alert(`Deleting student with ID: ${studentId}`);
+            setStudents(prevStudents => prevStudents.filter(student => student.id !== studentId));
+            alert(`Deleted student with ID: ${studentId}`);
         }
     };
     const handleViewStudentDetails = (studentId) => alert(`Viewing details for student ID: ${studentId}`);
+
+    // Close modal on Escape key press
+    useEffect(() => {
+        const handleEsc = (event) => {
+            if (event.key === 'Escape') {
+                handleCloseModal();
+            }
+        };
+        if (isModalOpen) {
+            window.addEventListener('keydown', handleEsc);
+        }
+        return () => {
+            window.removeEventListener('keydown', handleEsc);
+        };
+    }, [isModalOpen]);
+
 
     return (
         <UserDashboardContainer admin={true}>
             <motion.div
                 className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-7xl mx-auto"
-                variants={sectionVariants}
-                initial="hidden"
-                animate="visible"
+                variants={sectionVariants} initial="hidden" animate="visible"
             >
+                {/* ... Header and Paragraph ... (same as your refined version) */}
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-gray-900 mb-3 sm:mb-5 flex items-center">
                     <Users className="mr-2 sm:mr-3 h-6 w-6 sm:h-7 lg:h-8 text-blue-600" /> Manage Students
                 </h2>
@@ -115,10 +158,12 @@ export default function StudentsPage() {
                     Efficiently <strong>manage student accounts</strong> on your platform. Use the search and filter options to quickly find specific students, or add new ones as needed.
                 </p>
 
+
                 <motion.div
                     className="bg-white rounded-xl shadow-md p-3 sm:p-5 border border-gray-100"
                     variants={itemVariants}
                 >
+                    {/* ... Search and Filter Buttons ... (Filter button is a placeholder) */}
                     <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between mb-5 gap-3 sm:gap-4">
                         <div className="relative flex-grow w-full md:w-auto mb-3 md:mb-0">
                             <input
@@ -137,13 +182,14 @@ export default function StudentsPage() {
                             </button>
                             <button
                                 className="w-full sm:w-auto flex items-center justify-center px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md font-medium text-xs sm:text-sm"
-                                onClick={handleAddStudent}
+                                onClick={handleOpenModal} // Changed to handleOpenModal
                             >
                                 <UserPlus className="h-4 w-4 mr-1.5 sm:mr-2" /> Add Student
                             </button>
                         </div>
                     </div>
 
+                    {/* ... Students Table ... (same as your refined version, ensure dependencies for sort/filter use 'students' state) */}
                     <div className="overflow-x-auto min-h-[300px] w-full">
                         {filteredStudents.length > 0 ? (
                             <table className="min-w-full divide-y divide-gray-200 table-auto">
@@ -195,6 +241,8 @@ export default function StudentsPage() {
                         )}
                     </div>
 
+
+                    {/* ... Pagination ... (same as your refined version) */}
                     {totalPages > 1 && filteredStudents.length > 0 && (
                         <div className="mt-5 flex flex-col sm:flex-row justify-between items-center text-xs sm:text-sm text-gray-600 gap-3">
                             <span>Showing {indexOfFirstStudent + 1}-{Math.min(indexOfLastStudent, filteredStudents.length)} of {filteredStudents.length}</span>
@@ -209,6 +257,78 @@ export default function StudentsPage() {
                     )}
                 </motion.div>
             </motion.div>
+
+            {/* Add Student Modal */}
+            <AnimatePresence>
+                {isModalOpen && (
+                    <motion.div
+                        className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4"
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 }, exit: { opacity: 0 } }}
+                        onClick={handleCloseModal} // Close on backdrop click
+                    >
+                        <motion.div
+                            className="bg-white p-5 sm:p-7 rounded-xl shadow-2xl w-full max-w-md relative"
+                            variants={modalVariants}
+                            onClick={(e) => e.stopPropagation()} // Prevent close on modal content click
+                        >
+                            <button
+                                onClick={handleCloseModal}
+                                className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 p-1 rounded-full transition-colors"
+                                aria-label="Close modal"
+                            >
+                                <X size={20} />
+                            </button>
+                            <h3 className="text-xl font-semibold mb-5 text-gray-800">Add New Student</h3>
+
+                            <div className="space-y-4">
+                                <div>
+                                    <label htmlFor="studentName" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                    <input
+                                        type="text"
+                                        id="studentName"
+                                        value={newStudentName}
+                                        onChange={(e) => setNewStudentName(e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                        placeholder="e.g., John Doe"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="studentEmail" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                    <input
+                                        type="email"
+                                        id="studentEmail"
+                                        value={newStudentEmail}
+                                        onChange={(e) => setNewStudentEmail(e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                        placeholder="e.g., john.doe@example.com"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-200">
+                                <button
+                                    type="button"
+                                    onClick={handleCloseModal}
+                                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={handleSaveNewStudent}
+                                    className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                >
+                                    Add Student
+                                </button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
         </UserDashboardContainer>
     );
 }
