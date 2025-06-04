@@ -89,7 +89,7 @@ export default function Sidebar({ admin, isOpenSideBar, toggleSidebar }) {
                             {navItems.map((item) => {
                                 const isActive = location.pathname === item.path;
                                 return (
-                                    <li key={item.name} className="mb-1">
+                                    <li key={item.name} className="mb-2">
                                         <Link
                                             to={item.path}
                                             onClick={toggleSidebar} // Close sidebar on click for mobile

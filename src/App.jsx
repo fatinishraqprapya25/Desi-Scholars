@@ -24,6 +24,7 @@ import ResourcesPage from "./components/dashboards/student/pages/Resources";
 
 // admin dashboard imports
 import AdminHome from "./components/dashboards/admin/pages/AdminHome";
+import StudentsPage from "./components/dashboards/admin/pages/Students";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
 
         {/* admin dashboard routes */}
         <Route path="/admin/dashboard" element={<AdminHome />} />
+        <Route path="/admin/students" element={<StudentsPage />} />
 
       </Routes>
     </>
