@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, PlayCircle, Globe, Video, FileText, Code, ExternalLink } from 'lucide-react';
-import UserDashboardContainer from '../UserDashboardContainer';
+import UserDashboardContainer from '../../common/UserDashboardContainer';
 
 // Mock data for resources
 const resourcesData = [

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FileText, Award, Clock, HelpCircle, BookOpen, PlayCircle, ChevronsRight } from 'lucide-react';
-import UserDashboardContainer from '../UserDashboardContainer';
+import UserDashboardContainer from '../../common/UserDashboardContainer';
 
 // Mock data for practice tests
 const practiceTestsData = [

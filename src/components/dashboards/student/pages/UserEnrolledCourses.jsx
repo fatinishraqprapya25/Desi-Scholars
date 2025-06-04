@@ -1,4 +1,4 @@
-import UserDashboardContainer from "../UserDashboardContainer";
+import UserDashboardContainer from "../../common/UserDashboardContainer";
 import EnrolledCourses from '../EnrolledCourses';
 import PracticeTest from '../PracticeTest';
 import FreeResources from '../FreeResource';

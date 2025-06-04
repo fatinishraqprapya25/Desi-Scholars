@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Award, Trophy, User, Crown, Filter, ChevronsRight } from 'lucide-react'; // Added Filter and ChevronsRight
-import UserDashboardContainer from '../UserDashboardContainer';
+import UserDashboardContainer from '../../common/UserDashboardContainer';
 
 function LeaderBoard() {
     // Mock data for leaderboard entries

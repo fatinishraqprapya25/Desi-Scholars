@@ -1,5 +1,5 @@
 import Profile from "../Profile";
-import UserDashboardContainer from "../UserDashboardContainer";
+import UserDashboardContainer from "../../common/UserDashboardContainer";
 
 export default function UserDashboardProfile() {
     console.log("This component rendered!")

@@ -5,7 +5,7 @@ import {
     BarChart2, CalendarDays, Megaphone, Lightbulb, TrendingUp, Trophy, FolderOpen,
     PlayCircle, PlusCircle, Search, Award, MessageSquare
 } from 'lucide-react';
-import UserDashboardContainer from '../UserDashboardContainer';
+import UserDashboardContainer from '../../common/UserDashboardContainer';
 
 const COLORS = {
     primary: '#3B82F6', // blue-500

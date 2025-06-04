@@ -1,8 +1,8 @@
-import UserDashboardHome from "./pages/UserDashboardHome";
-import Profile from "../../dashboards/student/Profile";
+import UserDashboardHome from "../student/pages/UserDashboardHome";
+import Profile from "../student/Profile";
 import { useState } from "react";
-import Sidebar from "../../dashboards/common/Sidebar";
-import UserDashboardHeader from "../../dashboards/common/UserDashboardHeader";
+import Sidebar from "./Sidebar";
+import UserDashboardHeader from "./UserDashboardHeader";
 
 export default function UserDashboardContainer({ children }) {
     const [isOpenSideBar, setIsOpenSideBar] = useState(false);

@@ -6,7 +6,7 @@ import {
     PlayCircle, PlusCircle, Search, Award,
     CheckCircle, Users, Star, Target, Zap, Activity
 } from 'lucide-react';
-import UserDashboardContainer from '../UserDashboardContainer';
+import UserDashboardContainer from '../../common/UserDashboardContainer';
 
 // Mock Data for MyProgressPage
 const progressOverviewData = [
