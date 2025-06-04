@@ -1,21 +1,67 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-    BookOpen, PlusCircle, Search, Edit, Trash2, Eye, Calendar, Users, Hash, Tag, Lightbulb, User,
+    BookOpen, PlusCircle, Search, Edit, Trash2, Eye, Calendar, Users, Hash, Tag, Lightbulb, User, Clock, HelpCircle
 } from 'lucide-react';
 import UserDashboardContainer from '../../common/UserDashboardContainer'; // Assuming this component exists
 
-// Mock data for courses (reduced to 5 and slightly adjusted for variety)
+// Mock data for courses (adjusted for the new card design)
 const coursesData = [
-    { id: 'C-001', title: 'Introduction to React', instructor: 'Dr. Emily White', studentsEnrolled: 120, status: 'Active', lastUpdated: '2025-05-30', category: 'Web Development', description: 'Master the fundamentals of React, JSX, state, props, and component lifecycle. Build interactive user interfaces with modern React practices.' },
-    { id: 'C-002', title: 'Advanced JavaScript', instructor: 'Prof. David Lee', studentsEnrolled: 95, status: 'Active', lastUpdated: '2025-06-01', category: 'Web Development', description: 'Dive deep into ES6+, asynchronous JavaScript, advanced array methods, closures, and design patterns. Enhance your JavaScript proficiency.' },
-    { id: 'C-003', title: 'Data Structures & Algorithms', instructor: 'Ms. Sarah Chen', studentsEnrolled: 150, status: 'Archived', lastUpdated: '2025-04-15', category: 'Computer Science', description: 'Learn essential data structures (arrays, linked lists, trees, graphs) and algorithms (sorting, searching) for efficient problem-solving.' },
-    { id: 'C-004', title: 'Machine Learning Basics', instructor: 'Mr. Alex Kim', studentsEnrolled: 80, status: 'Active', lastUpdated: '2025-05-28', category: 'Artificial Intelligence', description: 'Explore the foundations of machine learning, including supervised and unsupervised learning, model evaluation, and common algorithms.' },
-    { id: 'C-005', title: 'UI/UX Design Principles', instructor: 'Dr. Olivia Brown', studentsEnrolled: 70, status: 'Draft', lastUpdated: '2025-03-20', category: 'Design', description: 'Understand the core principles of User Interface (UI) and User Experience (UX) design. Learn to create intuitive and aesthetically pleasing digital products.' },
+    {
+        id: 'C-001',
+        title: 'Introduction to React',
+        instructor: 'Dr. Emily White',
+        studentsEnrolled: 120,
+        status: 'Active',
+        lastUpdated: '2025-05-30',
+        category: 'Web Development',
+        description: 'Master the fundamentals of React, JSX, state, props, and component lifecycle. Build interactive user interfaces with modern React practices.'
+    },
+    {
+        id: 'C-002',
+        title: 'Advanced JavaScript',
+        instructor: 'Prof. David Lee',
+        studentsEnrolled: 95,
+        status: 'Active',
+        lastUpdated: '2025-06-01',
+        category: 'Web Development',
+        description: 'Dive deep into ES6+, asynchronous JavaScript, advanced array methods, closures, and design patterns. Enhance your JavaScript proficiency.'
+    },
+    {
+        id: 'C-003',
+        title: 'Data Structures & Algorithms',
+        instructor: 'Ms. Sarah Chen',
+        studentsEnrolled: 150,
+        status: 'Archived',
+        lastUpdated: '2025-04-15',
+        category: 'Computer Science',
+        description: 'Learn essential data structures (arrays, linked lists, trees, graphs) and algorithms (sorting, searching) for efficient problem-solving.'
+    },
+    {
+        id: 'C-004',
+        title: 'Machine Learning Basics',
+        instructor: 'Mr. Alex Kim',
+        studentsEnrolled: 80,
+        status: 'Active',
+        lastUpdated: '2025-05-28',
+        category: 'Artificial Intelligence',
+        description: 'Explore the foundations of machine learning, including supervised and unsupervised learning, model evaluation, and common algorithms.'
+    },
+    {
+        id: 'C-005',
+        title: 'UI/UX Design Principles',
+        instructor: 'Dr. Olivia Brown',
+        studentsEnrolled: 70,
+        status: 'Draft',
+        lastUpdated: '2025-03-20',
+        category: 'Design',
+        description: 'Understand the core principles of User Interface (UI) and User Experience (UX) design. Learn to create intuitive and aesthetically pleasing digital products.'
+    },
 ];
 
 export default function CoursesPage() {
     const [searchTerm, setSearchTerm] = useState('');
+    const accentPurple = '#8A4AF8'; // Define the accent color for consistency
 
     // Framer Motion variants
     const sectionVariants = {
@@ -33,6 +79,8 @@ export default function CoursesPage() {
         visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: 'easeOut' } },
         exit: { opacity: 0, scale: 0.95, transition: { duration: 0.3, ease: 'easeIn' } },
     };
+
+    const defaultAvatar = 'https://via.placeholder.com/40'; // Placeholder for instructor avatar
 
     // Filtering logic (simplified as no explicit status/category filters are visible)
     const filteredCourses = useMemo(() => {
@@ -57,17 +105,6 @@ export default function CoursesPage() {
 
     const handleEditCourse = (courseId) => {
         alert(`Edit course with ID: ${courseId}`);
-    };
-
-    const handleDeleteCourse = (courseId) => {
-        if (confirm(`Are you sure you want to delete course ${courseId}?`)) {
-            alert(`Course ${courseId} deleted! (In a real app, you'd update state/call API)`);
-            // In a real application, you would dispatch an action or call an API to remove the course
-        }
-    };
-
-    const handleViewCourseDetails = (courseId) => {
-        alert(`View details for course ID: ${courseId}`);
     };
 
     // Function to get status badge styling
@@ -146,40 +183,50 @@ export default function CoursesPage() {
                                 {filteredCourses.map((course) => (
                                     <motion.div
                                         key={course.id}
-                                        className="bg-white rounded-xl shadow-lg border border-gray-100 p-5 flex flex-col justify-between hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1"
+                                        className="bg-white rounded-xl shadow-lg border-2 border-transparent hover:border-purple-500 transition-all duration-300 transform hover:-translate-y-1 p-4 flex flex-col justify-between relative overflow-hidden"
                                         variants={cardVariants}
                                         layout // Enables smooth layout transitions for reordering/filtering
                                     >
-                                        <div>
-                                            <div className="flex justify-between items-start mb-3">
-                                                <h3 className="text-xl font-bold text-gray-900 leading-tight">
-                                                    {course.title}
-                                                </h3>
-                                                <span className={`px-3 py-1 text-xs font-semibold rounded-full ${getStatusBadge(course.status)}`}>
-                                                    {course.status}
-                                                </span>
+                                        {/* Decorative top border */}
+                                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-indigo-600"></div>
+
+                                        {/* Status Badge at the top right */}
+                                        <div className="flex justify-between items-start mb-2">
+                                            {/* Course ID */}
+                                            <div className="flex items-center text-xs text-gray-500">
+                                                <Hash className="w-3.5 h-3.5 mr-1 text-gray-400" /> ID: <span className="font-medium ml-0.5">{course.id}</span>
                                             </div>
-                                            <p className="text-sm text-gray-600 mb-4 line-clamp-3" title={course.description}>
-                                                {course.description}
-                                            </p>
-                                            <div className="text-xs text-gray-500 grid grid-cols-1 sm:grid-cols-2 gap-y-2 mb-4 border-t border-gray-100 pt-3">
-                                                <div className="flex items-center"><User className="h-4 w-4 mr-2 text-indigo-500" /> {course.instructor}</div>
-                                                <div className="flex items-center"><Tag className="h-4 w-4 mr-2 text-green-500" /> {course.category}</div>
-                                                <div className="flex items-center"><Users className="h-4 w-4 mr-2 text-blue-500" /> {course.studentsEnrolled} Students</div>
-                                                <div className="flex items-center"><Calendar className="h-4 w-4 mr-2 text-purple-500" /> Last Updated: {course.lastUpdated}</div>
-                                            </div>
+                                            <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${getStatusBadge(course.status)}`}>
+                                                {course.status}
+                                            </span>
                                         </div>
 
-                                        {/* Card Actions */}
-                                        <div className="flex justify-end space-x-2 border-t border-gray-100 pt-4">
-                                            <button className="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-colors duration-200" title="View Details" onClick={() => handleViewCourseDetails(course.id)}>
-                                                <Eye className="h-5 w-5" />
-                                            </button>
-                                            <button className="text-indigo-600 hover:text-indigo-800 p-2 rounded-full hover:bg-indigo-100 transition-colors duration-200" title="Edit Course" onClick={() => handleEditCourse(course.id)}>
-                                                <Edit className="h-5 w-5" />
-                                            </button>
-                                            <button className="text-red-600 hover:text-red-800 p-2 rounded-full hover:bg-red-100 transition-colors duration-200" title="Delete Course" onClick={() => handleDeleteCourse(course.id)}>
-                                                <Trash2 className="h-5 w-5" />
+                                        {/* Course Title */}
+                                        <h3 className="text-lg font-bold text-gray-900 mb-2 leading-tight">
+                                            {course.title}
+                                        </h3>
+
+                                        {/* Description */}
+                                        <p className="text-sm text-gray-600 mb-3 line-clamp-2" title={course.description}>
+                                            {course.description}
+                                        </p>
+
+                                        {/* Instructor, Students Enrolled, Last Updated, Category */}
+                                        <div className="text-xs text-gray-500 grid grid-cols-2 gap-y-1 mb-3 border-t border-gray-100 pt-3">
+                                            <div className="flex items-center"><User className="h-3.5 w-3.5 mr-1.5 text-indigo-500" /> {course.instructor}</div>
+                                            <div className="flex items-center"><Users className="h-3.5 w-3.5 mr-1.5 text-blue-500" /> {course.studentsEnrolled} Students</div>
+                                            <div className="flex items-center"><Calendar className="h-3.5 w-3.5 mr-1.5 text-orange-500" /> Updated: {course.lastUpdated}</div>
+                                            <div className="flex items-center"><Tag className="h-3.5 w-3.5 mr-1.5 text-green-500" /> {course.category}</div>
+                                        </div>
+
+                                        {/* Action Button: Edit Course */}
+                                        <div className="flex justify-end pt-2">
+                                            <button
+                                                className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-medium text-sm"
+                                                onClick={() => handleEditCourse(course.id)}
+                                                title="Edit Course"
+                                            >
+                                                <Edit className="h-4 w-4 mr-2" /> Edit Course
                                             </button>
                                         </div>
                                     </motion.div>
