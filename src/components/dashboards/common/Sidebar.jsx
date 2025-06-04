@@ -8,13 +8,14 @@ import {
     User,
     LogOut,
     X, // Changed XCircle to X for a cleaner close icon
-    BarChart2 // Added a new icon for Analytics/Progress
+    BarChart2,
+    Users, UserCog, CreditCard, BellRing, Settings
 } from 'lucide-react';
 
-export default function Sidebar({ isOpenSideBar, toggleSidebar }) {
+export default function Sidebar({ admin, isOpenSideBar, toggleSidebar }) {
     const location = useLocation(); // Get current path
 
-    const navItems = [
+    const studentNavItems = [
         { name: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' }, // Adjusted path for consistency
         { name: 'My Courses', icon: BookOpen, path: '/dashboard/mycourses' },
         { name: 'Leader Board', icon: BookOpen, path: '/dashboard/leaderboard' },
@@ -24,16 +25,25 @@ export default function Sidebar({ isOpenSideBar, toggleSidebar }) {
         { name: 'Messages', icon: MessageSquare, path: '/dashboard/messages' },
         { name: 'Profile', icon: User, path: '/dashboard/profile' },
     ];
+    const adminNavItems = [
+        { name: 'Admin Dashboard', icon: LayoutDashboard, path: '/admin/dashboard' },
+        { name: 'Manage Students', icon: Users, path: '/admin/students' },
+        { name: 'Manage Teachers', icon: UserCog, path: '/admin/teachers' },
+        { name: 'Manage Courses', icon: BookOpen, path: '/admin/courses' },
+        { name: 'Manage Practice Tests', icon: FileText, path: '/admin/practicetests' },
+        { name: 'Manage Resources', icon: FolderOpen, path: '/admin/resources' },
+        { name: 'Orders & Payments', icon: CreditCard, path: '/admin/orders' },
+        { name: 'Broadcast Notifications', icon: BellRing, path: '/admin/notifications' },
+        { name: 'System Settings', icon: Settings, path: '/admin/settings' },
+    ];
+
+    const navItems = admin ? adminNavItems : studentNavItems;
 
     const bottomNavItems = [
         { name: 'Logout', icon: LogOut, path: '/logout' },
     ];
 
-    // --- IMPORTANT: Adjust this value based on your HEADER's actual height ---
-    // The previous header had py-4 (16px top + 16px bottom = 32px vertical padding)
-    // plus icon height (e.g., 24px for h-6). A safe bet is often 64px or 72px.
-    // Let's use 72px (4.5rem) as a common header height for modern designs.
-    const HEADER_HEIGHT_REM = '4.5rem'; // Equivalent to 72px
+    const HEADER_HEIGHT_REM = '4.5rem';
 
     return (
         <>

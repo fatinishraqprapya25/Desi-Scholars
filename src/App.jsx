@@ -1,4 +1,7 @@
+// external imports
 import { Route, Routes } from "react-router-dom";
+
+// common imports
 import CourseListingPage from "./pages/Courses";
 import Home from "./pages/Home";
 import CourseDetailsPage from "./components/courses/CourseDetails";
@@ -9,6 +12,8 @@ import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import AboutUs from "./pages/About";
 import MockPage from "./pages/Mock";
+
+// student dashboard imports
 import UserDashboard from "./pages/UserDashboard";
 import UserDashboardProfile from "./components/dashboards/student/pages/UserDashboardProfile";
 import UserEnrolledCourses from "./components/dashboards/student/pages/UserEnrolledCourses";
@@ -17,10 +22,14 @@ import PracticeTests from "./components/dashboards/student/pages/PracticeTests";
 import MyProgress from "./components/dashboards/student/pages/MyProgress";
 import ResourcesPage from "./components/dashboards/student/pages/Resources";
 
+// admin dashboard imports
+import AdminHome from "./components/dashboards/admin/AdminHome";
+
 function App() {
   return (
     <>
       <Routes>
+        {/* general routes */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/courses" element={<CourseListingPage />} />
@@ -35,14 +44,19 @@ function App() {
           <Footer />
         </>} />
         <Route path="/mock" element={<MockPage />} />
+
+        {/* student dashboard routes */}
         <Route path="dashboard" element={<UserDashboard />} />
         <Route path="/dashboard/profile" element={<UserDashboardProfile />} />
         <Route path="/dashboard/mycourses" element={<UserEnrolledCourses />} />
         <Route path="/dashboard/leaderboard" element={<UserLeaderBoard />} />
         <Route path="/dashboard/practicetest" element={<PracticeTests />} />
         <Route path="/dashboard/progress" element={<MyProgress />} />
-
         <Route path="/dashboard/resources" element={<ResourcesPage />} />
+
+        {/* admin dashboard routes */}
+        <Route path="/admin/dashboard" element={<AdminHome />} />
+
       </Routes>
     </>
   )
