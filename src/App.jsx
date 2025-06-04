@@ -28,6 +28,8 @@ import StudentsPage from "./components/dashboards/admin/pages/Students";
 import TeachersPage from "./components/dashboards/admin/pages/Teachers";
 import CoursesPage from "./components/dashboards/admin/pages/Courses";
 import PracticeTest from "./components/dashboards/admin/pages/PracticeTests";
+import ManageResourcesPage from "./components/dashboards/admin/pages/Resources";
+import ManageBroadcastsPage from "./components/dashboards/admin/pages/Notifications";
 
 function App() {
   return (
@@ -64,6 +66,8 @@ function App() {
         <Route path="/admin/teachers" element={<TeachersPage />} />
         <Route path="/admin/courses" element={<CoursesPage />} />
         <Route path="/admin/practicetests" element={<PracticeTest />} />
+        <Route path="/admin/resources" element={<ManageResourcesPage />} />
+        <Route path="/admin/notifications" element={<ManageBroadcastsPage />} />
 
       </Routes>
     </>
