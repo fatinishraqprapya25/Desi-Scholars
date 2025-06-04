@@ -83,7 +83,7 @@ export default function Sidebar({ isOpenSideBar, toggleSidebar }) {
                                         <Link
                                             to={item.path}
                                             onClick={toggleSidebar} // Close sidebar on click for mobile
-                                            className={`w-full flex items-center p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300
+                                            className={`w-full flex items-center p-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300
                                                 ${isActive ? 'bg-blue-50 text-blue-700 font-semibold shadow-sm border-r-4 border-blue-600' : ''}
                                             `}
                                         >
@@ -97,7 +97,7 @@ export default function Sidebar({ isOpenSideBar, toggleSidebar }) {
                     </nav>
 
                     {/* Bottom Navigation (Logout) */}
-                    <nav className="px-4 mt-6 border-t border-gray-100 pt-4">
+                    <nav className="px-4 mt-1 border-t border-gray-100 pt-4">
                         <ul>
                             {bottomNavItems.map((item) => (
                                 <li key={item.name}>
