@@ -27,6 +27,7 @@ import AdminHome from "./components/dashboards/admin/pages/AdminHome";
 import StudentsPage from "./components/dashboards/admin/pages/Students";
 import TeachersPage from "./components/dashboards/admin/pages/Teachers";
 import CoursesPage from "./components/dashboards/admin/pages/Courses";
+import PracticeTest from "./components/dashboards/admin/pages/PracticeTests";
 
 function App() {
   return (
@@ -62,6 +63,7 @@ function App() {
         <Route path="/admin/students" element={<StudentsPage />} />
         <Route path="/admin/teachers" element={<TeachersPage />} />
         <Route path="/admin/courses" element={<CoursesPage />} />
+        <Route path="/admin/practicetests" element={<PracticeTest />} />
 
       </Routes>
     </>
