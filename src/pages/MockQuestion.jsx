@@ -38,68 +38,44 @@ export default function MockQuestion() {
             { id: 'C', text: `“He did not read very fast, and it might be said that he read quite slowly, but this did not bother him at all.”` },
             { id: 'D', text: `“Outside the window it was quiet, and only the rustling of the leaves in the bare maple trees could be heard at times.”` }, // Corrected spelling for example
         ],
-        // You'd also have properties like:
-        // isAttempted: false,
-        // isMarkedForReview: false,
-        // isPostDoubt: false,
-        // selectedAnswerId: null, // To store the user's selected option
     });
 
-    // --- State for Quiz UI Control ---
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
-    const totalQuestions = 60; // Example total questions, replace with actual data
-    const [selectedOptionId, setSelectedOptionId] = useState(null); // State for selected answer
-    const [initialTime, setInitialTime] = useState(500); // Example: 500 seconds
+    const totalQuestions = 60;
+    const [selectedOptionId, setSelectedOptionId] = useState(null);
+    const [initialTime, setInitialTime] = useState(500); // 
 
-    // --- Handlers for QuizHeader ---
-    // Note: QuizHeader in its simplified version doesn't accept these props directly anymore
-    // If you need functionality like info toggle, hint, dictionary, you'd add them back to QuizHeader
-    // and manage their state/callbacks here.
     const handleQuizTimeUp = () => {
         console.log("Quiz Time is Up!");
-        // Logic to automatically submit quiz or show results
     };
-
-    // --- Handlers for QuizMetadataBar ---
     const handleChronologicalClick = () => {
         console.log("Chronological button clicked!");
-        // Logic to open a chronological question list or sort options
     };
 
-    // --- Handlers for QuizActionButtons ---
     const handleToggleAttempted = () => {
         console.log("Toggle Attempted/Unattempted clicked!");
-        // Update quizData.isAttempted state
     };
     const handleToggleMarkForReview = () => {
         console.log("Toggle Mark for Review clicked!");
-        // Update quizData.isMarkedForReview state
     };
     const handlePostDoubt = () => {
         console.log("Post Doubt clicked!");
-        // Logic to open a post doubt modal
     };
     const handleReport = () => {
         console.log("Report button clicked!");
-        // Logic to open a report issue modal
     };
     const handleEdit = () => {
         console.log("Edit button clicked!");
-        // Logic to enable editing of the question (unlikely for a quiz taker)
     };
 
-    // --- Handler for QuizOption selection ---
     const handleOptionSelect = (optionId) => {
         setSelectedOptionId(optionId);
         console.log(`Option ${optionId} selected.`);
-        // In a real app, you'd save this to quizData or send to backend
     };
-
-    // --- Handlers for QuizFooter ---
     const handleExit = () => {
         if (window.confirm("Are you sure you want to exit the quiz? Your progress might not be saved.")) {
             console.log("Exiting quiz...");
-            // Implement navigation away or quiz end logic
+
         }
     };
 
