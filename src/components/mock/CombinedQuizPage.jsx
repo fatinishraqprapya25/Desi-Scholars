@@ -1,12 +1,11 @@
 // CombinedQuizPage.jsx (Modified significantly)
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaLightbulb, FaBook, FaChartLine, FaPlayCircle, FaBrain, FaLaptopCode, FaInfoCircle, FaCheckCircle, FaTimesCircle } from 'react-icons/fa'; // Ensure all needed icons are imported
+import { FaLightbulb, FaBook, FaChartLine, FaPlayCircle, FaBrain, FaLaptopCode, FaQuestionCircle, FaInfoCircle, FaCheckCircle, FaTimesCircle } from 'react-icons/fa'; 
 
-// Import the new components
-import QuizHeader from '../components/quiz/QuizHeader'; // Adjust path as needed
-import QuestionInfoBar from '../components/quiz/QuestionInfoBar'; // Adjust path as needed
-import QuizBottomNavigation from '../components/quiz/QuizBottomNavigation'; // Adjust path as needed
+import QuizHeader from './MockHeader'; // Adjust path as needed
+import QuestionInfoBar from './QuestionInfoBar'; // Adjust path as needed
+import QuizBottomNavigation from './MockBottomNavigation'; // Adjust path as needed
 
 // Re-import QuestionItem with its modifications
 import QuestionItem from './QuestionItem'; // Assuming it's in the same directory, adjust path if different
