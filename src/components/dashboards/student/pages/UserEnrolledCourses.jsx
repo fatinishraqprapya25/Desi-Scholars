@@ -1,8 +1,8 @@
 import UserDashboardContainer from "../../common/UserDashboardContainer";
-import EnrolledCourses from '../EnrolledCourses';
-import PracticeTest from '../PracticeTest';
-import FreeResources from '../FreeResource';
-import RecentTestScores from "../RecentTestScores"
+import EnrolledCourses from '../mycourses/EnrolledCourses';
+import PracticeTest from '../mycourses/PracticeTest';
+import FreeResources from '../mycourses/FreeResource';
+import RecentTestScores from "../mycourses/RecentTestScores"
 
 export default function UserEnrolledCourses() {
     return <>
