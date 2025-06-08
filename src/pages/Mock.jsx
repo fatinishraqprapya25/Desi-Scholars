@@ -80,12 +80,11 @@ export default function Mock() {
                     <Hero />
 
                     <div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+                        {/* Mock Tests Section */}
+                        <MockGrid mockTests={mockTests} />
 
                         {/* General Content Section */}
                         <GeneralContents />
-
-                        {/* Mock Tests Section */}
-                        <MockGrid mockTests={mockTests} />
 
                         {/* Why Practice With Us Section */}
                         <WhyUs features={features} />
