@@ -4,7 +4,7 @@ import {
     GraduationCap, Activity, Trophy
 } from 'lucide-react';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
-import SectionHeader from '../progress/SectionHeader';
+import PageHeader from '../../common/PageHeader';
 import ProgressOverviewCard from '../progress/ProgressOverviewCard';
 import DetailedCourseCard from '../progress/DetailedCourseCard';
 import SkillProgressBar from '../progress/SkillProgressBar';
@@ -87,7 +87,7 @@ function MyProgressPage() {
             >
                 {/* Progress Overview Cards */}
                 <section className="mb-10">
-                    <SectionHeader icon={<Zap className="h-8 w-8 text-yellow-600" />} title="Overview" />
+                    <PageHeader icon={<Zap className="h-8 w-8 text-yellow-600" />} title="Overview" />
                     <motion.div
                         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
                         variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
@@ -100,7 +100,7 @@ function MyProgressPage() {
 
                 {/* Detailed Course Progress */}
                 <section className="mb-10">
-                    <SectionHeader icon={<BookOpen className="h-8 w-8 text-blue-600" />} title="Course Progress" />
+                    <PageHeader icon={<BookOpen className="h-8 w-8 text-blue-600" />} title="Course Progress" />
                     <motion.div
                         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
                         variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
@@ -113,7 +113,7 @@ function MyProgressPage() {
 
                 {/* Skills Development */}
                 <section className="mb-10">
-                    <SectionHeader icon={<Target className="mr-3 h-8 w-8 text-green-600" />} title="Skills Development" />
+                    <PageHeader icon={<Target className="mr-3 h-8 w-8 text-green-600" />} title="Skills Development" />
                     <motion.div
                         className="bg-white rounded-md shadow-md border border-gray-100 p-6"
                         variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
@@ -128,7 +128,7 @@ function MyProgressPage() {
 
                 {/* Achievements & Badges */}
                 <section className="mb-10">
-                    <SectionHeader icon={<Award className="mr-3 h-8 w-8 text-yellow-600" />} title="Your Achievements" />
+                    <PageHeader icon={<Award className="mr-3 h-8 w-8 text-yellow-600" />} title="Your Achievements" />
                     <motion.div
                         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
                         variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
