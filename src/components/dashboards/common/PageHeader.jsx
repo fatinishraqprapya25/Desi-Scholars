@@ -5,7 +5,7 @@ const headerVariants = {
     visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100, damping: 15 } }
 };
 
-function SectionHeader({ icon, title }) {
+function PageHeader({ icon, title }) {
     return (
         <motion.h3
             className="text-3xl font-extrabold text-gray-800 mb-8 flex items-center"
@@ -18,4 +18,4 @@ function SectionHeader({ icon, title }) {
     );
 }
 
-export default SectionHeader;
+export default PageHeader;

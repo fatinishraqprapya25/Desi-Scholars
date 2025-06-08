@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
-import PageHeader from '../components/PageHeader';
-import ResourceCard from '../components/ResourceCard';
+import PageHeader from '../../common/PageHeader';
+import ResourceCard from '../resources/ResourceCard';
+import { GrResources } from 'react-icons/gr';
 
 const resourcesData = [
     {
@@ -90,7 +91,8 @@ function ResourcesPage() {
                 initial="hidden"
                 animate="visible"
             >
-                <PageHeader />
+                <PageHeader icon={<GrResources />
+                } title="Our Resources" />
 
                 {/* Resource Cards Grid */}
                 <motion.div
