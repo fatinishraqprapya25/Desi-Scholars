@@ -12,6 +12,7 @@ import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import AboutUs from "./pages/About";
 import MockPage from "./pages/Mock";
+// import CombinedQuizPage from "./components/mock/CombinedQuizPage";
 
 // student dashboard imports
 import UserDashboard from "./pages/UserDashboard";
@@ -50,6 +51,7 @@ function App() {
           <Footer />
         </>} />
         <Route path="/mock" element={<MockPage />} />
+        {/* <Route path="/mock/:mockId" element={<CombinedQuizPage />} /> */}
 
         {/* student dashboard routes */}
         <Route path="dashboard" element={<UserDashboard />} />
