@@ -56,9 +56,8 @@ const resourcesData = [
 
 export default function ManageResourcesPage() {
     const [searchTerm, setSearchTerm] = useState('');
-    const accentPurple = '#8A4AF8'; // Define the accent color for consistency
+    const accentPurple = '#8A4AF8';
 
-    // Framer Motion variants (reused from previous pages)
     const sectionVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
