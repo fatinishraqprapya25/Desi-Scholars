@@ -31,6 +31,7 @@ import CoursesPage from "./components/dashboards/admin/pages/Courses";
 import PracticeTest from "./components/dashboards/admin/pages/PracticeTests";
 import ManageResourcesPage from "./components/dashboards/admin/pages/Resources";
 import ManageBroadcastsPage from "./components/dashboards/admin/pages/Notifications";
+import MockQuestion from "./pages/MockQuestion";
 
 function App() {
   return (
@@ -51,7 +52,7 @@ function App() {
           <Footer />
         </>} />
         <Route path="/mock" element={<MockPage />} />
-        {/* <Route path="/mock/:mockId" element={<CombinedQuizPage />} /> */}
+        <Route path="/mock/:id" element={<MockQuestion />} />
 
         {/* student dashboard routes */}
         <Route path="dashboard" element={<UserDashboard />} />

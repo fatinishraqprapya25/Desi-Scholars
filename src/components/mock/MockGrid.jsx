@@ -1,7 +1,7 @@
 // src/components/MockGrid.jsx
 import { motion } from "framer-motion";
 import { FaBook, FaClock, FaPlayCircle, FaLightbulb, FaChartLine, FaPuzzlePiece, FaLaptopCode, FaFlask } from 'react-icons/fa'; // Added FaFlask for new test example
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 // Define COLORS or import from a centralized file for consistency
 const COLORS = {
@@ -133,44 +133,45 @@ export default function MockGrid({ mockTests: propMockTests }) {
                 animate="visible"
             >
                 {currentMockTests.map((test, index) => (
-                    <motion.div
-                        key={test.id}
-                        className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 flex flex-col items-center text-center relative overflow-hidden group transform transition-all duration-300 hover:shadow-2xl hover:scale-105"
-                        variants={cardVariants}
-                        whileHover={{ y: -5 }}
-                        onClick={() => handleSelectTest(test.id)}
-                    >
-                        {/* Animated Border Glow on Hover */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl -z-10 blur-sm"></div>
-                        <div className="absolute inset-0 bg-white rounded-2xl -z-10"></div>
-
-                        {/* Icon Container with Background Blur/Light */}
-                        <div className="mb-6 text-6xl transform transition-transform duration-300 group-hover:scale-110 p-3 rounded-full bg-blue-50 bg-opacity-70 backdrop-blur-sm border border-blue-100 shadow-md">
-                            {test.icon}
-                        </div>
-
-                        <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 leading-tight">
-                            {test.title}
-                        </h3>
-                        <p className="text-gray-600 text-sm mb-4 flex-grow px-2 leading-relaxed">
-                            {test.description}
-                        </p>
-                        <div className="text-base font-semibold text-gray-700 mb-4 space-y-1">
-                            <span className="flex items-center justify-center gap-2">
-                                <FaBook className="text-blue-500 text-lg" /> {test.totalQuestions} Questions
-                            </span>
-                            <span className="flex items-center justify-center gap-2 mt-1">
-                                <FaClock className="text-indigo-500 text-lg" /> {test.timeLimit / 60} Minutes
-                            </span>
-                        </div>
-                        <motion.button
-                            className="mt-auto px-7 py-3 bg-blue-600 text-white rounded-full text-lg font-bold shadow-md hover:bg-blue-700 transition-colors duration-300 flex items-center gap-2 transform group-hover:scale-105 active:scale-95"
-                            whileHover={{ y: -2 }}
-                            whileTap={{ scale: 0.98 }}
+                    <Link to={`/mock/${test.id}`}>
+                        <motion.div
+                            key={test.id}
+                            className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 flex flex-col items-center text-center relative overflow-hidden group transform transition-all duration-300 hover:shadow-2xl hover:scale-105"
+                            variants={cardVariants}
+                            whileHover={{ y: -5 }}
+                            onClick={() => handleSelectTest(test.id)}
                         >
-                            <FaPlayCircle /> Start Test
-                        </motion.button>
-                    </motion.div>
+                            {/* Animated Border Glow on Hover */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl -z-10 blur-sm"></div>
+                            <div className="absolute inset-0 bg-white rounded-2xl -z-10"></div>
+
+                            {/* Icon Container with Background Blur/Light */}
+                            <div className="mb-6 text-6xl transform transition-transform duration-300 group-hover:scale-110 p-3 rounded-full bg-blue-50 bg-opacity-70 backdrop-blur-sm border border-blue-100 shadow-md">
+                                {test.icon}
+                            </div>
+
+                            <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 leading-tight">
+                                {test.title}
+                            </h3>
+                            <p className="text-gray-600 text-sm mb-4 flex-grow px-2 leading-relaxed">
+                                {test.description}
+                            </p>
+                            <div className="text-base font-semibold text-gray-700 mb-4 space-y-1">
+                                <span className="flex items-center justify-center gap-2">
+                                    <FaBook className="text-blue-500 text-lg" /> {test.totalQuestions} Questions
+                                </span>
+                                <span className="flex items-center justify-center gap-2 mt-1">
+                                    <FaClock className="text-indigo-500 text-lg" /> {test.timeLimit / 60} Minutes
+                                </span>
+                            </div>
+                            <motion.button
+                                className="mt-auto px-7 py-3 bg-blue-600 text-white rounded-full text-lg font-bold shadow-md hover:bg-blue-700 transition-colors duration-300 flex items-center gap-2 transform group-hover:scale-105 active:scale-95"
+                                whileHover={{ y: -2 }}
+                                whileTap={{ scale: 0.98 }}
+                            >
+                                <FaPlayCircle /> Start Test
+                            </motion.button>
+                        </motion.div></Link>
                 ))}
             </motion.div>
         </section>
