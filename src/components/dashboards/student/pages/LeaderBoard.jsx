@@ -129,10 +129,9 @@ function LeaderBoard() {
                     {leaderboardData.slice(0, 3).map((student, index) => (
                         <motion.div
                             key={student.id}
-                            className={`p-6 rounded-md shadow-md border-2 ${getRankBgColor(student.rank)} // Changed shadow-md to shadow-md for lighter shadow
-                                    flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300
-                                    ${student.rank === 1 ? 'border-yellow-300' : student.rank === 2 ? 'border-gray-300' : student.rank === 3 ? 'border-amber-300' : ''}`} // Added specific border colors
-                            variants={cardVariants} // Use cardVariants for individual card animation
+                            className={`p-6 rounded-md shadow-md border-2 ${getRankBgColor(student.rank)}
+                                    ${student.rank === 1 ? 'border-yellow-300' : student.rank === 2 ? 'border-gray-300' : student.rank === 3 ? 'border-amber-300' : ''}`} 
+                            variants={cardVariants}
                             transition={{ delay: index * 0.1 }}
                         >
                             {student.rank === 1 && <Crown className="h-10 w-10 text-yellow-500 fill-yellow-500 mb-3" />}
@@ -146,8 +145,6 @@ function LeaderBoard() {
                     ))}
                 </motion.div>
 
-
-                {/* Main Leaderboard Table */}
                 <h3 className="text-3xl font-extrabold text-gray-800 mb-8 flex items-center">
                     <Award className="mr-3 h-8 w-8 text-blue-600" /> Full Leaderboard
                 </h3>
