@@ -33,6 +33,7 @@ import ManageResourcesPage from "./components/dashboards/admin/pages/Resources";
 import ManageBroadcastsPage from "./components/dashboards/admin/pages/Notifications";
 import MockQuestion from "./pages/MockQuestion";
 import CourseEditor from "./components/dashboards/admin/pages/CourseEditor";
+import MessagePage from "./components/dashboards/student/pages/Message";
 
 function App() {
   return (
@@ -63,6 +64,7 @@ function App() {
         <Route path="/dashboard/practicetest" element={<PracticeTests />} />
         <Route path="/dashboard/progress" element={<MyProgress />} />
         <Route path="/dashboard/resources" element={<ResourcesPage />} />
+        <Route path="/dashboard/messages" element={<MessagePage />} />
 
         {/* admin dashboard routes */}
         <Route path="/admin/dashboard" element={<AdminHome />} />
