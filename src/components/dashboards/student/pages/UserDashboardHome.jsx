@@ -6,6 +6,7 @@ import {
     PlayCircle, PlusCircle, Search, Award, MessageSquare
 } from 'lucide-react';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
+import WelcomeBanner from '../home/WelcomeBanner';
 
 const COLORS = {
     primary: '#3B82F6', // blue-500
@@ -18,6 +19,7 @@ const COLORS = {
     lightPurpleBg: 'linear-gradient(to bottom right, #F5F3FF, #E0D7FA)',
 };
 
+// demo enrolled course
 const enrolledCoursesData = [
     {
         id: 1,
@@ -48,18 +50,21 @@ const enrolledCoursesData = [
     },
 ];
 
+// demo announcements data
 const announcementsData = [
     { id: 1, title: 'Platform Maintenance Scheduled', date: 'June 10, 2025', message: 'Our platform will undergo scheduled maintenance from 2 AM to 4 AM UTC. Services may be temporarily interrupted.' },
     { id: 2, title: 'New Course: Advanced React Hooks', date: 'May 28, 2025', message: 'Exciting news! A new course on Advanced React Hooks has been launched. Enroll now to deepen your React expertise.' },
     { id: 3, title: 'Webinar: Future of AI in Education', date: 'May 25, 2025', message: 'Join our upcoming webinar on June 15th to discuss the transformative impact of AI in the education sector.' },
 ];
 
+// demo upcoming events data
 const upcomingEventsData = [
     { id: 1, title: 'Web Dev Project Deadline', date: 'June 15, 2025', time: '11:59 PM', course: 'Web Development' },
     { id: 2, title: 'Calculus Mid-term Exam', date: 'June 20, 2025', time: '10:00 AM', course: 'Calculus I' },
     { id: 3, title: 'DSA Live Session', date: 'June 12, 2025', time: '07:00 PM', course: 'Data Structures' },
 ];
 
+// demo recommended course data
 const recommendedCoursesData = [
     {
         id: 'rec1',
@@ -86,133 +91,6 @@ const recommendedCoursesData = [
         duration: '8 weeks',
     },
 ];
-
-// --- Sub-Components for the Dashboard Sections ---
-
-// EnrolledCourses.jsx (Optimized from previous turns)
-function EnrolledCourses({ courses }) {
-    const accentColor = '#6366F1'; // Tailwind indigo-500 for consistency
-    const secondaryAccent = '#818CF8'; // Tailwind indigo-400
-
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.15,
-                delayChildren: 0.2
-            }
-        }
-    };
-
-    const itemVariants = {
-        hidden: { y: 20, opacity: 0 },
-        visible: {
-            y: 0,
-            opacity: 1,
-            transition: {
-                type: 'spring',
-                stiffness: 100,
-                damping: 15
-            }
-        }
-    };
-
-    return (
-        <section className="mb-10 font-sans">
-            <h3 className="text-3xl font-extrabold text-gray-800 mb-8 flex items-center">
-                <BookOpen className="mr-3 h-8 w-8 text-blue-600" /> My Enrolled Courses
-            </h3>
-
-            <motion.div
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-            >
-                {courses.map((course) => (
-                    <motion.div
-                        key={course.id}
-                        className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden cursor-pointer
-                                   hover:shadow-2xl hover:border-blue-200 transition-all duration-300 transform hover:-translate-y-2"
-                        variants={itemVariants}
-                    >
-                        {/* Course Image */}
-                        <div className="relative h-40 w-full overflow-hidden">
-                            <img
-                                src={course.imageUrl || 'https://via.placeholder.com/400x200?text=Course+Image'}
-                                alt={course.title}
-                                className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
-                            />
-                            {/* Optional: Overlay for image */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                        </div>
-
-                        <div className="p-6">
-                            <h4 className="text-xl font-bold text-gray-900 mb-2 leading-tight">{course.title}</h4>
-                            <div className="flex items-center text-sm text-gray-600 mb-3">
-                                <UserSquare2 className="mr-2 h-4 w-4 text-gray-500" />
-                                <span>Instructor: {course.instructor}</span>
-                            </div>
-
-                            {/* Progress Bar */}
-                            <div className="w-full bg-gray-200 rounded-full h-2.5 mb-2">
-                                <div
-                                    className="h-2.5 rounded-full"
-                                    style={{ width: `${course.progress}%`, background: `linear-gradient(to right, ${accentColor}, ${secondaryAccent})` }}
-                                ></div>
-                            </div>
-                            <p className="text-sm text-gray-700 font-medium mb-4">Progress: {course.progress}% Complete</p>
-
-                            {/* Key Course Details */}
-                            <div className="space-y-2 mb-4">
-                                <div className="flex items-center text-sm text-gray-700">
-                                    <Compass className="mr-2 h-4 w-4 text-blue-500" />
-                                    <span>Next Lesson: <span className="font-semibold">{course.nextLesson}</span></span>
-                                </div>
-                                <div className="flex items-center text-sm text-gray-600">
-                                    <Clock className="mr-2 h-4 w-4 text-gray-500" />
-                                    <span>Last Accessed: {course.lastAccessed}</span>
-                                </div>
-                            </div>
-
-                            {/* Call to Action Button */}
-                            <button
-                                className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-3 px-4 rounded-xl shadow-lg
-                                           hover:from-blue-700 hover:to-indigo-800 transition-all duration-300 ease-in-out
-                                           flex items-center justify-center text-lg font-medium transform hover:scale-105 active:scale-95"
-                            >
-                                <Compass className="mr-2 h-5 w-5" /> Continue Course
-                            </button>
-                        </div>
-                    </motion.div>
-                ))}
-            </motion.div>
-        </section>
-    );
-}
-
-// WelcomeBanner.jsx
-function WelcomeBanner({ userName = 'Student' }) {
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-8 sm:p-10 rounded-2xl shadow-xl mb-10 relative overflow-hidden"
-        >
-            <div className="absolute top-0 left-0 w-full h-full opacity-10" style={{ backgroundImage: 'url(https://www.transparenttextures.com/patterns/cubes.png)' }}></div>
-            <div className="relative z-10">
-                <h2 className="text-3xl sm:text-4xl font-extrabold mb-2">
-                    Welcome back, <span className="text-blue-200">{userName}!</span>
-                </h2>
-                <p className="text-blue-100 text-lg sm:text-xl">
-                    Ready to achieve your learning goals today? Let's make progress!
-                </p>
-            </div>
-        </motion.div>
-    );
-}
 
 // KeyMetrics.jsx
 function KeyMetrics() {
