@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import {
-    BookOpen, Compass, Clock, UserSquare2,
+    Clock, UserSquare2,
     BarChart2, CalendarDays, Megaphone, Lightbulb, TrendingUp, Trophy, FolderOpen,
     PlayCircle, PlusCircle, Search, Award, MessageSquare
 } from 'lucide-react';
@@ -10,53 +10,7 @@ import WelcomeBanner from '../home/WelcomeBanner';
 import KeyMetrics from '../home/KeyMetrics';
 import UpcomingEvents from '../home/UpcomingEvents';
 import LatestAnnouncements from '../home/Announcements';
-
-const COLORS = {
-    primary: '#3B82F6', // blue-500
-    primaryDarker: '#2563EB', // blue-600
-    secondary: '#6366F1', // indigo-500
-    success: '#10B981', // green-500
-    danger: '#EF4444', // red-500
-    border: '#E5E7EB', // gray-200
-    accentPurple: '#8A4AF8',
-    lightPurpleBg: 'linear-gradient(to bottom right, #F5F3FF, #E0D7FA)',
-};
-
-// demo enrolled course
-const enrolledCoursesData = [
-    {
-        id: 1,
-        title: 'Introduction to Web Development',
-        progress: 75,
-        nextLesson: 'CSS Flexbox',
-        instructor: 'Dr. Alice Smith',
-        lastAccessed: '2 days ago',
-        imageUrl: 'https://images.unsplash.com/photo-1542831371-29b0f74f9d91?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-    },
-    {
-        id: 2,
-        title: 'Calculus I',
-        progress: 40,
-        nextLesson: 'Derivatives',
-        instructor: 'Prof. John Doe',
-        lastAccessed: '5 days ago',
-        imageUrl: 'https://images.unsplash.com/photo-1554460586-e0094025170d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-    },
-    {
-        id: 3,
-        title: 'Data Structures and Algorithms',
-        progress: 90,
-        nextLesson: 'Graph Traversal',
-        instructor: 'Ms. Emily White',
-        lastAccessed: '1 day ago',
-        imageUrl: 'https://images.unsplash.com/photo-1617470701193-276949b2-32b0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-    },
-];
-
-// demo announcements data
-
-
-// demo upcoming events data
+import QuickActions from '../home/QuickActions';
 
 // demo recommended course data
 const recommendedCoursesData = [
@@ -87,53 +41,7 @@ const recommendedCoursesData = [
 ];
 
 // QuickActions.jsx
-function QuickActions() {
-    const actions = [
-        { id: 1, name: 'Start New Test', icon: <PlayCircle className="h-6 w-6" />, color: 'bg-blue-600', hoverColor: 'bg-blue-700' },
-        { id: 2, name: 'Explore Courses', icon: <Search className="h-6 w-6" />, color: 'bg-indigo-600', hoverColor: 'bg-indigo-700' },
-        { id: 3, name: 'View Resources', icon: <FolderOpen className="h-6 w-6" />, color: 'bg-green-600', hoverColor: 'bg-green-700' },
-        { id: 4, name: 'Ask a Question', icon: <MessageSquare className="h-6 w-6" />, color: 'bg-purple-600', hoverColor: 'bg-purple-700' },
-    ];
 
-    const itemVariants = {
-        hidden: { y: 20, opacity: 0 },
-        visible: {
-            y: 0,
-            opacity: 1,
-            transition: {
-                type: 'spring',
-                stiffness: 100,
-                damping: 15
-            }
-        }
-    };
-
-    return (
-        <section className="mb-10">
-            <h3 className="text-3xl font-extrabold text-gray-800 mb-8 flex items-center">
-                <PlusCircle className="mr-3 h-8 w-8 text-green-600" /> Quick Actions
-            </h3>
-            <motion.div
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
-                initial="hidden"
-                animate="visible"
-                variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-            >
-                {actions.map(action => (
-                    <motion.button
-                        key={action.id}
-                        className={`p-6 rounded-2xl shadow-lg border border-gray-100 flex flex-col items-center text-center
-                                    ${action.color} text-white transform hover:scale-105 transition-all duration-300`}
-                        variants={itemVariants}
-                    >
-                        <div className="mb-4">{action.icon}</div>
-                        <p className="text-lg font-semibold">{action.name}</p>
-                    </motion.button>
-                ))}
-            </motion.div>
-        </section>
-    );
-}
 
 // LatestAnnouncements.jsx
 
