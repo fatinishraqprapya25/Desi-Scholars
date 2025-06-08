@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     BookOpen, PlusCircle, Search, Edit, Trash2, Eye, Calendar, Users, Hash, Tag, Lightbulb, User, Clock, HelpCircle
@@ -221,13 +222,14 @@ export default function CoursesPage() {
 
                                         {/* Action Button: Edit Course */}
                                         <div className="flex justify-end pt-2">
-                                            <button
-                                                className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-medium text-sm"
-                                                onClick={() => handleEditCourse(course.id)}
-                                                title="Edit Course"
-                                            >
-                                                <Edit className="h-4 w-4 mr-2" /> Edit Course
-                                            </button>
+                                            <Link to="/admin/courses/edit">
+                                                <button
+                                                    className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-medium text-sm"
+                                                    onClick={() => handleEditCourse(course.id)}
+                                                    title="Edit Course"
+                                                >
+                                                    <Edit className="h-4 w-4 mr-2" /> Edit Course
+                                                </button></Link>
                                         </div>
                                     </motion.div>
                                 ))}

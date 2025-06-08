@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     BookOpen, User, AlignLeft, Video, Radio, PlusCircle, Edit, Trash2, X, Hash, ListOrdered, ClipboardList, Save, CheckCircle
 } from 'lucide-react'; // Added relevant icons
+import UserDashboardContainer from '../../common/UserDashboardContainer';
 
 // A simple utility for generating unique IDs for new modules
 const generateUniqueId = () => `MOD-${Date.now()}-${Math.random().toString(36).substr(2, 5).toUpperCase()}`;
@@ -165,202 +166,204 @@ export default function CourseEditor({ initialCourseData = mockCourseData, onSav
     };
 
     return (
-        <div className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-7xl mx-auto">
-            <motion.div
-                className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 sm:p-8"
-                variants={sectionVariants}
-                initial="hidden"
-                animate="visible"
-            >
-                {/* Header Section */}
-                <div className="flex items-center justify-between pb-4 mb-6 border-b border-gray-200">
-                    <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 flex items-center">
-                        <Edit className="mr-3 h-7 w-7 text-indigo-600" /> Edit Course
-                    </h2>
-                    <motion.button
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={handleSaveCourse}
-                        className="flex items-center px-6 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-semibold text-base"
-                    >
-                        <Save className="h-5 w-5 mr-2" /> Save Course
-                    </motion.button>
-                </div>
-
-                {/* Course Details Section */}
+        <UserDashboardContainer admin={true}>
+            <div className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-7xl mx-auto">
                 <motion.div
-                    className="mb-8 p-6 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg shadow-inner border border-indigo-100"
-                    variants={itemVariants}
+                    className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 sm:p-8"
+                    variants={sectionVariants}
+                    initial="hidden"
+                    animate="visible"
                 >
-                    <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                        <ClipboardList className="h-6 w-6 mr-2 text-indigo-700" /> Course Information
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                        {/* Course Name */}
-                        <div>
-                            <label htmlFor="courseName" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
-                                <BookOpen className="h-4 w-4 mr-1.5 text-blue-500" /> Course Name
-                            </label>
-                            <input
-                                type="text"
-                                id="courseName"
-                                name="name"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 text-gray-800"
-                                value={courseDetails.name || ''}
-                                onChange={handleCourseChange}
-                                placeholder="e.g., Advanced CSS Techniques"
-                                required
-                            />
-                        </div>
-
-                        {/* Instructor's Name */}
-                        <div>
-                            <label htmlFor="instructorName" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
-                                <User className="h-4 w-4 mr-1.5 text-green-500" /> Instructor's Name
-                            </label>
-                            <input
-                                type="text"
-                                id="instructorName"
-                                name="instructor"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 text-gray-800"
-                                value={courseDetails.instructor || ''}
-                                onChange={handleCourseChange}
-                                placeholder="e.g., Prof. Jane Smith"
-                                required
-                            />
-                        </div>
-
-                        {/* Course Type */}
-                        <div className="md:col-span-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-                                <Video className="h-4 w-4 mr-1.5 text-purple-500" /> Course Type
-                            </label>
-                            <div className="flex items-center space-x-6">
-                                <label className="inline-flex items-center cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        name="type"
-                                        value="Live"
-                                        checked={courseDetails.type === 'Live'}
-                                        onChange={handleCourseChange}
-                                        className="form-radio h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 transition-colors"
-                                    />
-                                    <span className="ml-2 text-gray-800 flex items-center"><Radio className="h-4 w-4 mr-1" /> Live</span>
-                                </label>
-                                <label className="inline-flex items-center cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        name="type"
-                                        value="Recorded"
-                                        checked={courseDetails.type === 'Recorded'}
-                                        onChange={handleCourseChange}
-                                        className="form-radio h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 transition-colors"
-                                    />
-                                    <span className="ml-2 text-gray-800 flex items-center"><Video className="h-4 w-4 mr-1" /> Recorded</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        {/* Course Description */}
-                        <div className="md:col-span-2">
-                            <label htmlFor="courseDescription" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
-                                <AlignLeft className="h-4 w-4 mr-1.5 text-orange-500" /> Course Description
-                            </label>
-                            <textarea
-                                id="courseDescription"
-                                name="description"
-                                rows="4"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-y transition-all duration-200 text-gray-800"
-                                value={courseDetails.description || ''}
-                                onChange={handleCourseChange}
-                                placeholder="Provide a detailed description of the course content..."
-                                required
-                            ></textarea>
-                        </div>
-                    </div>
-                </motion.div>
-
-                {/* Modules Section */}
-                <motion.div
-                    className="p-6 bg-white rounded-lg shadow-md border border-gray-100"
-                    variants={itemVariants}
-                >
-                    <div className="flex justify-between items-center mb-5 pb-3 border-b border-gray-200">
-                        <h3 className="text-xl font-bold text-gray-800 flex items-center">
-                            <ListOrdered className="h-6 w-6 mr-2 text-purple-700" /> Course Modules ({modules.length})
-                        </h3>
+                    {/* Header Section */}
+                    <div className="flex items-center justify-between pb-4 mb-6 border-b border-gray-200">
+                        <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 flex items-center">
+                            <Edit className="mr-3 h-7 w-7 text-indigo-600" /> Edit Course
+                        </h2>
                         <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={handleAddModule}
-                            className="flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-sm font-medium text-sm"
+                            whileHover={{ scale: 1.03 }}
+                            whileTap={{ scale: 0.97 }}
+                            onClick={handleSaveCourse}
+                            className="flex items-center px-6 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-semibold text-base"
                         >
-                            <PlusCircle className="h-4 w-4 mr-2" /> Add Module
+                            <Save className="h-5 w-5 mr-2" /> Save Course
                         </motion.button>
                     </div>
 
-                    {modules.length > 0 ? (
-                        <AnimatePresence mode="popLayout">
-                            <ul className="space-y-4">
-                                {modules.map((module) => (
-                                    <motion.li
-                                        key={module.id}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, x: -20, transition: { duration: 0.2 } }}
-                                        layout // Ensures smooth transitions when items are added/removed/reordered
-                                        className="flex items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200"
-                                    >
-                                        <div className="flex items-center">
-                                            <Hash className="h-4 w-4 mr-2 text-gray-400" />
-                                            <span className="font-medium text-gray-900 text-base">{module.name}</span>
-                                        </div>
-                                        <div className="flex items-center space-x-2">
-                                            <motion.button
-                                                whileHover={{ scale: 1.1 }}
-                                                whileTap={{ scale: 0.9 }}
-                                                onClick={() => handleEditModule(module)}
-                                                className="p-2 text-indigo-600 hover:text-indigo-800 rounded-full hover:bg-indigo-50 transition-colors"
-                                                title="Edit Module"
-                                            >
-                                                <Edit className="h-4 w-4" />
-                                            </motion.button>
-                                            <motion.button
-                                                whileHover={{ scale: 1.1 }}
-                                                whileTap={{ scale: 0.9 }}
-                                                onClick={() => handleDeleteModule(module.id)}
-                                                className="p-2 text-red-600 hover:text-red-800 rounded-full hover:bg-red-50 transition-colors"
-                                                title="Delete Module"
-                                            >
-                                                <Trash2 className="h-4 w-4" />
-                                            </motion.button>
-                                        </div>
-                                    </motion.li>
-                                ))}
-                            </ul>
-                        </AnimatePresence>
-                    ) : (
-                        <div className="text-center py-8 text-gray-500 text-sm">
-                            <CheckCircle className="mx-auto h-10 w-10 text-gray-300 mb-3" />
-                            No modules added yet. Click "Add Module" to begin structuring your course!
-                        </div>
-                    )}
-                </motion.div>
-            </motion.div>
+                    {/* Course Details Section */}
+                    <motion.div
+                        className="mb-8 p-6 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg shadow-inner border border-indigo-100"
+                        variants={itemVariants}
+                    >
+                        <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <ClipboardList className="h-6 w-6 mr-2 text-indigo-700" /> Course Information
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                            {/* Course Name */}
+                            <div>
+                                <label htmlFor="courseName" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                                    <BookOpen className="h-4 w-4 mr-1.5 text-blue-500" /> Course Name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="courseName"
+                                    name="name"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 text-gray-800"
+                                    value={courseDetails.name || ''}
+                                    onChange={handleCourseChange}
+                                    placeholder="e.g., Advanced CSS Techniques"
+                                    required
+                                />
+                            </div>
 
-            {/* Module Add/Edit Modal */}
-            <AnimatePresence>
-                {showModuleModal && (
-                    <ModuleFormModal
-                        isOpen={showModuleModal}
-                        onClose={() => setShowModuleModal(false)}
-                        moduleData={editingModule}
-                        onSave={handleSaveModule}
-                        isEditing={!!editingModule}
-                    />
-                )}
-            </AnimatePresence>
-        </div>
+                            {/* Instructor's Name */}
+                            <div>
+                                <label htmlFor="instructorName" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                                    <User className="h-4 w-4 mr-1.5 text-green-500" /> Instructor's Name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="instructorName"
+                                    name="instructor"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 text-gray-800"
+                                    value={courseDetails.instructor || ''}
+                                    onChange={handleCourseChange}
+                                    placeholder="e.g., Prof. Jane Smith"
+                                    required
+                                />
+                            </div>
+
+                            {/* Course Type */}
+                            <div className="md:col-span-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                                    <Video className="h-4 w-4 mr-1.5 text-purple-500" /> Course Type
+                                </label>
+                                <div className="flex items-center space-x-6">
+                                    <label className="inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="type"
+                                            value="Live"
+                                            checked={courseDetails.type === 'Live'}
+                                            onChange={handleCourseChange}
+                                            className="form-radio h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 transition-colors"
+                                        />
+                                        <span className="ml-2 text-gray-800 flex items-center"><Radio className="h-4 w-4 mr-1" /> Live</span>
+                                    </label>
+                                    <label className="inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="type"
+                                            value="Recorded"
+                                            checked={courseDetails.type === 'Recorded'}
+                                            onChange={handleCourseChange}
+                                            className="form-radio h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 transition-colors"
+                                        />
+                                        <span className="ml-2 text-gray-800 flex items-center"><Video className="h-4 w-4 mr-1" /> Recorded</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            {/* Course Description */}
+                            <div className="md:col-span-2">
+                                <label htmlFor="courseDescription" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                                    <AlignLeft className="h-4 w-4 mr-1.5 text-orange-500" /> Course Description
+                                </label>
+                                <textarea
+                                    id="courseDescription"
+                                    name="description"
+                                    rows="4"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-y transition-all duration-200 text-gray-800"
+                                    value={courseDetails.description || ''}
+                                    onChange={handleCourseChange}
+                                    placeholder="Provide a detailed description of the course content..."
+                                    required
+                                ></textarea>
+                            </div>
+                        </div>
+                    </motion.div>
+
+                    {/* Modules Section */}
+                    <motion.div
+                        className="p-6 bg-white rounded-lg shadow-md border border-gray-100"
+                        variants={itemVariants}
+                    >
+                        <div className="flex justify-between items-center mb-5 pb-3 border-b border-gray-200">
+                            <h3 className="text-xl font-bold text-gray-800 flex items-center">
+                                <ListOrdered className="h-6 w-6 mr-2 text-purple-700" /> Course Modules ({modules.length})
+                            </h3>
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={handleAddModule}
+                                className="flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-sm font-medium text-sm"
+                            >
+                                <PlusCircle className="h-4 w-4 mr-2" /> Add Module
+                            </motion.button>
+                        </div>
+
+                        {modules.length > 0 ? (
+                            <AnimatePresence mode="popLayout">
+                                <ul className="space-y-4">
+                                    {modules.map((module) => (
+                                        <motion.li
+                                            key={module.id}
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, x: -20, transition: { duration: 0.2 } }}
+                                            layout // Ensures smooth transitions when items are added/removed/reordered
+                                            className="flex items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200"
+                                        >
+                                            <div className="flex items-center">
+                                                <Hash className="h-4 w-4 mr-2 text-gray-400" />
+                                                <span className="font-medium text-gray-900 text-base">{module.name}</span>
+                                            </div>
+                                            <div className="flex items-center space-x-2">
+                                                <motion.button
+                                                    whileHover={{ scale: 1.1 }}
+                                                    whileTap={{ scale: 0.9 }}
+                                                    onClick={() => handleEditModule(module)}
+                                                    className="p-2 text-indigo-600 hover:text-indigo-800 rounded-full hover:bg-indigo-50 transition-colors"
+                                                    title="Edit Module"
+                                                >
+                                                    <Edit className="h-4 w-4" />
+                                                </motion.button>
+                                                <motion.button
+                                                    whileHover={{ scale: 1.1 }}
+                                                    whileTap={{ scale: 0.9 }}
+                                                    onClick={() => handleDeleteModule(module.id)}
+                                                    className="p-2 text-red-600 hover:text-red-800 rounded-full hover:bg-red-50 transition-colors"
+                                                    title="Delete Module"
+                                                >
+                                                    <Trash2 className="h-4 w-4" />
+                                                </motion.button>
+                                            </div>
+                                        </motion.li>
+                                    ))}
+                                </ul>
+                            </AnimatePresence>
+                        ) : (
+                            <div className="text-center py-8 text-gray-500 text-sm">
+                                <CheckCircle className="mx-auto h-10 w-10 text-gray-300 mb-3" />
+                                No modules added yet. Click "Add Module" to begin structuring your course!
+                            </div>
+                        )}
+                    </motion.div>
+                </motion.div>
+
+                {/* Module Add/Edit Modal */}
+                <AnimatePresence>
+                    {showModuleModal && (
+                        <ModuleFormModal
+                            isOpen={showModuleModal}
+                            onClose={() => setShowModuleModal(false)}
+                            moduleData={editingModule}
+                            onSave={handleSaveModule}
+                            isEditing={!!editingModule}
+                        />
+                    )}
+                </AnimatePresence>
+            </div>
+        </UserDashboardContainer>
     );
 }
 
