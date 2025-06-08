@@ -1,5 +1,3 @@
-import UserDashboardHome from "../student/pages/UserDashboardHome";
-import Profile from "../student/Profile";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import UserDashboardHeader from "./UserDashboardHeader";
