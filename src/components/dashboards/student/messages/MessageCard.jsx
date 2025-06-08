@@ -1,10 +1,10 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, ChevronDown, ChevronUp } from 'lucide-react';
 
 function MessageCard({ message }) {
     const [isOpen, setIsOpen] = useState(false);
-    
+
     const toggleOpen = () => setIsOpen(!isOpen);
 
     const formatTimestamp = (isoString) => {
