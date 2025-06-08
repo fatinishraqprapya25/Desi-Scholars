@@ -8,7 +8,6 @@ import UserDashboardContainer from '../../common/UserDashboardContainer'; // Ass
 
 // Mock data for teachers
 const teachersData = [
-    // ... (your data remains the same)
     { id: 'T-001', name: 'Dr. Emily White', email: 'emily.w@example.com', assignedCourses: 2, status: 'Active', lastLogin: '2025-06-04', hireDate: '2022-09-01' },
     { id: 'T-002', name: 'Prof. David Lee', email: 'david.l@example.com', assignedCourses: 3, status: 'Active', lastLogin: '2025-06-03', hireDate: '2021-03-10' },
     { id: 'T-003', name: 'Ms. Sarah Chen', email: 'sarah.c@example.com', assignedCourses: 1, status: 'Inactive', lastLogin: '2025-05-29', hireDate: '2023-01-20' },
@@ -23,16 +22,86 @@ const teachersData = [
     { id: 'T-012', name: 'Mr. Daniel Garcia', email: 'daniel.g@example.com', assignedCourses: 3, status: 'Active', lastLogin: '2025-06-03', hireDate: '2023-06-20' },
 ];
 
+// New component for the Add Teacher Modal
+const AddTeacherModal = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <motion.div
+                initial={{ opacity: 0, y: -50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -50 }}
+                className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-auto"
+            >
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Add New Teacher</h3>
+                <form>
+                    <div className="mb-4">
+                        <label htmlFor="teacherName" className="block text-sm font-medium text-gray-700 mb-1">Teacher Name</label>
+                        <input
+                            type="text"
+                            id="teacherName"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+                            placeholder="e.g., Jane Doe"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label htmlFor="teacherEmail" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input
+                            type="email"
+                            id="teacherEmail"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+                            placeholder="e.g., jane.doe@example.com"
+                        />
+                    </div>
+                    {/* Add more fields as needed, e.g., assigned courses, status, hire date */}
+                    <div className="flex justify-end space-x-3">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors duration-200"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors duration-200"
+                        >
+                            Add Teacher
+                        </button>
+                    </div>
+                </form>
+            </motion.div>
+        </div>
+    );
+};
+
 
 export default function TeachersPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [teachersPerPage] = useState(8);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
+    const [showAddTeacherModal, setShowAddTeacherModal] = useState(false); // New state for modal visibility
 
-    const sectionVariants = { /* ... (no change) ... */ };
-    const itemVariants = { /* ... (no change) ... */ };
-    const sortedTeachers = useMemo(() => { /* ... (no change, ensure teachersData is stable or in deps) ... */
+    const sectionVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.6,
+                when: "beforeChildren",
+                staggerChildren: 0.1
+            }
+        }
+    };
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+    };
+
+    const sortedTeachers = useMemo(() => {
         let sortableTeachers = [...teachersData];
         if (sortConfig.key) {
             sortableTeachers.sort((a, b) => {
@@ -47,7 +116,7 @@ export default function TeachersPage() {
     }, [teachersData, sortConfig]);
 
 
-    const filteredTeachers = useMemo(() => { /* ... (no change) ... */
+    const filteredTeachers = useMemo(() => {
         return sortedTeachers.filter(teacher =>
             teacher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             teacher.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -61,12 +130,39 @@ export default function TeachersPage() {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
     const totalPages = Math.ceil(filteredTeachers.length / teachersPerPage);
 
-    const requestSort = (key) => { /* ... (no change) ... */ };
-    const getClassNamesFor = (key) => { /* ... (no change) ... */ };
-    const handleAddTeacher = () => { /* ... (no change) ... */ };
-    const handleEditTeacher = (teacherId) => { /* ... (no change) ... */ };
-    const handleDeleteTeacher = (teacherId) => { /* ... (no change) ... */ };
-    const handleViewTeacherDetails = (teacherId) => { /* ... (no change) ... */ };
+    const requestSort = (key) => {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key, direction });
+    };
+
+    const getClassNamesFor = (key) => {
+        if (!sortConfig.key) {
+            return;
+        }
+        return sortConfig.key === key ? sortConfig.direction : undefined;
+    };
+
+    const handleAddTeacher = () => {
+        setShowAddTeacherModal(true); // Open the modal
+    };
+
+    const handleEditTeacher = (teacherId) => {
+        console.log('Edit teacher:', teacherId);
+        // Implement edit logic here
+    };
+
+    const handleDeleteTeacher = (teacherId) => {
+        console.log('Delete teacher:', teacherId);
+        // Implement delete logic here
+    };
+
+    const handleViewTeacherDetails = (teacherId) => {
+        console.log('View teacher details:', teacherId);
+        // Implement view details logic here
+    };
 
     return (
         <UserDashboardContainer admin={true}>
@@ -81,7 +177,7 @@ export default function TeachersPage() {
                     <Briefcase className="mr-2 sm:mr-3 h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-purple-600" /> Manage Educators
                 </h2>
                 <p className="text-sm sm:text-base lg:text-lg text-gray-700 mb-5 sm:mb-7 max-w-3xl leading-relaxed">
-                    Oversee and <strong>manage all faculty accounts</strong> on your platform. Utilize robust search, sorting, and filtering tools to efficiently locate and manage teacher profiles.
+                    Oversee and **manage all faculty accounts** on your platform. Utilize robust search, sorting, and filtering tools to efficiently locate and manage teacher profiles.
                 </p>
 
                 {/* Content block: search, buttons, table, pagination */}
@@ -223,6 +319,12 @@ export default function TeachersPage() {
                     )}
                 </motion.div>
             </motion.div>
+
+            {/* Add Teacher Modal */}
+            <AddTeacherModal
+                isOpen={showAddTeacherModal}
+                onClose={() => setShowAddTeacherModal(false)}
+            />
         </UserDashboardContainer>
     );
 }
