@@ -77,9 +77,6 @@ function MyProgressPage() {
         }
     };
 
-    // itemVariants and progressBarVariants can be passed down as props or defined within the components
-    // if they are truly unique to those components. For now, keeping them separate for clarity.
-
     return (
         <UserDashboardContainer>
             <motion.div
