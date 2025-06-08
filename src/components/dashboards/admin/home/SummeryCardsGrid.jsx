@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import SummaryCard from './SummaryCard';
+import SummaryCard from './SummeryCard';
 
 const gridContainerVariants = {
     hidden: { opacity: 0 },
