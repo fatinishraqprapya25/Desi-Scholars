@@ -1,5 +1,3 @@
-// pages/LeaderBoard.jsx
-import React from 'react';
 import { motion } from 'framer-motion';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
 import LeaderboardHeader from '../leaderboard/LeaderBoardHeader';
