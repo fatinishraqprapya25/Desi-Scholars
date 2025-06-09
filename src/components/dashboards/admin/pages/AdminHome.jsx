@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
-import { Users, BookOpen, Package, DollarSign } from "lucide-react";
+import { Users, BookOpen, Package, DollarSign, LayoutDashboard } from "lucide-react";
 
 // Import the new components
-import AdminHeader from '../home/AdminHeader';
+import PageHeader from '../../common/PageHeader';
 import SummaryCardsGrid from '../home/SummeryCardsGrid';
 import MonthlyEarningsChart from '../home/MonthlyEarningsCart';
 import RecentActivitiesSection from '../home/RecentActivitiesSection';
@@ -77,7 +77,13 @@ function AdminHome() {
                 animate="visible"
             >
                 {/* Admin Dashboard Header */}
-                <AdminHeader />
+                <PageHeader
+                    icon={<LayoutDashboard className="mr-3 h-8 w-8 text-indigo-600" />}
+                    title="Admin Dashboard Overview"
+                />
+                <p className="text-lg text-gray-700 mb-8 max-w-2xl">
+                    Welcome back, Administrator! Here's a quick summary of your platform's performance and key metrics.
+                </p>
 
                 {/* Summary Cards Grid */}
                 <SummaryCardsGrid summaryData={summaryData} />

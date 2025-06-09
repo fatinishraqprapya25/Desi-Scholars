@@ -1,3 +1,4 @@
+import { LayoutDashboard } from 'lucide-react'; // Assuming LayoutDashboard comes from lucide-react or a similar icon library
 import { motion } from 'framer-motion';
 
 const headerVariants = {
