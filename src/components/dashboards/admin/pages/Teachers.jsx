@@ -1,12 +1,19 @@
-import React, { useState, useMemo } from 'react';
+// src/components/teachers/TeachersPage.jsx
+import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import {
-    Briefcase, UserPlus, Search, Edit, Trash2, SlidersHorizontal, ArrowDownUp,
-    ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Eye
-} from 'lucide-react';
-import UserDashboardContainer from '../../common/UserDashboardContainer'; // Assuming this component exists
+import { Briefcase, UserPlus, SlidersHorizontal } from 'lucide-react';
 
-// Mock data for teachers
+// Reusable Components
+import UserDashboardContainer from '../../common/UserDashboardContainer';
+import DashboardHeader from '../../common/PageHeader';
+import SearchBar from '../teachers/SearchBar';
+import ActionButton from '../teachers/ActionButton';
+import AddTeacherModal from '../teachers/AddTeacherModal';
+import TeacherTable from '../teachers/TeacherTable';
+import TablePagination from '../teachers/TablePagination';
+import PageHeader from '../../common/PageHeader';
+
+
 const teachersData = [
     { id: 'T-001', name: 'Dr. Emily White', email: 'emily.w@example.com', assignedCourses: 2, status: 'Active', lastLogin: '2025-06-04', hireDate: '2022-09-01' },
     { id: 'T-002', name: 'Prof. David Lee', email: 'david.l@example.com', assignedCourses: 3, status: 'Active', lastLogin: '2025-06-03', hireDate: '2021-03-10' },
@@ -22,67 +29,13 @@ const teachersData = [
     { id: 'T-012', name: 'Mr. Daniel Garcia', email: 'daniel.g@example.com', assignedCourses: 3, status: 'Active', lastLogin: '2025-06-03', hireDate: '2023-06-20' },
 ];
 
-// New component for the Add Teacher Modal
-const AddTeacherModal = ({ isOpen, onClose }) => {
-    if (!isOpen) return null;
-
-    return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <motion.div
-                initial={{ opacity: 0, y: -50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -50 }}
-                className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-auto"
-            >
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Add New Teacher</h3>
-                <form>
-                    <div className="mb-4">
-                        <label htmlFor="teacherName" className="block text-sm font-medium text-gray-700 mb-1">Teacher Name</label>
-                        <input
-                            type="text"
-                            id="teacherName"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-                            placeholder="e.g., Jane Doe"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="teacherEmail" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                        <input
-                            type="email"
-                            id="teacherEmail"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-                            placeholder="e.g., jane.doe@example.com"
-                        />
-                    </div>
-                    {/* Add more fields as needed, e.g., assigned courses, status, hire date */}
-                    <div className="flex justify-end space-x-3">
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors duration-200"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            type="submit"
-                            className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors duration-200"
-                        >
-                            Add Teacher
-                        </button>
-                    </div>
-                </form>
-            </motion.div>
-        </div>
-    );
-};
-
-
 export default function TeachersPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [teachersPerPage] = useState(8);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
-    const [showAddTeacherModal, setShowAddTeacherModal] = useState(false); // New state for modal visibility
+    const [showAddTeacherModal, setShowAddTeacherModal] = useState(false);
+    const [allTeachers, setAllTeachers] = useState(teachersData); // State to hold teachers, allowing adds/deletes
 
     const sectionVariants = {
         hidden: { opacity: 0, y: 20 },
@@ -101,8 +54,19 @@ export default function TeachersPage() {
         visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
     };
 
+    // Columns configuration for the table
+    const tableColumns = useMemo(() => [
+        { key: 'id', label: 'ID', sortable: true, className: '' },
+        { key: 'name', label: 'Name', sortable: true, className: '' },
+        { key: 'email', label: 'Email', sortable: false, className: 'hidden sm:table-cell' },
+        { key: 'assignedCourses', label: 'Courses', sortable: true, className: 'hidden md:table-cell' },
+        { key: 'status', label: 'Status', sortable: true, className: '' },
+        { key: 'lastLogin', label: 'Last Login', sortable: true, className: 'hidden lg:table-cell' },
+    ], []);
+
+
     const sortedTeachers = useMemo(() => {
-        let sortableTeachers = [...teachersData];
+        let sortableTeachers = [...allTeachers]; // Use allTeachers state
         if (sortConfig.key) {
             sortableTeachers.sort((a, b) => {
                 const aValue = typeof a[sortConfig.key] === 'string' ? a[sortConfig.key].toLowerCase() : a[sortConfig.key];
@@ -113,22 +77,29 @@ export default function TeachersPage() {
             });
         }
         return sortableTeachers;
-    }, [teachersData, sortConfig]);
+    }, [allTeachers, sortConfig]);
 
 
     const filteredTeachers = useMemo(() => {
+        const lowerCaseSearchTerm = searchTerm.toLowerCase();
         return sortedTeachers.filter(teacher =>
-            teacher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            teacher.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            teacher.id.toLowerCase().includes(searchTerm.toLowerCase())
+            teacher.name.toLowerCase().includes(lowerCaseSearchTerm) ||
+            teacher.email.toLowerCase().includes(lowerCaseSearchTerm) ||
+            teacher.id.toLowerCase().includes(lowerCaseSearchTerm)
         );
     }, [searchTerm, sortedTeachers]);
 
     const indexOfLastTeacher = currentPage * teachersPerPage;
     const indexOfFirstTeacher = indexOfLastTeacher - teachersPerPage;
     const currentTeachers = filteredTeachers.slice(indexOfFirstTeacher, indexOfLastTeacher);
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
     const totalPages = Math.ceil(filteredTeachers.length / teachersPerPage);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const handleSearchChange = (value) => {
+        setSearchTerm(value);
+        setCurrentPage(1); // Reset to first page on new search
+    };
 
     const requestSort = (key) => {
         let direction = 'ascending';
@@ -138,192 +109,85 @@ export default function TeachersPage() {
         setSortConfig({ key, direction });
     };
 
-    const getClassNamesFor = (key) => {
-        if (!sortConfig.key) {
-            return;
-        }
-        return sortConfig.key === key ? sortConfig.direction : undefined;
-    };
-
-    const handleAddTeacher = () => {
-        setShowAddTeacherModal(true); // Open the modal
+    const handleAddTeacher = (newTeacher) => {
+        const newId = `T-${String(allTeachers.length + 1).padStart(3, '0')}`; // Simple ID generation
+        setAllTeachers(prev => [
+            ...prev,
+            { ...newTeacher, id: newId, assignedCourses: 0, status: 'Active', lastLogin: new Date().toISOString().slice(0, 10), hireDate: new Date().toISOString().slice(0, 10) }
+        ]);
     };
 
     const handleEditTeacher = (teacherId) => {
         console.log('Edit teacher:', teacherId);
-        // Implement edit logic here
+        // Implement edit logic here, perhaps open an edit modal
     };
 
     const handleDeleteTeacher = (teacherId) => {
-        console.log('Delete teacher:', teacherId);
-        // Implement delete logic here
+        if (window.confirm(`Are you sure you want to delete teacher ${teacherId}?`)) {
+            setAllTeachers(prev => prev.filter(teacher => teacher.id !== teacherId));
+        }
     };
 
     const handleViewTeacherDetails = (teacherId) => {
         console.log('View teacher details:', teacherId);
-        // Implement view details logic here
+        // Implement view details logic here, perhaps navigate to a detail page or open a view-only modal
     };
 
     return (
         <UserDashboardContainer admin={true}>
-            {/* Main page container with responsive padding and max-width */}
             <motion.div
-                className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-7xl mx-auto" // Reduced lg padding slightly
+                className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-7xl mx-auto"
                 variants={sectionVariants}
                 initial="hidden"
                 animate="visible"
             >
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-gray-900 mb-3 sm:mb-5 flex items-center">
-                    <Briefcase className="mr-2 sm:mr-3 h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-purple-600" /> Manage Educators
-                </h2>
-                <p className="text-sm sm:text-base lg:text-lg text-gray-700 mb-5 sm:mb-7 max-w-3xl leading-relaxed">
-                    Oversee and **manage all faculty accounts** on your platform. Utilize robust search, sorting, and filtering tools to efficiently locate and manage teacher profiles.
-                </p>
+                <PageHeader
+                    title="Manage Educators"
+                    icon={<Briefcase />}
+                    sectionVariants={sectionVariants}
+                />
 
-                {/* Content block: search, buttons, table, pagination */}
                 <motion.div
-                    className="bg-white rounded-xl shadow-md p-3 sm:p-5 border border-gray-100" // Reduced padding
+                    className="bg-white rounded-xl shadow-md p-3 sm:p-5 border border-gray-100"
                     variants={itemVariants}
                 >
-                    {/* Search and Action Buttons Row */}
                     <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between mb-5 gap-3 sm:gap-4">
-                        <div className="relative flex-grow w-full md:w-auto mb-3 md:mb-0">
-                            <input
-                                type="text"
-                                placeholder="Search..." // Shorter placeholder for small screens
-                                className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 text-gray-700 placeholder-gray-400 text-sm sm:text-base"
-                                value={searchTerm}
-                                onChange={(e) => {
-                                    setSearchTerm(e.target.value);
-                                    setCurrentPage(1);
-                                }}
-                            />
-                            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4 sm:h-5 sm:w-5" />
-                        </div>
-
+                        <SearchBar
+                            searchTerm={searchTerm}
+                            onSearchChange={handleSearchChange}
+                            placeholder="Search by name, email, or ID..."
+                        />
                         <div className="flex flex-col sm:flex-row flex-shrink-0 gap-2 sm:gap-3 w-full md:w-auto">
-                            <button className="w-full sm:w-auto flex items-center justify-center px-3 sm:px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors duration-200 font-medium text-xs sm:text-sm">
-                                <SlidersHorizontal className="h-4 w-4 mr-1.5 sm:mr-2" /> Filter
-                            </button>
-                            <button
-                                className="w-full sm:w-auto flex items-center justify-center px-3 sm:px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200 shadow-md font-medium text-xs sm:text-sm"
-                                onClick={handleAddTeacher}
-                            >
-                                <UserPlus className="h-4 w-4 mr-1.5 sm:mr-2" /> Add Teacher
-                            </button>
+                            <ActionButton icon={SlidersHorizontal} variant="secondary">Filter</ActionButton>
+                            <ActionButton icon={UserPlus} onClick={() => setShowAddTeacherModal(true)} variant="primary">Add Teacher</ActionButton>
                         </div>
                     </div>
 
-                    {/* Teachers Table Container - THIS IS CRITICAL FOR TABLE RESPONSIVENESS */}
-                    <div className="overflow-x-auto min-h-[300px] w-full"> {/* Ensure this div takes full width of its parent */}
-                        {filteredTeachers.length > 0 ? (
-                            <table className="min-w-full divide-y divide-gray-200 table-auto"> {/* table-auto can sometimes help, or table-fixed if you set col widths */}
-                                <thead className="bg-gray-50">
-                                    <tr>
-                                        {/* Reduced padding, ensure text can wrap or is short */}
-                                        <th scope="col" className="px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onClick={() => requestSort('id')}>
-                                            ID {getClassNamesFor('id') ? (getClassNamesFor('id') === 'asc' ? '↑' : '↓') : <ArrowDownUp className="inline-block h-3 w-3 ml-1 opacity-50" />}
-                                        </th>
-                                        <th scope="col" className="px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onClick={() => requestSort('name')}>
-                                            Name {getClassNamesFor('name') ? (getClassNamesFor('name') === 'asc' ? '↑' : '↓') : <ArrowDownUp className="inline-block h-3 w-3 ml-1 opacity-50" />}
-                                        </th>
-                                        <th scope="col" className="px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell"> {/* Hidden on xs, shown from sm */}
-                                            Email
-                                        </th>
-                                        <th scope="col" className="px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100 hidden md:table-cell" onClick={() => requestSort('assignedCourses')}> {/* Hidden on sm, shown from md */}
-                                            Courses {getClassNamesFor('assignedCourses') ? (getClassNamesFor('assignedCourses') === 'asc' ? '↑' : '↓') : <ArrowDownUp className="inline-block h-3 w-3 ml-1 opacity-50" />}
-                                        </th>
-                                        <th scope="col" className="px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onClick={() => requestSort('status')}>
-                                            Status {getClassNamesFor('status') ? (getClassNamesFor('status') === 'asc' ? '↑' : '↓') : <ArrowDownUp className="inline-block h-3 w-3 ml-1 opacity-50" />}
-                                        </th>
-                                        <th scope="col" className="px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell cursor-pointer hover:bg-gray-100" onClick={() => requestSort('lastLogin')}> {/* Hidden on md, shown from lg */}
-                                            Last Login {getClassNamesFor('lastLogin') ? (getClassNamesFor('lastLogin') === 'asc' ? '↑' : '↓') : <ArrowDownUp className="inline-block h-3 w-3 ml-1 opacity-50" />}
-                                        </th>
-                                        <th scope="col" className="px-3 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider rounded-tr-lg">
-                                            Actions
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
-                                    {currentTeachers.map((teacher) => (
-                                        <tr key={teacher.id} className="hover:bg-gray-50 transition-colors duration-150">
-                                            {/* Use break-words for content that might overflow its cell */}
-                                            <td className="px-3 py-3 text-sm text-gray-800 break-words whitespace-normal">
-                                                {teacher.id}
-                                            </td>
-                                            <td className="px-3 py-3 text-sm text-gray-800 break-words whitespace-normal">
-                                                {teacher.name}
-                                            </td>
-                                            <td className="px-3 py-3 text-sm text-blue-600 break-words whitespace-normal hidden sm:table-cell">
-                                                <a href={`mailto:${teacher.email}`} className="hover:underline">{teacher.email}</a>
-                                            </td>
-                                            <td className="px-3 py-3 text-sm text-gray-700 text-center break-words whitespace-normal hidden md:table-cell">
-                                                {teacher.assignedCourses}
-                                            </td>
-                                            <td className="px-3 py-3 text-sm whitespace-normal"> {/* whitespace-normal to allow wrapping if status text is long */}
-                                                <span className={`px-2 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-full
-                                                    ${teacher.status === 'Active' ? 'bg-green-100 text-green-800' : ''}
-                                                    ${teacher.status === 'Inactive' ? 'bg-yellow-100 text-yellow-800' : ''}
-                                                    ${teacher.status === 'On Leave' ? 'bg-orange-100 text-orange-800' : ''}
-                                                    ${teacher.status === 'Retired' ? 'bg-red-100 text-red-800' : ''}
-                                                `}>
-                                                    {teacher.status}
-                                                </span>
-                                            </td>
-                                            <td className="px-3 py-3 text-sm text-gray-500 break-words whitespace-normal hidden lg:table-cell">
-                                                {teacher.lastLogin}
-                                            </td>
-                                            <td className="px-3 py-3 text-center text-sm font-medium whitespace-nowrap"> {/* Actions usually don't wrap */}
-                                                <div className="flex justify-center items-center space-x-1 sm:space-x-1.5">
-                                                    <button className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100" title="View Details" onClick={() => handleViewTeacherDetails(teacher.id)}>
-                                                        <Eye className="h-4 w-4 sm:h-4.5 w-4.5" />
-                                                    </button>
-                                                    <button className="text-indigo-600 hover:text-indigo-900 p-1 rounded-full hover:bg-indigo-100" title="Edit Teacher" onClick={() => handleEditTeacher(teacher.id)}>
-                                                        <Edit className="h-4 w-4 sm:h-4.5 w-4.5" />
-                                                    </button>
-                                                    <button className="text-red-600 hover:text-red-900 p-1 rounded-full hover:bg-red-100" title="Delete Teacher" onClick={() => handleDeleteTeacher(teacher.id)}>
-                                                        <Trash2 className="h-4 w-4 sm:h-4.5 w-4.5" />
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        ) : (
-                            <div className="text-center py-10 text-gray-500 text-sm sm:text-base">
-                                No teachers found matching your criteria.
-                            </div>
-                        )}
-                    </div>
+                    <TeacherTable
+                        teachers={currentTeachers}
+                        sortConfig={sortConfig}
+                        requestSort={requestSort}
+                        handleEdit={handleEditTeacher}
+                        handleDelete={handleDeleteTeacher}
+                        handleViewDetails={handleViewTeacherDetails}
+                        columns={tableColumns}
+                    />
 
-                    {/* Pagination Controls */}
-                    {totalPages > 1 && filteredTeachers.length > 0 && ( // Show only if multiple pages & results exist
-                        <div className="mt-5 flex flex-col sm:flex-row justify-between items-center text-xs sm:text-sm text-gray-600 gap-3">
-                            <span>
-                                Showing {indexOfFirstTeacher + 1}-{Math.min(indexOfLastTeacher, filteredTeachers.length)} of {filteredTeachers.length}
-                            </span>
-                            <div className="flex items-center gap-1 sm:gap-1.5">
-                                <button onClick={() => paginate(1)} disabled={currentPage === 1} className="p-1.5 sm:p-2 border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"> <ChevronsLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> </button>
-                                <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} className="p-1.5 sm:p-2 border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"> <ChevronLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> </button>
-
-                                {/* Simplified Page Number Display for extreme responsiveness */}
-                                <span className="px-2 sm:px-3 py-1 border border-gray-300 rounded-md bg-gray-50">
-                                    Page {currentPage} of {totalPages}
-                                </span>
-
-                                <button onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages} className="p-1.5 sm:p-2 border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"> <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> </button>
-                                <button onClick={() => paginate(totalPages)} disabled={currentPage === totalPages} className="p-1.5 sm:p-2 border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"> <ChevronsRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> </button>
-                            </div>
-                        </div>
-                    )}
+                    <TablePagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        filteredLength={filteredTeachers.length}
+                        indexOfFirst={indexOfFirstTeacher}
+                        indexOfLast={indexOfLastTeacher}
+                        paginate={paginate}
+                    />
                 </motion.div>
             </motion.div>
 
-            {/* Add Teacher Modal */}
             <AddTeacherModal
                 isOpen={showAddTeacherModal}
                 onClose={() => setShowAddTeacherModal(false)}
+                onSave={handleAddTeacher}
             />
         </UserDashboardContainer>
     );

@@ -1,4 +1,6 @@
+// src/components/teachers/AddTeacherModal.jsx
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 
 const modalVariants = {
@@ -44,7 +46,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSave }) {
 
     return (
         <motion.div
-            className="fixed inset-0 flex items-center justify-center z-50 p-4 backdrop-blur-sm bg-black/30"
+            className="fixed inset-0 flex items-center justify-center z-50 p-4 backdrop-blur-sm bg-blue-100/60" // CHANGED BACKGROUND HERE
             initial="hidden"
             animate="visible"
             exit="exit"
@@ -65,7 +67,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSave }) {
                 </button>
                 <h3 className="text-xl font-semibold mb-5 text-gray-800">Add New Teacher</h3>
 
-                <form onSubmit={handleSave}> {/* Added form and onSubmit */}
+                <form onSubmit={handleSave}>
                     <div className="space-y-4">
                         <div>
                             <label htmlFor="teacherName" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
@@ -76,7 +78,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSave }) {
                                 onChange={(e) => setNewTeacherName(e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 text-sm"
                                 placeholder="e.g., Jane Doe"
-                                required // Added required attribute
+                                required
                             />
                         </div>
                         <div>
@@ -88,7 +90,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSave }) {
                                 onChange={(e) => setNewTeacherEmail(e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 text-sm"
                                 placeholder="e.g., jane.doe@example.com"
-                                required // Added required attribute
+                                required
                             />
                         </div>
                     </div>
@@ -102,7 +104,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSave }) {
                             Cancel
                         </button>
                         <button
-                            type="submit" // Changed to submit type
+                            type="submit"
                             className="px-4 py-2 text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 rounded-md shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
                         >
                             Add Teacher

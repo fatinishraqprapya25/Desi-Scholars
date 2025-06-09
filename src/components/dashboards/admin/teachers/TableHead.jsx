@@ -1,34 +1,30 @@
-import { ArrowDownUp } from 'lucide-react';
+// src/components/teachers/TableHead.jsx
+import React from 'react';
 
 const TableHead = ({ columns, sortConfig, requestSort }) => {
-    const getClassNamesFor = (key) => {
-        if (!sortConfig.key) {
-            return;
-        }
-        return sortConfig.key === key ? sortConfig.direction : undefined;
-    };
-
     return (
         <thead className="bg-gray-50">
             <tr>
-                {columns.map((column) => (
+                {columns.map(column => (
                     <th
                         key={column.key}
-                        scope="col"
-                        className={`px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider ${column.sortable ? 'cursor-pointer hover:bg-gray-100' : ''} ${column.className || ''}`}
-                        onClick={column.sortable ? () => requestSort(column.key) : undefined}
+                        onClick={() => column.sortable && requestSort(column.key)}
+                        className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer 
+                            ${column.className || ''} 
+                            ${column.sortable ? 'hover:bg-gray-100' : ''}`}
                     >
-                        {column.label}
-                        {column.sortable && (
-                            getClassNamesFor(column.key) ? (
-                                getClassNamesFor(column.key) === 'ascending' ? ' ↑' : ' ↓'
-                            ) : (
-                                <ArrowDownUp className="inline-block h-3 w-3 ml-1 opacity-50" />
-                            )
-                        )}
+                        <div className="flex items-center">
+                            {column.label}
+                            {sortConfig.key === column.key && (
+                                <span className="ml-1 text-gray-700">
+                                    {sortConfig.direction === 'ascending' ? ' ▲' : ' ▼'}
+                                </span>
+                            )}
+                        </div>
                     </th>
                 ))}
-                <th scope="col" className="px-3 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider rounded-tr-lg">
+                {/* Add a header for the Actions column, which is not in your `tableColumns` config */}
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Actions
                 </th>
             </tr>
