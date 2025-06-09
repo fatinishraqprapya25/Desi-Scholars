@@ -39,7 +39,7 @@ export default function AddStudentModal({ onClose, onSave }) {
 
     return (
         <motion.div
-            className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 flex items-center justify-center z-50 p-4 backdrop-blur-sm bg-black/30" // Changed background and added backdrop-blur
             initial="hidden"
             animate="visible"
             exit="exit"
