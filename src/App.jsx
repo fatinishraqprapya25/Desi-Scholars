@@ -34,6 +34,7 @@ import ManageBroadcastsPage from "./components/dashboards/admin/pages/Notificati
 import MockQuestion from "./pages/MockQuestion";
 import CourseEditor from "./components/dashboards/admin/pages/CourseEditor";
 import MessagePage from "./components/dashboards/student/pages/Message";
+import CreateCoursePage from "./components/dashboards/admin/course/CreateCourse";
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
         <Route path="/admin/teachers" element={<TeachersPage />} />
         <Route path="/admin/courses" element={<CoursesPage />} />
         <Route path="/admin/courses/edit" element={<CourseEditor />} />
+        <Route path="/admin/courses/create" element={<CreateCoursePage />} />
         <Route path="/admin/practicetests" element={<PracticeTest />} />
         <Route path="/admin/resources" element={<ManageResourcesPage />} />
         <Route path="/admin/notifications" element={<ManageBroadcastsPage />} />

@@ -4,6 +4,7 @@ import { BookOpen, PlusCircle, Lightbulb } from 'lucide-react';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
 import CourseCard from '../course/CourseCard';
 import CourseSearchInput from '../course/CourseSearchInput';
+import { Link } from 'react-router-dom';
 
 const coursesData = [
     {
@@ -86,10 +87,6 @@ export default function CoursesPage() {
         return processedCourses;
     }, [searchTerm, coursesData]);
 
-    const handleAddCourse = () => {
-        alert('the feature is not implemented yet');
-    };
-
     return (
         <UserDashboardContainer admin={true}>
             <motion.div
@@ -114,12 +111,11 @@ export default function CoursesPage() {
                     {/* Top Controls: Search and Add Course */}
                     <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between mb-5 gap-3 sm:gap-4">
                         <CourseSearchInput searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-                        <button
+                        <Link to="/admin/courses/create"><button
                             className="w-full sm:w-auto flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-medium text-sm"
-                            onClick={handleAddCourse}
                         >
                             <PlusCircle className="h-4 w-4 mr-2" /> Add New Course
-                        </button>
+                        </button></Link>
                     </div>
 
                     {/* Course Cards Grid */}
