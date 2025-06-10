@@ -35,7 +35,7 @@ import MockQuestion from "./pages/MockQuestion";
 import CourseEditor from "./components/dashboards/admin/pages/CourseEditor";
 import MessagePage from "./components/dashboards/student/pages/Message";
 import CreateCoursePage from "./components/dashboards/admin/course/CreateCourse";
-import CreatePracticeTestPage from "./components/dashboards/admin/practicetests/CreatePracticeTest";
+import CreatePracticeTestPage from "./components/dashboards/admin/practicetests/create/CreatePracticeTestPage";
 
 function App() {
   return (

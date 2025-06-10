@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-import UserDashboardContainer from "../../common/UserDashboardContainer";
+import UserDashboardContainer from "../../../common/UserDashboardContainer";
 import TestHeader from './CreateTestHeader';
 import TestDetailsForm from './TestDetailsForm';
 import QuestionsSection from './QuestionSection';
