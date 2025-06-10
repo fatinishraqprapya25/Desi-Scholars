@@ -170,7 +170,7 @@ const QuestionsSection = ({
     handleOptionTextChange,
     handleCorrectAnswerChange,
 }) => {
-    // Re-define formItemVariants here to make this component self-contained for now
+
     const formItemVariants = {
         hidden: { opacity: 0, x: -20 },
         visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: 'easeOut' } },
