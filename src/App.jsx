@@ -36,6 +36,7 @@ import CourseEditor from "./components/dashboards/admin/pages/CourseEditor";
 import MessagePage from "./components/dashboards/student/pages/Message";
 import CreateCoursePage from "./components/dashboards/admin/course/CreateCourse";
 import CreatePracticeTestPage from "./components/dashboards/admin/practicetests/create/CreatePracticeTestPage";
+import EditPracticeTestPage from "./components/dashboards/admin/practicetests/edit/EditPracticePage";
 
 function App() {
   return (
@@ -77,6 +78,7 @@ function App() {
         <Route path="/admin/courses/create" element={<CreateCoursePage />} />
         <Route path="/admin/practicetests" element={<PracticeTest />} />
         <Route path="/admin/practicetests/create" element={<CreatePracticeTestPage />} />
+        <Route path="/admin/practicetests/edit" element={<EditPracticeTestPage />} />
         <Route path="/admin/resources" element={<ManageResourcesPage />} />
         <Route path="/admin/notifications" element={<ManageBroadcastsPage />} />
 

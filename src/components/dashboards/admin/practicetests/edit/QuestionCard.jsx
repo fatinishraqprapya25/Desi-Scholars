@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { XCircle, MinusCircle, PlusCircle } from "lucide-react";
 
 const QuestionCard = ({
     question,
