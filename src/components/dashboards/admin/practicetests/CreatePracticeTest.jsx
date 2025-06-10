@@ -1,18 +1,16 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { PlusCircle, MinusCircle, FileText, Send, Lightbulb, XCircle } from 'lucide-react';
-import UserDashboardContainer from '../../common/UserDashboardContainer';
 
-// Framer Motion variants
+import UserDashboardContainer from "../../common/UserDashboardContainer";
+import TestHeader from './CreateTestHeader';
+import TestDetailsForm from './TestDetailsForm';
+import QuestionsSection from './QuestionSection';
+import SubmitTestButton from './SubmitTestButton';
+
+
 const sectionVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
-};
-
-const formItemVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: 'easeOut' } },
-    exit: { opacity: 0, x: 20, transition: { duration: 0.3, ease: 'easeIn' } },
 };
 
 export default function CreatePracticeTestPage() {
@@ -23,8 +21,7 @@ export default function CreatePracticeTestPage() {
         questions: []
     });
 
-    // Handle changes for basic test details (title, description, duration)
-    const handleChange = (e) => {
+    const handleTestDetailsChange = (e) => {
         const { name, value } = e.target;
         setTestDetails(prevDetails => ({
             ...prevDetails,
@@ -161,12 +158,7 @@ export default function CreatePracticeTestPage() {
                 initial="hidden"
                 animate="visible"
             >
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-gray-900 mb-3 sm:mb-5 flex items-center">
-                    <FileText className="mr-2 sm:mr-3 h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-indigo-600" /> Create New Practice Test
-                </h2>
-                <p className="text-sm sm:text-base lg:text-lg text-gray-700 mb-5 sm:mb-7 max-w-3xl leading-relaxed">
-                    Design and build new practice tests with customizable questions and options.
-                </p>
+                <TestHeader />
 
                 <motion.form
                     onSubmit={handleSubmit}
@@ -175,161 +167,23 @@ export default function CreatePracticeTestPage() {
                     initial="hidden"
                     animate="visible"
                 >
-                    {/* Basic Test Details */}
-                    <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-gray-800 border-b pb-2 mb-4">Test Information</h3>
-                        <div>
-                            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Test Title</label>
-                            <input
-                                type="text"
-                                id="title"
-                                name="title"
-                                value={testDetails.title}
-                                onChange={handleChange}
-                                placeholder="e.g., React Hooks Deep Dive"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-gray-900"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                            <textarea
-                                id="description"
-                                name="description"
-                                value={testDetails.description}
-                                onChange={handleChange}
-                                placeholder="A brief overview of the test content..."
-                                rows="3"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-gray-900"
-                            ></textarea>
-                        </div>
-                        <div>
-                            <label htmlFor="durationMinutes" className="block text-sm font-medium text-gray-700 mb-1">Duration (Minutes)</label>
-                            <input
-                                type="number"
-                                id="durationMinutes"
-                                name="durationMinutes"
-                                value={testDetails.durationMinutes}
-                                onChange={handleChange}
-                                min="1"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-gray-900"
-                                required
-                            />
-                        </div>
-                    </div>
+                    <TestDetailsForm
+                        testDetails={testDetails}
+                        handleChange={handleTestDetailsChange}
+                    />
 
-                    {/* Questions Section */}
-                    <div className="space-y-6 pt-4 border-t border-gray-200">
-                        <h3 className="text-lg font-semibold text-gray-800 border-b pb-2 mb-4">Questions</h3>
+                    <QuestionsSection
+                        questions={testDetails.questions}
+                        handleAddQuestion={handleAddQuestion}
+                        handleRemoveQuestion={handleRemoveQuestion}
+                        handleQuestionTextChange={handleQuestionTextChange}
+                        handleAddOption={handleAddOption}
+                        handleRemoveOption={handleRemoveOption}
+                        handleOptionTextChange={handleOptionTextChange}
+                        handleCorrectAnswerChange={handleCorrectAnswerChange}
+                    />
 
-                        {testDetails.questions.length === 0 && (
-                            <div className="text-center py-6 text-gray-500">
-                                <Lightbulb className="mx-auto h-10 w-10 text-gray-400 mb-3" />
-                                <p className="text-base">No questions added yet.</p>
-                                <p className="text-sm">Click "Add Question" to start building your test.</p>
-                            </div>
-                        )}
-
-                        {testDetails.questions.map((question, qIndex) => (
-                            <motion.div
-                                key={qIndex} // Using index as key for now, consider unique IDs in real apps
-                                variants={formItemVariants}
-                                initial="hidden"
-                                animate="visible"
-                                exit="exit"
-                                className="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm relative"
-                            >
-                                <button
-                                    type="button"
-                                    onClick={() => handleRemoveQuestion(qIndex)}
-                                    className="absolute top-2 right-2 text-red-500 hover:text-red-700 transition-colors"
-                                    title="Remove Question"
-                                >
-                                    <XCircle className="h-6 w-6" />
-                                </button>
-                                <h4 className="text-md font-semibold text-gray-800 mb-3">Question {qIndex + 1}</h4>
-                                <div className="mb-4">
-                                    <label htmlFor={`question-${qIndex}`} className="block text-sm font-medium text-gray-700 mb-1">Question Text</label>
-                                    <textarea
-                                        id={`question-${qIndex}`}
-                                        value={question.questionText}
-                                        onChange={(e) => handleQuestionTextChange(qIndex, e.target.value)}
-                                        placeholder="Enter your question here..."
-                                        rows="2"
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-gray-900"
-                                        required
-                                    ></textarea>
-                                </div>
-
-                                {/* Options for the current question */}
-                                <div className="space-y-3 pl-4 border-l-2 border-indigo-200">
-                                    <h5 className="text-sm font-medium text-gray-700">Options (Select one correct answer)</h5>
-                                    {question.options.map((option, oIndex) => (
-                                        <div key={oIndex} className="flex items-center gap-2">
-                                            <input
-                                                type="radio"
-                                                id={`q${qIndex}-option${oIndex}`}
-                                                name={`q${qIndex}-correct-answer`}
-                                                checked={question.correctAnswerIndex === oIndex}
-                                                onChange={() => handleCorrectAnswerChange(qIndex, oIndex)}
-                                                className="h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
-                                            />
-                                            <label htmlFor={`q${qIndex}-option${oIndex}`} className="sr-only">Option {oIndex + 1}</label>
-                                            <input
-                                                type="text"
-                                                value={option}
-                                                onChange={(e) => handleOptionTextChange(qIndex, oIndex, e.target.value)}
-                                                placeholder={`Option ${oIndex + 1}`}
-                                                className="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-gray-900"
-                                                required // Require all options to be filled
-                                            />
-                                            {question.options.length > 2 && ( // Allow removing if more than 2 options
-                                                <motion.button
-                                                    type="button"
-                                                    onClick={() => handleRemoveOption(qIndex, oIndex)}
-                                                    className="p-1 text-red-500 hover:text-red-700 rounded-full transition-colors"
-                                                    title="Remove Option"
-                                                    whileHover={{ scale: 1.1 }}
-                                                    whileTap={{ scale: 0.9 }}
-                                                >
-                                                    <MinusCircle className="h-5 w-5" />
-                                                </motion.button>
-                                            )}
-                                        </div>
-                                    ))}
-                                    <motion.button
-                                        type="button"
-                                        onClick={() => handleAddOption(qIndex)}
-                                        className="flex items-center px-3 py-1.5 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors text-sm font-medium mt-2"
-                                        whileHover={{ scale: 1.02 }}
-                                        whileTap={{ scale: 0.98 }}
-                                    >
-                                        <PlusCircle className="h-4 w-4 mr-1.5" /> Add Option
-                                    </motion.button>
-                                </div>
-                            </motion.div>
-                        ))}
-
-                        <motion.button
-                            type="button"
-                            onClick={handleAddQuestion}
-                            className="w-full flex items-center justify-center px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors duration-200 shadow-md font-medium text-base mt-6"
-                            whileHover={{ scale: 1.01 }}
-                            whileTap={{ scale: 0.99 }}
-                        >
-                            <PlusCircle className="h-5 w-5 mr-2" /> Add Question
-                        </motion.button>
-                    </div>
-
-                    {/* Submit Button */}
-                    <motion.button
-                        type="submit"
-                        className="w-full flex items-center justify-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200 shadow-lg font-bold text-lg mt-8"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                    >
-                        <Send className="h-6 w-6 mr-3" /> Create Test
-                    </motion.button>
+                    <SubmitTestButton />
                 </motion.form>
             </motion.div>
         </UserDashboardContainer>
