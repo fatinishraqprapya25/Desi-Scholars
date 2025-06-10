@@ -30,10 +30,6 @@ export default function ManagePracticeTestsPage() {
         return processedTests;
     }, [searchTerm]);
 
-    const handleEditTest = (testId) => {
-        alert(`Edit practice test with ID: ${testId}`);
-    };
-
     return (
         <UserDashboardContainer admin={true}>
             <motion.div
@@ -79,7 +75,6 @@ export default function ManagePracticeTestsPage() {
                                     <PracticeTestCard
                                         key={test.id}
                                         test={test}
-                                        onEditTest={handleEditTest}
                                         variants={cardVariants}
                                     />
                                 ))}

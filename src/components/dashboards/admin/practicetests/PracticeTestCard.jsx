@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Hash, HelpCircle, Clock, Calendar, Edit } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const getStatusBadge = (status) => {
     switch (status) {
@@ -55,15 +56,15 @@ const PracticeTestCard = ({ test, onEditTest, variants }) => {
 
             {/* Action Button: Edit Test */}
             <div className="flex justify-end pt-2">
-                <motion.button
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-medium text-sm"
-                    onClick={() => onEditTest(test.id)}
-                    title="Edit Test"
-                >
-                    <Edit className="h-4 w-4 mr-2" /> Edit Test
-                </motion.button>
+                <Link to="/admin/practicetests/edit">
+                    <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-medium text-sm"
+                        title="Edit Test"
+                    >
+                        <Edit className="h-4 w-4 mr-2" /> Edit Test
+                    </motion.button></Link>
             </div>
         </motion.div>
     );
