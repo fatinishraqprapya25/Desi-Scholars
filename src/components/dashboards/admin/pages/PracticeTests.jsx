@@ -1,4 +1,4 @@
-import  { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText } from 'lucide-react';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
@@ -28,12 +28,7 @@ export default function ManagePracticeTestsPage() {
             );
         }
         return processedTests;
-    }, [searchTerm]); // Only practiceTestsData dependency if it were dynamic (e.g., fetched from API)
-
-    // Handlers for test actions
-    const handleCreateTest = () => {
-        alert('Prompt to create a new practice test (e.g., open a form modal)!');
-    };
+    }, [searchTerm]);
 
     const handleEditTest = (testId) => {
         alert(`Edit practice test with ID: ${testId}`);
@@ -63,7 +58,6 @@ export default function ManagePracticeTestsPage() {
                     <PracticeTestHeader
                         searchTerm={searchTerm}
                         setSearchTerm={setSearchTerm}
-                        onCreateTest={handleCreateTest}
                     />
 
                     {/* Practice Test Cards Grid */}
