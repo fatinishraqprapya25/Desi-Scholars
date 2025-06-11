@@ -1,5 +1,6 @@
 import { User, Users, Calendar, Tag, Hash, Edit } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion } from "framer-motion";
 
 const cardVariants = {
     hidden: { opacity: 0, scale: 0.95 },

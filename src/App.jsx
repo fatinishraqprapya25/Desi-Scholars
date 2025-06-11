@@ -43,6 +43,7 @@ import CreateBroadcastPage from "./components/dashboards/admin/notifications/Cre
 import EditBroadcastPage from "./components/dashboards/admin/notifications/EditBroadcast";
 import SystemPage from "./components/dashboards/admin/pages/SystemSettings";
 import TeacherHome from "./components/dashboards/teacher/pages/TeacherDashboardHome";
+import MyCourses from "./components/dashboards/teacher/pages/MyCourses";
 
 function App() {
   return (
@@ -96,6 +97,7 @@ function App() {
 
         {/* teachers dashboard routess */}
         <Route path="/teacher/dashboard" element={<TeacherHome />} />
+        <Route path="/teacher/courses" element={<MyCourses />} />
 
       </Routes>
     </>
