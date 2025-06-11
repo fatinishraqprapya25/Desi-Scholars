@@ -1,9 +1,9 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-    BellRing, PlusCircle, Search, Edit, Calendar, User, MessageSquare, Send, Lightbulb, Hash
-} from 'lucide-react';
+import { BellRing, Lightbulb } from 'lucide-react';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
+import BroadcastControls from '../notifications/BroadCastControlls';
+import BroadcastCard from '../notifications/BroadCastCard';
 
 const broadcastsData = [
     {
@@ -50,9 +50,8 @@ const broadcastsData = [
 
 export default function ManageBroadcastsPage() {
     const [searchTerm, setSearchTerm] = useState('');
-    const accentPurple = '#8A4AF8'; // Define the accent color for consistency
 
-    // Framer Motion variants (reused from previous pages)
+    // Framer Motion variants
     const sectionVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
@@ -69,7 +68,7 @@ export default function ManageBroadcastsPage() {
         exit: { opacity: 0, scale: 0.95, transition: { duration: 0.3, ease: 'easeIn' } },
     };
 
-    // Filtering logic for broadcasts
+    // Filtering logic for broadcasts (memoized for performance)
     const filteredBroadcasts = useMemo(() => {
         let processedBroadcasts = [...broadcastsData];
 
@@ -82,18 +81,15 @@ export default function ManageBroadcastsPage() {
             );
         }
         return processedBroadcasts;
-    }, [searchTerm, broadcastsData]);
-
-    // Handlers for broadcast actions
+    }, [searchTerm]);
     const handleCreateBroadcast = () => {
-        alert('Prompt to create a new broadcast or notification (e.g., open a form modal)!');
+        alert('Action: Open a form or modal to create a new broadcast!');
     };
 
     const handleEditBroadcast = (broadcastId) => {
-        alert(`Edit broadcast with ID: ${broadcastId}`);
+        alert(`Action: Edit broadcast with ID: ${broadcastId}. You would typically navigate to an edit page.`);
     };
 
-    // Function to get status badge styling for broadcasts
     const getStatusBadge = (status) => {
         switch (status) {
             case 'Sent':
@@ -124,108 +120,49 @@ export default function ManageBroadcastsPage() {
                     Centralized management for all platform-wide broadcasts and user notifications. Easily search, create, and update messages.
                 </p>
 
-                <motion.div
-                    className="bg-white rounded-xl shadow-md p-3 sm:p-5 border border-gray-100"
-                    variants={itemVariants}
-                    initial="hidden"
-                    animate="visible"
-                >
-                    {/* Top Controls: Search and Add Broadcast */}
-                    <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between mb-5 gap-3 sm:gap-4">
-                        <div className="relative flex-grow w-full md:w-auto">
-                            <input
-                                type="text"
-                                placeholder="Search broadcasts..."
-                                className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 text-gray-700 placeholder-gray-400 text-sm sm:text-base"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4 sm:h-5 sm:w-5" />
-                        </div>
+                {/* Broadcast Controls Component */}
+                <BroadcastControls
+                    searchTerm={searchTerm}
+                    onSearchChange={setSearchTerm}
+                    onCreateBroadcast={handleCreateBroadcast}
+                    itemVariants={itemVariants}
+                />
 
-                        <button
-                            className="w-full sm:w-auto flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-medium text-sm"
-                            onClick={handleCreateBroadcast}
-                        >
-                            <PlusCircle className="h-4 w-4 mr-2" /> Create New Broadcast
-                        </button>
-                    </div>
-
-                    {/* Broadcast Cards Grid */}
-                    {filteredBroadcasts.length > 0 ? (
-                        <motion.div
-                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
-                            initial="hidden"
-                            animate="visible"
-                            variants={{
-                                visible: {
-                                    transition: {
-                                        staggerChildren: 0.1
-                                    }
+                {/* Broadcast Cards Grid */}
+                {filteredBroadcasts.length > 0 ? (
+                    <motion.div
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-6"
+                        initial="hidden"
+                        animate="visible"
+                        variants={{
+                            visible: {
+                                transition: {
+                                    staggerChildren: 0.1
                                 }
-                            }}
-                        >
-                            <AnimatePresence>
-                                {filteredBroadcasts.map((broadcast) => (
-                                    <motion.div
-                                        key={broadcast.id}
-                                        className="bg-white rounded-xl shadow-lg border-2 border-transparent hover:border-purple-500 transition-all duration-300 transform hover:-translate-y-1 p-4 flex flex-col justify-between relative overflow-hidden"
-                                        variants={cardVariants}
-                                        layout // Enables smooth layout transitions for reordering/filtering
-                                    >
-                                        {/* Decorative top border */}
-                                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-indigo-600"></div>
-
-                                        {/* Broadcast ID and Status Badge */}
-                                        <div className="flex justify-between items-start mb-2">
-                                            <div className="flex items-center text-xs text-gray-500">
-                                                <Hash className="w-3.5 h-3.5 mr-1 text-gray-400" /> ID: <span className="font-medium ml-0.5">{broadcast.id}</span>
-                                            </div>
-                                            <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${getStatusBadge(broadcast.status)}`}>
-                                                {broadcast.status}
-                                            </span>
-                                        </div>
-
-                                        {/* Broadcast Title */}
-                                        <h3 className="text-lg font-bold text-gray-900 mb-2 leading-tight">
-                                            {broadcast.title}
-                                        </h3>
-
-                                        {/* Message/Description */}
-                                        <p className="text-sm text-gray-600 mb-3 line-clamp-2" title={broadcast.message}>
-                                            {broadcast.message}
-                                        </p>
-
-                                        {/* Sender and Date */}
-                                        <div className="text-xs text-gray-500 grid grid-cols-2 gap-y-1 mb-3 border-t border-gray-100 pt-3">
-                                            <div className="flex items-center"><Send className="h-3.5 w-3.5 mr-1.5 text-indigo-500" /> {broadcast.sender}</div>
-                                            <div className="flex items-center"><Calendar className="h-3.5 w-3.5 mr-1.5 text-orange-500" /> Date: {broadcast.sendDate}</div>
-                                        </div>
-
-                                        {/* Action Button: Edit Broadcast */}
-                                        <div className="flex justify-end pt-2">
-                                            <button
-                                                className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-medium text-sm"
-                                                onClick={() => handleEditBroadcast(broadcast.id)}
-                                                title="Edit Broadcast"
-                                            >
-                                                <Edit className="h-4 w-4 mr-2" /> Edit Broadcast
-                                            </button>
-                                        </div>
-                                    </motion.div>
-                                ))}
-                            </AnimatePresence>
-                        </motion.div>
-                    ) : (
-                        <div className="text-center py-10 text-gray-500 text-base">
-                            <Lightbulb className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                            <h3 className="mt-2 text-lg font-medium text-gray-900">No broadcasts found</h3>
-                            <p className="mt-1 text-sm text-gray-500">
-                                Adjust your search or create a new broadcast!
-                            </p>
-                        </div>
-                    )}
-                </motion.div>
+                            }
+                        }}
+                    >
+                        <AnimatePresence>
+                            {filteredBroadcasts.map((broadcast) => (
+                                <BroadcastCard
+                                    key={broadcast.id}
+                                    broadcast={broadcast}
+                                    onEditBroadcast={handleEditBroadcast}
+                                    cardVariants={cardVariants}
+                                    getStatusBadge={getStatusBadge}
+                                />
+                            ))}
+                        </AnimatePresence>
+                    </motion.div>
+                ) : (
+                    <div className="text-center py-10 text-gray-500 text-base mt-6">
+                        <Lightbulb className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+                        <h3 className="mt-2 text-lg font-medium text-gray-900">No broadcasts found</h3>
+                        <p className="mt-1 text-sm text-gray-500">
+                            Adjust your search or create a new broadcast!
+                        </p>
+                    </div>
+                )}
             </motion.div>
         </UserDashboardContainer>
     );
