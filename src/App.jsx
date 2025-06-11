@@ -38,6 +38,7 @@ import CreateCoursePage from "./components/dashboards/admin/course/CreateCourse"
 import CreatePracticeTestPage from "./components/dashboards/admin/practicetests/create/CreatePracticeTestPage";
 import EditPracticeTestPage from "./components/dashboards/admin/practicetests/edit/EditPracticePage";
 import CreateResourcePage from "./components/dashboards/admin/resources/create/CreateResourcePage";
+import EditResourcePage from "./components/dashboards/admin/resources/create/EditResource";
 
 function App() {
   return (
@@ -82,6 +83,7 @@ function App() {
         <Route path="/admin/practicetests/edit" element={<EditPracticeTestPage />} />
         <Route path="/admin/resources" element={<ManageResourcesPage />} />
         <Route path="/admin/resources/create" element={<CreateResourcePage />} />
+        <Route path="/admin/resources/edit" element={<EditResourcePage />} />
         <Route path="/admin/notifications" element={<ManageBroadcastsPage />} />
 
       </Routes>
