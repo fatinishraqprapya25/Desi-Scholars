@@ -39,6 +39,7 @@ import CreatePracticeTestPage from "./components/dashboards/admin/practicetests/
 import EditPracticeTestPage from "./components/dashboards/admin/practicetests/edit/EditPracticePage";
 import CreateResourcePage from "./components/dashboards/admin/resources/create/CreateResourcePage";
 import EditResourcePage from "./components/dashboards/admin/resources/create/EditResource";
+import CreateBroadcastPage from "./components/dashboards/admin/notifications/CreateBroadcast";
 
 function App() {
   return (
@@ -85,6 +86,7 @@ function App() {
         <Route path="/admin/resources/create" element={<CreateResourcePage />} />
         <Route path="/admin/resources/edit" element={<EditResourcePage />} />
         <Route path="/admin/notifications" element={<ManageBroadcastsPage />} />
+        <Route path="/admin/notifications/create" element={<CreateBroadcastPage />} />
 
       </Routes>
     </>
