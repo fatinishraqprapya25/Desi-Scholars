@@ -41,6 +41,7 @@ import CreateResourcePage from "./components/dashboards/admin/resources/create/C
 import EditResourcePage from "./components/dashboards/admin/resources/create/EditResource";
 import CreateBroadcastPage from "./components/dashboards/admin/notifications/CreateBroadcast";
 import EditBroadcastPage from "./components/dashboards/admin/notifications/EditBroadcast";
+import SystemPage from "./components/dashboards/admin/pages/SystemSettings";
 
 function App() {
   return (
@@ -90,6 +91,7 @@ function App() {
         <Route path="/admin/notifications/create" element={<CreateBroadcastPage />} />
         <Route path="/admin/notifications/create" element={<CreateBroadcastPage />} />
         <Route path="/admin/notifications/edit" element={<EditBroadcastPage />} />
+        <Route path="/admin/settings" element={<SystemPage />} />
 
       </Routes>
     </>
