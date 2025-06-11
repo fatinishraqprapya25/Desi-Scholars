@@ -2,7 +2,7 @@ import { Search, PlusCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-export default function BroadcastControls({ searchTerm, onSearchChange, onCreateBroadcast, itemVariants }) {
+export default function BroadcastControls({ searchTerm, onSearchChange, itemVariants }) {
     return (
         <motion.div
             className="bg-white rounded-xl shadow-md p-3 sm:p-5 border border-gray-100"
