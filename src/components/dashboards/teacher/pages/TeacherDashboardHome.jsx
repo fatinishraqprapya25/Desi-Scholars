@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
-    LayoutDashboard, BookOpen, Users, BellRing, SquarePen, CalendarDays,
-    ArrowRight, MessageSquareText, FileText, Lightbulb, GraduationCap, ListChecks,
-    History, Info
+    LayoutDashboard, BookOpen, Users, BellRing, Lightbulb, XCircle, ListChecks
 } from 'lucide-react';
+
+import TeacherStatsCard from '../home/TeacherStatsCard';
+import QuickActionsSection from '../home/QuickActionsSection';
+import RecentActivitySection from '../home/RecentActivitySection';
+import UpcomingDeadlinesSection from '../home/UpcomingDeadlines';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
 
 export default function TeacherHome() {
@@ -18,6 +21,7 @@ export default function TeacherHome() {
             setLoading(true);
             setError(null);
             try {
+
                 setTimeout(() => {
                     const dummyData = {
                         teacherName: 'Ms. Emily Chen',
@@ -65,37 +69,9 @@ export default function TeacherHome() {
         visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: 'easeOut' } },
     };
 
-    const cardVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: i => ({
-            opacity: 1,
-            y: 0,
-            transition: {
-                delay: i * 0.1,
-                duration: 0.5,
-                ease: 'easeOut'
-            }
-        })
-    };
-
-    const getActivityIcon = (type) => {
-        switch (type) {
-            case 'assignment_submitted':
-                return <FileText className="h-4 w-4 text-blue-500" />;
-            case 'message_received':
-                return <MessageSquareText className="h-4 w-4 text-purple-500" />;
-            case 'new_enrollment':
-                return <Users className="h-4 w-4 text-green-500" />;
-            case 'course_update':
-                return <BookOpen className="h-4 w-4 text-orange-500" />;
-            default:
-                return <Info className="h-4 w-4 text-gray-500" />;
-        }
-    };
-
     if (loading) {
         return (
-            <UserDashboardContainer admin={false}> {/* Teachers are not 'admin' in this context */}
+            <UserDashboardContainer admin={false}>
                 <div className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-4xl mx-auto text-center text-gray-600">
                     <Lightbulb className="h-5 w-5 inline-block animate-pulse mr-2" /> Loading teacher dashboard...
                 </div>
@@ -105,7 +81,7 @@ export default function TeacherHome() {
 
     if (error) {
         return (
-            <UserDashboardContainer teacher={true}>
+            <UserDashboardContainer admin={false}>
                 <div className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-4xl mx-auto text-center text-red-600">
                     <XCircle className="h-5 w-5 inline-block mr-2" /> {error}
                 </div>
@@ -124,7 +100,7 @@ export default function TeacherHome() {
     }
 
     return (
-        <UserDashboardContainer admin={false}> {/* Pass false for teacher context */}
+        <UserDashboardContainer admin={false}>
             <motion.div
                 className="p-4 sm:p-6 lg:p-8 font-sans w-full mx-auto"
                 variants={sectionVariants}
@@ -140,116 +116,48 @@ export default function TeacherHome() {
 
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                    <motion.div variants={cardVariants} initial="hidden" animate="visible" custom={0} className="bg-white rounded-xl shadow-sm p-4 border border-blue-100 flex items-center space-x-3">
-                        <div className="p-3 rounded-full bg-blue-100 text-blue-700">
-                            <BookOpen className="h-6 w-6" />
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">My Courses</p>
-                            <p className="text-xl font-bold text-gray-900">{teacherDashboardData.totalCourses}</p>
-                        </div>
-                    </motion.div>
-                    <motion.div variants={cardVariants} initial="hidden" animate="visible" custom={1} className="bg-white rounded-xl shadow-sm p-4 border border-green-100 flex items-center space-x-3">
-                        <div className="p-3 rounded-full bg-green-100 text-green-700">
-                            <Users className="h-6 w-6" />
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">Total Students</p>
-                            <p className="text-xl font-bold text-gray-900">{teacherDashboardData.totalStudents}</p>
-                        </div>
-                    </motion.div>
-                    <motion.div variants={cardVariants} initial="hidden" animate="visible" custom={2} className="bg-white rounded-xl shadow-sm p-4 border border-orange-100 flex items-center space-x-3">
-                        <div className="p-3 rounded-full bg-orange-100 text-orange-700">
-                            <ListChecks className="h-6 w-6" />
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">Pending Grading</p>
-                            <p className="text-xl font-bold text-gray-900">{teacherDashboardData.pendingAssignments}</p>
-                        </div>
-                    </motion.div>
-                    <motion.div variants={cardVariants} initial="hidden" animate="visible" custom={3} className="bg-white rounded-xl shadow-sm p-4 border border-purple-100 flex items-center space-x-3">
-                        <div className="p-3 rounded-full bg-purple-100 text-purple-700">
-                            <BellRing className="h-6 w-6" />
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">Unread Messages</p>
-                            <p className="text-xl font-bold text-gray-900">{teacherDashboardData.unreadMessages}</p>
-                        </div>
-                    </motion.div>
+                    <TeacherStatsCard
+                        title="My Courses"
+                        value={teacherDashboardData.totalCourses}
+                        icon={BookOpen}
+                        bgColor="bg-blue-100"
+                        textColor="text-blue-700"
+                        borderColor="border-blue-100"
+                        delay={0}
+                    />
+                    <TeacherStatsCard
+                        title="Total Students"
+                        value={teacherDashboardData.totalStudents}
+                        icon={Users}
+                        bgColor="bg-green-100"
+                        textColor="text-green-700"
+                        borderColor="border-green-100"
+                        delay={0.1}
+                    />
+                    <TeacherStatsCard
+                        title="Pending Grading"
+                        value={teacherDashboardData.pendingAssignments}
+                        icon={ListChecks}
+                        bgColor="bg-orange-100"
+                        textColor="text-orange-700"
+                        borderColor="border-orange-100"
+                        delay={0.2}
+                    />
+                    <TeacherStatsCard
+                        title="Unread Messages"
+                        value={teacherDashboardData.unreadMessages}
+                        icon={BellRing}
+                        bgColor="bg-purple-100"
+                        textColor="text-purple-700"
+                        borderColor="border-purple-100"
+                        delay={0.3}
+                    />
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {/* Quick Actions */}
-                    <motion.div variants={itemVariants} className="lg:col-span-1 bg-white rounded-xl shadow-md p-5 border border-gray-100">
-                        <h3 className="text-lg font-semibold text-gray-900 flex items-center mb-4">
-                            <SquarePen className="h-5 w-5 mr-2 text-indigo-600" /> Quick Actions
-                        </h3>
-                        <div className="space-y-3">
-                            {teacherDashboardData.quickActions.map((action, index) => (
-                                <motion.a
-                                    key={index}
-                                    href={action.link} // Use a real React Router Link in production
-                                    className="flex items-center justify-between p-3 bg-gray-50 hover:bg-indigo-50 rounded-lg transition-all duration-200 group"
-                                    whileHover={{ x: 5 }}
-                                >
-                                    <span className="flex items-center text-gray-800 font-medium">
-                                        {action.icon}
-                                        <span className="ml-3">{action.name}</span>
-                                    </span>
-                                    <ArrowRight className="h-5 w-5 text-gray-400 group-hover:text-indigo-600 transition-colors" />
-                                </motion.a>
-                            ))}
-                        </div>
-                    </motion.div>
-
-                    {/* Recent Activity */}
-                    <motion.div variants={itemVariants} className="lg:col-span-2 bg-white rounded-xl shadow-md p-5 border border-gray-100">
-                        <h3 className="text-lg font-semibold text-gray-900 flex items-center mb-4">
-                            <History className="h-5 w-5 mr-2 text-teal-600" /> Recent Activity
-                        </h3>
-                        <ul className="space-y-3">
-                            {teacherDashboardData.recentActivity.length > 0 ? (
-                                teacherDashboardData.recentActivity.map((activity, index) => (
-                                    <li key={index} className="flex items-center space-x-3 text-gray-700 text-sm">
-                                        {getActivityIcon(activity.type)}
-                                        <span>
-                                            {activity.type === 'assignment_submitted' && `Student ${activity.student} submitted an assignment in ${activity.course}.`}
-                                            {activity.type === 'message_received' && `Received a message from ${activity.sender}.`}
-                                            {activity.type === 'new_enrollment' && `New student ${activity.student} enrolled in ${activity.course}.`}
-                                            {activity.type === 'course_update' && `Course ${activity.course} was updated.`}
-                                        </span>
-                                        <span className="ml-auto text-gray-500 text-xs">{activity.time}</span>
-                                    </li>
-                                ))
-                            ) : (
-                                <p className="text-gray-500">No recent activity.</p>
-                            )}
-                        </ul>
-                    </motion.div>
-
-                    {/* Upcoming Deadlines */}
-                    <motion.div variants={itemVariants} className="lg:col-span-3 bg-white rounded-xl shadow-md p-5 border border-gray-100">
-                        <h3 className="text-lg font-semibold text-gray-900 flex items-center mb-4">
-                            <CalendarDays className="h-5 w-5 mr-2 text-red-600" /> Upcoming Deadlines
-                        </h3>
-                        <ul className="space-y-3">
-                            {teacherDashboardData.upcomingDeadlines.length > 0 ? (
-                                teacherDashboardData.upcomingDeadlines.map((deadline, index) => (
-                                    <li key={index} className="flex items-center space-x-3 text-gray-700 text-sm p-2 bg-yellow-50 rounded-md border border-yellow-100">
-                                        <GraduationCap className="h-4 w-4 text-yellow-700" /> {/* Corrected GradCap to GraduationCap */}
-                                        <span>
-                                            <span className="font-medium">{deadline.title}</span> for <span className="font-medium">{deadline.course}</span>.
-                                        </span>
-                                        <span className="ml-auto text-yellow-700 text-xs flex items-center">
-                                            <CalendarDays className="h-4 w-4 mr-1" /> {deadline.date}
-                                        </span>
-                                    </li>
-                                ))
-                            ) : (
-                                <p className="text-gray-500">No upcoming deadlines.</p>
-                            )}
-                        </ul>
-                    </motion.div>
+                    <QuickActionsSection actions={teacherDashboardData.quickActions} itemVariants={itemVariants} />
+                    <RecentActivitySection activities={teacherDashboardData.recentActivity} itemVariants={itemVariants} />
+                    <UpcomingDeadlinesSection deadlines={teacherDashboardData.upcomingDeadlines} itemVariants={itemVariants} />
                 </div>
             </motion.div>
         </UserDashboardContainer>
