@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Clock, Edit, HardDrive } from "lucide-react";
+import { Clock, Edit, HardDrive, User, Calendar } from "lucide-react";
 
 const cardVariants = {
     hidden: { opacity: 0, scale: 0.95 },
