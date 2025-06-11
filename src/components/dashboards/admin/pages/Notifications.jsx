@@ -5,8 +5,6 @@ import {
 } from 'lucide-react';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
 
-
-// Mock data for broadcasts and notifications
 const broadcastsData = [
     {
         id: 'BR-001',
