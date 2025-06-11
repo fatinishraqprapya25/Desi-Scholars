@@ -7,7 +7,7 @@ export default function BroadcastCard({ broadcast, onEditBroadcast, cardVariants
             key={broadcast.id}
             className="bg-white rounded-xl shadow-lg border-2 border-transparent hover:border-purple-500 transition-all duration-300 transform hover:-translate-y-1 p-4 flex flex-col justify-between relative overflow-hidden"
             variants={cardVariants}
-            layout 
+            layout
         >
             {/* Decorative top border */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-indigo-600"></div>

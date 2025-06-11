@@ -1,5 +1,6 @@
 import { Search, PlusCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 export default function BroadcastControls({ searchTerm, onSearchChange, onCreateBroadcast, itemVariants }) {
     return (
@@ -21,12 +22,12 @@ export default function BroadcastControls({ searchTerm, onSearchChange, onCreate
                     <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4 sm:h-5 sm:w-5" />
                 </div>
 
-                <button
-                    className="w-full sm:w-auto flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-medium text-sm"
-                    onClick={onCreateBroadcast}
-                >
-                    <PlusCircle className="h-4 w-4 mr-2" /> Create New Broadcast
-                </button>
+                <Link to="/admin/notifications/create">
+                    <button
+                        className="w-full sm:w-auto flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-medium text-sm"
+                    >
+                        <PlusCircle className="h-4 w-4 mr-2" /> Create New Broadcast
+                    </button></Link>
             </div>
         </motion.div>
     );
