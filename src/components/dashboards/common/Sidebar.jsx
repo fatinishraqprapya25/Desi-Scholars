@@ -9,10 +9,12 @@ import {
     LogOut,
     X, // Changed XCircle to X for a cleaner close icon
     BarChart2,
-    Users, UserCog, CreditCard, BellRing, Settings
+    Users, UserCog, BellRing, Settings,
+    ListChecks,
+    UserCircle2
 } from 'lucide-react';
 
-export default function Sidebar({ admin, isOpenSideBar, toggleSidebar }) {
+export default function Sidebar({ role, isOpenSideBar, toggleSidebar }) {
     const location = useLocation(); // Get current path
 
     const studentNavItems = [
@@ -35,8 +37,25 @@ export default function Sidebar({ admin, isOpenSideBar, toggleSidebar }) {
         { name: 'Broadcast Notifications', icon: BellRing, path: '/admin/notifications' },
         { name: 'System Settings', icon: Settings, path: '/admin/settings' },
     ];
+    const teacherNavItems = [
+        { name: 'Dashboard', icon: LayoutDashboard, path: '/teacher/dashboard' },
+        { name: 'My Courses', icon: BookOpen, path: '/teacher/courses' },
+        { name: 'My Students', icon: Users, path: '/teacher/students' },
+        { name: 'Grade Assignments', icon: ListChecks, path: '/teacher/assignments/grade' },
+        { name: 'Messages', icon: MessageSquare, path: '/teacher/messages' },
+        { name: 'Resources', icon: FolderOpen, path: '/teacher/resources' },
+        { name: 'Settings', icon: Settings, path: '/teacher/settings' },
+        { name: 'Profile', icon: UserCircle2, path: '/teacher/profile' },
+    ];
 
-    const navItems = admin ? adminNavItems : studentNavItems;
+    let navItems;
+    if (role === "admin") {
+        navItems = adminNavItems;
+    } else if (role === "teacher") {
+        navItems = teacherNavItems;
+    } else {
+        navItems = studentNavItems;
+    }
 
     const bottomNavItems = [
         { name: 'Logout', icon: LogOut, path: '/logout' },

@@ -71,7 +71,7 @@ export default function TeacherHome() {
 
     if (loading) {
         return (
-            <UserDashboardContainer admin={false}>
+            <UserDashboardContainer role="teacher">
                 <div className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-4xl mx-auto text-center text-gray-600">
                     <Lightbulb className="h-5 w-5 inline-block animate-pulse mr-2" /> Loading teacher dashboard...
                 </div>
@@ -81,7 +81,7 @@ export default function TeacherHome() {
 
     if (error) {
         return (
-            <UserDashboardContainer admin={false}>
+            <UserDashboardContainer role={"teacher"}>
                 <div className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-4xl mx-auto text-center text-red-600">
                     <XCircle className="h-5 w-5 inline-block mr-2" /> {error}
                 </div>
@@ -91,7 +91,7 @@ export default function TeacherHome() {
 
     if (!teacherDashboardData) {
         return (
-            <UserDashboardContainer admin={false}>
+            <UserDashboardContainer role={"teacher"}>
                 <div className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-4xl mx-auto text-center text-gray-600">
                     No dashboard data available.
                 </div>
@@ -100,7 +100,7 @@ export default function TeacherHome() {
     }
 
     return (
-        <UserDashboardContainer admin={false}>
+        <UserDashboardContainer role="teacher">
             <motion.div
                 className="p-4 sm:p-6 lg:p-8 font-sans w-full mx-auto"
                 variants={sectionVariants}
