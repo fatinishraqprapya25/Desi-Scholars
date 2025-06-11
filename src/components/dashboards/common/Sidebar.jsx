@@ -32,7 +32,6 @@ export default function Sidebar({ admin, isOpenSideBar, toggleSidebar }) {
         { name: 'Manage Courses', icon: BookOpen, path: '/admin/courses' },
         { name: 'Manage Practice Tests', icon: FileText, path: '/admin/practicetests' },
         { name: 'Manage Resources', icon: FolderOpen, path: '/admin/resources' },
-        { name: 'Orders & Payments', icon: CreditCard, path: '/admin/orders' },
         { name: 'Broadcast Notifications', icon: BellRing, path: '/admin/notifications' },
         { name: 'System Settings', icon: Settings, path: '/admin/settings' },
     ];
