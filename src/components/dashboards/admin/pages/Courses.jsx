@@ -88,7 +88,7 @@ export default function CoursesPage() {
     }, [searchTerm, coursesData]);
 
     return (
-        <UserDashboardContainer admin={true}>
+        <UserDashboardContainer role={"admin"}>
             <motion.div
                 className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-7xl mx-auto"
                 variants={sectionVariants}

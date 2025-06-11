@@ -69,7 +69,7 @@ function AdminHome() {
     };
 
     return (
-        <UserDashboardContainer admin={true}>
+        <UserDashboardContainer role={"admin"}>
             <motion.div
                 className="p-6 md:p-8 lg:p-10 font-sans"
                 variants={sectionVariants}

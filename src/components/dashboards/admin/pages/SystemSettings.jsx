@@ -16,14 +16,6 @@ export default function SystemPage() {
             setLoading(true);
             setError(null);
             try {
-                // In a real application, you would make an API call here:
-                // const response = await fetch('/api/system-info');
-                // if (!response.ok) {
-                //     throw new Error(`HTTP error! status: ${response.status}`);
-                // }
-                // const data = await response.json();
-
-                // Simulate data fetching delay and provide dummy data
                 setTimeout(() => {
                     const dummyData = {
                         version: 'LMS v2.1.0',
@@ -80,7 +72,7 @@ export default function SystemPage() {
     };
 
     return (
-        <UserDashboardContainer admin={true}>
+        <UserDashboardContainer role={"admin"}>
             <motion.div
                 className="p-4 sm:p-6 lg:p-8 font-sans w-full mx-auto"
                 variants={sectionVariants}
