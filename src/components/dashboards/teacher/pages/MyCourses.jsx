@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, PlusCircle, Lightbulb } from 'lucide-react';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
 import CourseCard from '../courses/CourseCard';
-import CourseSearchInput from '../../admin/course/CourseSearchInput';
+import CourseSearchInput from '../courses/CourseSearchInput';
 import { Link } from 'react-router-dom';
 
 const coursesData = [
