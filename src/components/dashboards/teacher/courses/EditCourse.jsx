@@ -166,7 +166,7 @@ export default function EditCourse({ initialCourseData = mockCourseData, onSave 
     };
 
     return (
-        <UserDashboardContainer role="admin">
+        <UserDashboardContainer role="teacher">
             <div className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-7xl mx-auto">
                 <motion.div
                     className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 sm:p-8"

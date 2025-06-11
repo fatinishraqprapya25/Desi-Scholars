@@ -45,6 +45,7 @@ import SystemPage from "./components/dashboards/admin/pages/SystemSettings";
 import TeacherHome from "./components/dashboards/teacher/pages/TeacherDashboardHome";
 import MyCourses from "./components/dashboards/teacher/pages/MyCourses";
 import EditCourse from "./components/dashboards/teacher/courses/EditCourse";
+import CreateCourse from "./components/dashboards/teacher/courses/CreateCourse";
 
 function App() {
   return (
@@ -100,6 +101,7 @@ function App() {
         <Route path="/teacher/dashboard" element={<TeacherHome />} />
         <Route path="/teacher/courses" element={<MyCourses />} />
         <Route path="/teacher/courses/edit" element={<EditCourse />} />
+        <Route path="/teacher/courses/create" element={<CreateCourse />} />
 
       </Routes>
     </>
