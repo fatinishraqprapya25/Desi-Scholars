@@ -40,6 +40,7 @@ import EditPracticeTestPage from "./components/dashboards/admin/practicetests/ed
 import CreateResourcePage from "./components/dashboards/admin/resources/create/CreateResourcePage";
 import EditResourcePage from "./components/dashboards/admin/resources/create/EditResource";
 import CreateBroadcastPage from "./components/dashboards/admin/notifications/CreateBroadcast";
+import EditBroadcastPage from "./components/dashboards/admin/notifications/EditBroadcast";
 
 function App() {
   return (
@@ -87,6 +88,8 @@ function App() {
         <Route path="/admin/resources/edit" element={<EditResourcePage />} />
         <Route path="/admin/notifications" element={<ManageBroadcastsPage />} />
         <Route path="/admin/notifications/create" element={<CreateBroadcastPage />} />
+        <Route path="/admin/notifications/create" element={<CreateBroadcastPage />} />
+        <Route path="/admin/notifications/edit" element={<EditBroadcastPage />} />
 
       </Routes>
     </>
