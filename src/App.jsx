@@ -48,6 +48,7 @@ import EditCourse from "./components/dashboards/teacher/courses/EditCourse";
 import CreateCourse from "./components/dashboards/teacher/courses/CreateCourse";
 import MyStudents from "./components/dashboards/teacher/pages/MyStudents";
 import GradeAssignmentsPage from "./components/dashboards/teacher/pages/GradeAssignments";
+import MyMessages from "./components/dashboards/teacher/pages/MyMessages";
 
 function App() {
   return (
@@ -106,6 +107,7 @@ function App() {
         <Route path="/teacher/courses/create" element={<CreateCourse />} />
         <Route path="/teacher/students" element={<MyStudents />} />
         <Route path="/teacher/assignments/grade" element={<GradeAssignmentsPage />} />
+        <Route path="/teacher/messages" element={<MyMessages />} />
 
       </Routes>
     </>
