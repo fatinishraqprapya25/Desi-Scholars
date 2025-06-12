@@ -7,7 +7,7 @@ import {
     MessageSquare,
     User,
     LogOut,
-    X, // Changed XCircle to X for a cleaner close icon
+    X, 
     BarChart2,
     Users, UserCog, BellRing, Settings,
     ListChecks,
@@ -43,8 +43,7 @@ export default function Sidebar({ role, isOpenSideBar, toggleSidebar }) {
         { name: 'My Students', icon: Users, path: '/teacher/students' },
         { name: 'Grade Assignments', icon: ListChecks, path: '/teacher/assignments/grade' },
         { name: 'Messages', icon: MessageSquare, path: '/teacher/messages' },
-        { name: 'Resources', icon: FolderOpen, path: '/teacher/resources' },
-        { name: 'Settings', icon: Settings, path: '/teacher/settings' },
+        { name: 'My Tests', icon: FolderOpen, path: '/teacher/tests' },
         { name: 'Profile', icon: UserCircle2, path: '/teacher/profile' },
     ];
 
