@@ -77,7 +77,7 @@ export default function Sidebar({ role, isOpenSideBar, toggleSidebar }) {
                 className={`
                     fixed left-0 z-40
                     w-64
-                    top-[${HEADER_HEIGHT_REM}]
+                    top-[${HEADER_HEIGHT_REM}] 
                     h-[90vh] overflow-y-scroll
                     bg-white border-r border-gray-200 shadow-xl lg:shadow-none
                     transform transition-transform duration-300 ease-in-out
