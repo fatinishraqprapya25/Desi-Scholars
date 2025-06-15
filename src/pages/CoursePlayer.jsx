@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import Sidebar from './Sidebar';
-import VideoPlayer from './VideoPlayer';
-import Tabs from './Tabs';
+import Sidebar from '../components/coursePlayer/Sidebar';
+import VideoPlayer from '../components/coursePlayer/VideoPlayer';
+import Tabs from "../components/coursePlayer/Tabs";
 
 const App = () => {
     const videos = [

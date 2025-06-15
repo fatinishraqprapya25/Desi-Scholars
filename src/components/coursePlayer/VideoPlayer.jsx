@@ -1,5 +1,3 @@
-import React from 'react';
-
 const VideoPlayer = ({ videos, currentVideoIndex, setCurrentVideoIndex }) => {
     const handlePrev = () => {
         setCurrentVideoIndex(prev => (prev > 0 ? prev - 1 : videos.length - 1));
