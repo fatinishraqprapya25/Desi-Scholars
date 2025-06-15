@@ -10,7 +10,7 @@ export default function UserDashboardContainer({ role, children }) {
 
     return (
         <>
-            <UserDashboardHeader toggleSidebar={toggleSidebar} />
+            <UserDashboardHeader role={role} toggleSidebar={toggleSidebar} />
             <div className="min-h-screen font-sans antialiased flex flex-col lg:flex-row lg:ml-64">
                 {/* Sidebar Component */}
 

@@ -1,16 +1,24 @@
-import { Bell, User, Menu, Home, Layers } from 'lucide-react'; // Added Home and Layers for more options
+import { Bell, User, Menu, Home, Layers } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-function UserDashboardHeader({ setActiveSection, toggleSidebar, isSidebarOpen }) {
-    // Determine header background based on sidebar state for a cohesive feel
+function UserDashboardHeader({ setActiveSection, toggleSidebar, isSidebarOpen, role }) {
+
     const headerBg = isSidebarOpen
-        ? 'bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200' // Lighter when sidebar is open
-        : 'bg-gradient-to-r from-blue-100 to-indigo-100'; // Slightly darker with shadow when sidebar is closed
+        ? 'bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200'
+        : 'bg-gradient-to-r from-blue-100 to-indigo-100';
+
+    let dashboardHomePath = "";
+    if (role === "teacher") {
+        dashboardHomePath = "/teacher/dashboard";
+    } else if (role === "admin") {
+        dashboardHomePath = "/admin/dashboard";
+    } else {
+        dashboardHomePath = "/dashboard";
+    }
 
     return (
         <header className={`flex justify-between items-center py-4 px-6 fixed w-full z-30 transition-all duration-300 ${headerBg}`}>
-            {/* Left Side: Hamburger/Close Menu, Logo, and Desktop Nav */}
             <div className="flex items-center gap-4 lg:gap-8">
-                {/* Hamburger/Close Button for Mobile */}
                 <button
                     onClick={toggleSidebar}
                     className="p-2 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 lg:hidden"
@@ -27,21 +35,13 @@ function UserDashboardHeader({ setActiveSection, toggleSidebar, isSidebarOpen })
 
                 {/* Desktop Navigation Links */}
                 <nav className="hidden lg:flex items-center space-x-6">
-                    <button
-                        onClick={() => setActiveSection('dashboard')}
-                        className={`py-2 px-3 rounded-lg text-gray-700 text-sm font-semibold hover:bg-blue-100 hover:text-blue-700 transition-all duration-200
-                            ${setActiveSection === 'dashboard' ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600' : ''}`}
-                    >
-                        <Home className="inline-block w-4 h-4 mr-2" /> Dashboard
-                    </button>
-                    <button
-                        onClick={() => setActiveSection('courses')}
-                        className={`py-2 px-3 rounded-lg text-gray-700 text-sm font-semibold hover:bg-blue-100 hover:text-blue-700 transition-all duration-200
+                    <Link to={`${dashboardHomePath}`}>
+                        <button
+                            className={`py-2 px-3 rounded-lg text-gray-700 text-sm font-semibold hover:bg-blue-100 hover:text-blue-700 transition-all duration-200
                             ${setActiveSection === 'courses' ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600' : ''}`}
-                    >
-                        <Layers className="inline-block w-4 h-4 mr-2" /> Courses
-                    </button>
-                    {/* Add more desktop nav items as needed */}
+                        >
+                            <Layers className="inline-block w-4 h-4 mr-2" /> Dashboard
+                        </button></Link>
                 </nav>
             </div>
 
