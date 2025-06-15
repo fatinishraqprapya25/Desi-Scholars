@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import TabContent from './TabContent';
 
 const Tabs = ({ videos, currentVideoIndex }) => {
