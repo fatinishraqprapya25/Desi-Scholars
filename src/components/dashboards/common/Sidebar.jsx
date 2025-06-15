@@ -7,11 +7,11 @@ import {
     MessageSquare,
     User,
     LogOut,
-    X, 
+    X,
     BarChart2,
     Users, UserCog, BellRing, Settings,
     ListChecks,
-    UserCircle2
+    UserCircle2,
 } from 'lucide-react';
 
 export default function Sidebar({ role, isOpenSideBar, toggleSidebar }) {
@@ -34,6 +34,7 @@ export default function Sidebar({ role, isOpenSideBar, toggleSidebar }) {
         { name: 'Manage Courses', icon: BookOpen, path: '/admin/courses' },
         { name: 'Manage Practice Tests', icon: FileText, path: '/admin/practicetests' },
         { name: 'Manage Resources', icon: FolderOpen, path: '/admin/resources' },
+        { name: 'Payments', icon: FolderOpen, path: '/admin/payments' },
         { name: 'Broadcast Notifications', icon: BellRing, path: '/admin/notifications' },
         { name: 'System Settings', icon: Settings, path: '/admin/settings' },
     ];
@@ -74,77 +75,72 @@ export default function Sidebar({ role, isOpenSideBar, toggleSidebar }) {
 
             <div
                 className={`
-                    fixed left-0 z-40 // Sidebar is fixed, above content but below header
-                    w-64 // Fixed width for the sidebar
-                    top-[${HEADER_HEIGHT_REM}] // Starts precisely below the fixed header
-                    h-[calc(100vh-${HEADER_HEIGHT_REM})] // Occupies full viewport height minus header height
-
-                    // Appearance
-                    bg-white border-r border-gray-200 shadow-xl lg:shadow-none // Light background, subtle border and shadow
-                    transform transition-transform duration-300 ease-in-out // For slide-in/out animation
-                    ${isOpenSideBar ? 'translate-x-0' : '-translate-x-full'} // Mobile show/hide animation
-                    lg:translate-x-0 lg:block // Always visible on desktop and takes up space
-                    pb-4 lg:pb-0 // Padding at bottom for mobile to allow scrolling top-0 md:top-[12%] pt-3
+                    fixed left-0 z-40
+                    w-64
+                    top-[${HEADER_HEIGHT_REM}]
+                    h-[90vh] overflow-y-scroll
+                    bg-white border-r border-gray-200 shadow-xl lg:shadow-none
+                    transform transition-transform duration-300 ease-in-out
+                    ${isOpenSideBar ? 'translate-x-0' : '-translate-x-full'}
+                    lg:translate-x-0 lg:block
+                    flex flex-col
                 `}
             >
-                {/* Sidebar content container (flex column to push footer down) */}
-                <div className="h-full flex flex-col pt-4 lg:pt-0 pb-4 lg:pb-0 relative">
-                    {/* Mobile close button - positioned at top right within the sidebar */}
-                    <div className="flex justify-end p-4 lg:hidden">
-                        <button
-                            onClick={toggleSidebar}
-                            className="text-gray-600 hover:text-gray-900 focus:outline-none p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
-                            aria-label="Close sidebar"
-                        >
-                            <X className="h-6 w-6" />
-                        </button>
-                    </div>
+                {/* Mobile close button */}
+                <div className="flex justify-end p-4 lg:hidden">
+                    <button
+                        onClick={toggleSidebar}
+                        className="text-gray-600 hover:text-gray-900 focus:outline-none p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
+                        aria-label="Close sidebar"
+                    >
+                        <X className="h-6 w-6" />
+                    </button>
+                </div>
 
-                    {/* Navigation Links (flex-grow to push footer down) */}
-                    <nav className="flex-grow px-4 overflow-y-auto custom-scrollbar">
-                        <ul>
-                            {navItems.map((item) => {
-                                const isActive = location.pathname === item.path;
-                                return (
-                                    <li key={item.name} className="mb-2">
-                                        <Link
-                                            to={item.path}
-                                            onClick={toggleSidebar} // Close sidebar on click for mobile
-                                            className={`w-full flex items-center p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300
-                                                ${isActive ? 'bg-blue-50 text-blue-700 font-semibold shadow-sm border-r-4 border-blue-600' : ''}
-                                            `}
-                                        >
-                                            <item.icon className={`mr-3 h-5 w-5 ${isActive ? 'text-blue-600' : 'text-gray-500'}`} />
-                                            <span className="text-base">{item.name}</span>
-                                        </Link>
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </nav>
-
-                    {/* Bottom Navigation (Logout) */}
-                    <nav className="px-4 mt-1 border-t border-gray-100 pt-4">
-                        <ul>
-                            {bottomNavItems.map((item) => (
-                                <li key={item.name}>
+                {/* Navigation Links */}
+                <nav className="flex-grow px-4 overflow-y-auto custom-scrollbar">
+                    <ul>
+                        {navItems.map((item) => {
+                            const isActive = location.pathname === item.path;
+                            return (
+                                <li key={item.name} className="mb-2">
                                     <Link
                                         to={item.path}
-                                        onClick={toggleSidebar}
-                                        className="w-full flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-300"
+                                        onClick={toggleSidebar} // Close sidebar on mobile
+                                        className={`w-full flex items-center p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300
+                                            ${isActive ? 'bg-blue-50 text-blue-700 font-semibold shadow-sm border-r-4 border-blue-600' : ''}
+                                        `}
                                     >
-                                        <item.icon className="mr-3 h-5 w-5 text-gray-500" />
+                                        <item.icon className={`mr-3 h-5 w-5 ${isActive ? 'text-blue-600' : 'text-gray-500'}`} />
                                         <span className="text-base">{item.name}</span>
                                     </Link>
                                 </li>
-                            ))}
-                        </ul>
-                    </nav>
+                            );
+                        })}
+                    </ul>
+                </nav>
 
-                    {/* Footer */}
-                    <div className="text-center text-sm text-gray-500 mt-6 px-4">
-                        <p>&copy; 2024 EduHub. All rights reserved.</p>
-                    </div>
+                {/* Bottom Navigation (Logout) */}
+                <nav className="px-4 mt-1 border-t border-gray-100 pt-4">
+                    <ul>
+                        {bottomNavItems.map((item) => (
+                            <li key={item.name}>
+                                <Link
+                                    to={item.path}
+                                    onClick={toggleSidebar}
+                                    className="w-full flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-300"
+                                >
+                                    <item.icon className="mr-3 h-5 w-5 text-gray-500" />
+                                    <span className="text-base">{item.name}</span>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+
+                {/* Footer */}
+                <div className="text-center text-sm text-gray-500 mt-6 px-4">
+                    <p>&copy; 2024 EduHub. All rights reserved.</p>
                 </div>
             </div>
         </>

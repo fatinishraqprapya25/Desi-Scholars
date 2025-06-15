@@ -13,7 +13,6 @@ import Footer from "./components/common/Footer";
 import AboutUs from "./pages/About";
 import MockPage from "./pages/Mock";
 import VideoPlayer from "./pages/CoursePlayer";
-// import CombinedQuizPage from "./components/mock/CombinedQuizPage";
 
 // student dashboard imports
 import UserDashboard from "./pages/UserDashboard";
@@ -52,6 +51,7 @@ import GradeAssignmentsPage from "./components/dashboards/teacher/pages/GradeAss
 import MyMessages from "./components/dashboards/teacher/pages/MyMessages";
 import MyProfile from "./components/dashboards/teacher/pages/Profile";
 import CheckoutPage from "./pages/CheckOut";
+import PaymentApprovalPage from "./components/dashboards/admin/pages/Payments";
 
 function App() {
   return (
@@ -99,6 +99,7 @@ function App() {
         <Route path="/admin/resources" element={<ManageResourcesPage />} />
         <Route path="/admin/resources/create" element={<CreateResourcePage />} />
         <Route path="/admin/resources/edit" element={<EditResourcePage />} />
+        <Route path="/admin/payments" element={<PaymentApprovalPage />} />
         <Route path="/admin/notifications" element={<ManageBroadcastsPage />} />
         <Route path="/admin/notifications/create" element={<CreateBroadcastPage />} />
         <Route path="/admin/notifications/create" element={<CreateBroadcastPage />} />

@@ -11,15 +11,14 @@ export default function UserDashboardContainer({ role, children }) {
     return (
         <>
             <UserDashboardHeader role={role} toggleSidebar={toggleSidebar} />
-            <div className="min-h-screen font-sans antialiased flex flex-col lg:flex-row lg:ml-64">
-                {/* Sidebar Component */}
-
+            <div className="font-sans antialiased flex flex-col lg:flex-row">
+                {/* Sidebar is fixed, so no margin on lg */}
                 <Sidebar role={role} toggleSidebar={toggleSidebar} isOpenSideBar={isOpenSideBar} />
 
-                {/* Main Content Area */}
-                <div className="flex-1 p-4 sm:p-6 lg:p-8 mt-[50px]">
+                {/* Main content area with left margin on large screens */}
+                <main className="flex-1 p-4 sm:p-6 lg:p-8 mt-18 lg:ml-64">
                     {children}
-                </div>
+                </main>
             </div>
         </>
     );
