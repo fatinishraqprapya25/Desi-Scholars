@@ -51,6 +51,7 @@ import MyStudents from "./components/dashboards/teacher/pages/MyStudents";
 import GradeAssignmentsPage from "./components/dashboards/teacher/pages/GradeAssignments";
 import MyMessages from "./components/dashboards/teacher/pages/MyMessages";
 import MyProfile from "./components/dashboards/teacher/pages/Profile";
+import CheckoutPage from "./pages/CheckOut";
 
 function App() {
   return (
@@ -73,6 +74,7 @@ function App() {
         <Route path="/mock" element={<MockPage />} />
         <Route path="/mock/:id" element={<MockQuestion />} />
         <Route path="/video/c" element={<VideoPlayer />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
 
         {/* student dashboard routes */}
         <Route path="dashboard" element={<UserDashboard />} />
