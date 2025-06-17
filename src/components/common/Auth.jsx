@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import LoginForm from './Login'; // Assuming Login.js is your LoginForm
-import RegistrationForm from './Register'; // Assuming Register.js is your RegistrationForm
+import LoginForm from './Login';
+import RegistrationForm from './Register';
 
 const AuthPage = () => {
-  const [isRegisterMode, setIsRegisterMode] = useState(true); // true for Register, false for Login
+  const [isRegisterMode, setIsRegisterMode] = useState(true);
 
-  // Variants for the content panels to slide in/out
   const panelVariants = {
     initial: (isLeft) => ({
       x: isLeft ? '-100%' : '100%',
@@ -37,7 +36,6 @@ const AuthPage = () => {
     }),
   };
 
-  // Variants for the form panels to slide in/out
   const formVariants = {
     initial: (isLeft) => ({
       x: isLeft ? '-100%' : '100%',
