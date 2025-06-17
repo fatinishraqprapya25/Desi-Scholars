@@ -7,11 +7,39 @@ const RegistrationForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle registration logic here
-    console.log('Registration submitted:', { name, email, password });
-    alert('Registration functionality is not implemented in this demo. Check console for data.');
+
+    try {
+      const reqRegister = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password
+        })
+      });
+
+      if (!reqRegister.ok) {
+        const errorData = await reqRegister.json();
+        console.error("Registration failed:", errorData.message || "Unknown error");
+        alert(`Registration failed: ${errorData.message || "Unknown error"}`);
+        return;
+      }
+
+      const resRegister = await reqRegister.json();
+
+      setName('');
+      setEmail('');
+      setPassword('');
+
+    } catch (error) {
+      console.error("An error occurred:", error);
+      alert("An error occurred. Please try again later.");
+    }
   };
 
   return (
