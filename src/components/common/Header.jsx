@@ -30,7 +30,7 @@ export default function Header() {
 
     useEffect(() => {
         const handleScroll = () => {
-            setIsSticky(window.scrollY > 150); // Change scroll threshold here
+            setIsSticky(window.scrollY > 150);
         };
 
         window.addEventListener("scroll", handleScroll);
