@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import UserDashboardContainer from "../../common/UserDashboardContainer";
+import { Link } from 'react-router-dom';
 
 export default function Admins() {
     const [admins, setAdmins] = useState([
@@ -19,11 +20,13 @@ export default function Admins() {
                 <div className="p-5">
                     <div className="flex justify-between items-center mb-5">
                         <h2 className="text-2xl font-semibold">Admins List</h2>
-                        <button
-                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200 ease-in-out cursor-pointer"
-                        >
-                            Create Admin
-                        </button>
+                        <Link to="/admin/admins/create-admin">
+                            <button
+                                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200 ease-in-out cursor-pointer"
+                            >
+                                Create Admin
+                            </button>
+                        </Link>
                     </div>
 
                     {admins.length > 0 ? (
