@@ -1,16 +1,45 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import UserDashboardContainer from "../../common/UserDashboardContainer";
 import { Link } from 'react-router-dom';
 
 export default function Admins() {
-    const [admins, setAdmins] = useState([
-        { id: 1, name: "Alice Smith", email: "alice@example.com" },
-        { id: 2, name: "Bob Johnson", email: "bob@example.com" },
-        { id: 3, name: "Charlie Brown", email: "charlie@example.com" },
-    ]);
+    const [admins, setAdmins] = useState([]);
+
+    const fetchAdmins = async () => {
+        const reqAdmins = await fetch("http://localhost:5000/api/admin", {
+            method: "GET",
+            headers: {
+                "Content-Type": "Application/json"
+            }
+        });
+        const resAdmins = await reqAdmins.json();
+        if (resAdmins.success) {
+            setAdmins(resAdmins.data);
+        } else {
+            alert(resAdmins.message);
+        }
+    }
+
+    useEffect(() => {
+        fetchAdmins();
+    }, []);
 
     const handleDeleteAdmin = (adminId) => {
+        const deleteAdmin = async () => {
+            const deleteReq = await fetch(`http://localhost:5000/api/admin/${adminId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "Application/json"
+                }
+            });
+            const deleteRes = await deleteReq.json();
+            if (deleteRes.success) {
+                alert("Admin Deleted Successfully!")
+            }
+            fetchAdmins();
 
+        }
+        deleteAdmin();
     };
 
     return (
@@ -42,13 +71,13 @@ export default function Admins() {
                                 </thead>
                                 <tbody>
                                     {admins.map((admin) => (
-                                        <tr key={admin.id} className="border-b border-gray-200 last:border-b-0 hover:bg-gray-50">
-                                            <td className="py-3 px-4 text-sm text-gray-800">{admin.id}</td>
+                                        <tr key={admin._id} className="border-b border-gray-200 last:border-b-0 hover:bg-gray-50">
+                                            <td className="py-3 px-4 text-sm text-gray-800">{admin._id}</td>
                                             <td className="py-3 px-4 text-sm text-gray-800">{admin.name}</td>
                                             <td className="py-3 px-4 text-sm text-gray-800">{admin.email}</td>
                                             <td className="py-3 px-4 text-sm">
                                                 <button
-                                                    onClick={() => handleDeleteAdmin(admin.id)}
+                                                    onClick={() => handleDeleteAdmin(admin._id)}
                                                     className="px-3 py-1 bg-red-600 text-white rounded-sm hover:bg-red-700 transition duration-200 ease-in-out cursor-pointer"
                                                 >
                                                     Delete
