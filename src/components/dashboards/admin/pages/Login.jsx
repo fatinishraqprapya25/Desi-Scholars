@@ -1,9 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ValidateAdmin from '../../../../utils/ValidateAdmin';
 
 export default function Login() {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    // 🔒 Redirect if already logged in
+    useEffect(() => {
+        const checkIfLoggedIn = async () => {
+            const isLoggedIn = await ValidateAdmin();
+            if (isLoggedIn) {
+                navigate("/admin/dashboard");
+            }
+        };
+        checkIfLoggedIn();
+    }, [navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -27,8 +41,8 @@ export default function Login() {
             if (!result.success) {
                 setError(result.message || "Login failed.");
             } else {
-                alert("Login successful!");
                 localStorage.setItem("ASDFDKFFJF", result.data.token);
+                navigate("/admin/dashboard"); // 🚀 Redirect after successful login
             }
         } catch (err) {
             setError("Server error.");
