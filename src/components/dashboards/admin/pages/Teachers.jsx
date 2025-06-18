@@ -59,6 +59,7 @@ export default function TeachersPage() {
                 if (result.success) {
                     setTeachers(prev => prev.filter(t => t.id !== id));
                     alert("Teacher deleted successfully!");
+                    fetchTeachers();
                 } else {
                     console.error("Failed to delete teacher:", result.message);
                     alert(`Failed to delete teacher: ${result.message}`);
