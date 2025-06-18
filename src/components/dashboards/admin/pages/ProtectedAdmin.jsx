@@ -3,7 +3,6 @@ import { useEffect } from "react";
 
 export default function ProtectedAdmin({ children }) {
     const navigate = useNavigate();
-    const token = localStorage.getItem("ASDFDKFFJF");
 
     useEffect(() => {
         if (!token) {
