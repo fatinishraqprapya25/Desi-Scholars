@@ -1,44 +1,71 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate("");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log('Login submitted:', { email, password });
-    alert('Login functionality is not implemented in this demo. Check console for data.');
+
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email,
+          password
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(`Login failed: ${errorData.message || "Unknown error"}`);
+        return;
+      }
+
+      const data = await response.json();
+      localStorage.setItem("HIJDFJFJF12", data.data.token);
+      navigate("/dashboard");
+
+
+    } catch (err) {
+      alert("An error occurred. Please try again.");
+    }
   };
 
   return (
     <motion.form
-      className="bg-white p-6 sm:p-8 rounded-2xl shadow-xl w-full max-w-sm sm:max-w-md text-center mx-auto" // Adjusted padding and max-width for responsiveness
+      className="bg-white p-6 sm:p-8 rounded-2xl shadow-xl w-full max-w-sm sm:max-w-md text-center mx-auto"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
       onSubmit={handleSubmit}
     >
-      <h2 className="text-3xl sm:text-4xl font-extrabold mb-6 sm:mb-8 text-purple-800">Sign In</h2> {/* Adjusted font size for smaller screens */}
-      <div className="mb-4 sm:mb-6 relative"> {/* Adjusted margin-bottom */}
-        <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-base sm:text-lg" /> {/* Adjusted icon size */}
+      <h2 className="text-3xl sm:text-4xl font-extrabold mb-6 sm:mb-8 text-purple-800">Sign In</h2>
+      <div className="mb-4 sm:mb-6 relative">
+        <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-base sm:text-lg" />
         <input
           type="email"
           placeholder="Email"
-          className="w-full pl-10 pr-4 py-3 sm:py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 text-base sm:text-lg" // Adjusted padding, font size, and height
+          className="w-full pl-10 pr-4 py-3 sm:py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 text-black sm:text-lg" t
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
       </div>
-      <div className="mb-6 sm:mb-8 relative"> {/* Adjusted margin-bottom */}
-        <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-base sm:text-lg" /> {/* Adjusted icon size */}
+      <div className="mb-6 sm:mb-8 relative">
+        <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-base sm:text-lg" />
         <input
           type="password"
           placeholder="Password"
-          className="w-full pl-10 pr-4 py-3 sm:py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 text-base sm:text-lg" // Adjusted padding, font size, and height
+          className="w-full pl-10 pr-4 py-3 sm:py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 text-black sm:text-lg"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required

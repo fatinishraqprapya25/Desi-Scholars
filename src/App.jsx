@@ -52,6 +52,7 @@ import MyMessages from "./components/dashboards/teacher/pages/MyMessages";
 import MyProfile from "./components/dashboards/teacher/pages/Profile";
 import CheckoutPage from "./pages/CheckOut";
 import PaymentApprovalPage from "./components/dashboards/admin/pages/Payments";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -115,6 +116,9 @@ function App() {
         <Route path="/teacher/assignments/grade" element={<GradeAssignmentsPage />} />
         <Route path="/teacher/messages" element={<MyMessages />} />
         <Route path="/teacher/profile" element={<MyProfile />} />
+
+
+        <Route path="*" element={<NotFound />} />
 
       </Routes>
     </>
