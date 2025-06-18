@@ -55,6 +55,7 @@ import PaymentApprovalPage from "./components/dashboards/admin/pages/Payments";
 import NotFound from "./pages/NotFound";
 import Admins from "./components/dashboards/admin/pages/Admin";
 import CreateAdminPage from "./components/dashboards/admin/admins/CreateAdmin";
+import Login from "./components/dashboards/admin/pages/Login";
 
 function App() {
   return (
@@ -90,6 +91,7 @@ function App() {
         <Route path="/dashboard/messages" element={<MessagePage />} />
 
         {/* admin dashboard routes */}
+        <Route path="/admin/login" element={<Login />} />
         <Route path="/admin/dashboard" element={<AdminHome />} />
         <Route path="/admin/students" element={<StudentsPage />} />
         <Route path="/admin/teachers" element={<TeachersPage />} />
