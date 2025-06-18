@@ -126,7 +126,7 @@ function App() {
           }
         />
         <Route
-          path="/admin/courses/edit"
+          path="/admin/courses/edit/:id"
           element={
             <ProtectedAdmin>
               <CourseEditor />

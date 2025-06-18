@@ -173,10 +173,10 @@ export default function CreateCoursePage() {
                         {courseType === 'live' && (
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    <span className="flex items-center"><Clock className="h-4 w-4 mr-2 text-indigo-500" /> Start Time</span>
+                                    <span className="flex items-center"><Clock className="h-4 w-4 mr-2 text-indigo-500" /> Start Date</span>
                                 </label>
                                 <input
-                                    type="datetime-local"
+                                    type="date"
                                     value={startTime}
                                     onChange={(e) => setStartTime(e.target.value)}
                                     className="input-field"
