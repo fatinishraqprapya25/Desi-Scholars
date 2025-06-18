@@ -56,6 +56,7 @@ import NotFound from "./pages/NotFound";
 import Admins from "./components/dashboards/admin/pages/Admin";
 import CreateAdminPage from "./components/dashboards/admin/admins/CreateAdmin";
 import Login from "./components/dashboards/admin/pages/Login";
+import ProtectedAdmin from "./components/dashboards/admin/pages/ProtectedAdmin";
 
 function App() {
   return (
@@ -92,7 +93,9 @@ function App() {
 
         {/* admin dashboard routes */}
         <Route path="/admin/login" element={<Login />} />
-        <Route path="/admin/dashboard" element={<AdminHome />} />
+        <Route path="/admin/dashboard" element={<ProtectedAdmin>
+          <AdminHome />
+        </ProtectedAdmin>} />
         <Route path="/admin/students" element={<StudentsPage />} />
         <Route path="/admin/teachers" element={<TeachersPage />} />
         <Route path="/admin/courses" element={<CoursesPage />} />
