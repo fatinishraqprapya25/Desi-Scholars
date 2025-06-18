@@ -1,10 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import LoginForm from './Login';
 import RegistrationForm from './Register';
+import { useNavigate } from 'react-router-dom';
+import validateToken from '../../utils/ValidateToken';
 
 const AuthPage = () => {
   const [isRegisterMode, setIsRegisterMode] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const isUserLoggedIn = validateToken();
+    if (isUserLoggedIn) {
+      navigate("/");
+    }
+  }, []);
 
   const panelVariants = {
     initial: (isLeft) => ({
