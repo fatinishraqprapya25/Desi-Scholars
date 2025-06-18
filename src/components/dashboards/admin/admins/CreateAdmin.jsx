@@ -8,6 +8,8 @@ export default function CreateAdminPage() {
         password: ''
     });
 
+    const adminToken = localStorage.getItem("ASDFDKFFJF");
+
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
 
@@ -51,7 +53,8 @@ export default function CreateAdminPage() {
             const response = await fetch("http://localhost:5000/api/admin/", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${adminToken}`
                 },
                 body: JSON.stringify(formData)
             });

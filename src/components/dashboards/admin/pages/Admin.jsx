@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 
 export default function Admins() {
     const [admins, setAdmins] = useState([]);
+    const adminToken = localStorage.getItem("ASDFDKFFJF");
 
     const fetchAdmins = async () => {
         const reqAdmins = await fetch("http://localhost:5000/api/admin", {
             method: "GET",
             headers: {
-                "Content-Type": "Application/json"
+                "Content-Type": "Application/json",
+                "Authorization": `Bearer ${adminToken}`
             }
         });
         const resAdmins = await reqAdmins.json();
@@ -29,7 +31,8 @@ export default function Admins() {
             const deleteReq = await fetch(`http://localhost:5000/api/admin/${adminId}`, {
                 method: "DELETE",
                 headers: {
-                    "Content-Type": "Application/json"
+                    "Content-Type": "Application/json",
+                    "Authorization": `Bearer ${adminToken}`
                 }
             });
             const deleteRes = await deleteReq.json();
