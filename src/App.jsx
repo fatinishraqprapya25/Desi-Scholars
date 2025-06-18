@@ -106,6 +106,7 @@ function App() {
         <Route path="/admin/notifications/create" element={<CreateBroadcastPage />} />
         <Route path="/admin/notifications/edit" element={<EditBroadcastPage />} />
         <Route path="/admin/settings" element={<SystemPage />} />
+        <Route path="/admin/admins" element={<SystemPage />} />
 
         {/* teachers dashboard routess */}
         <Route path="/teacher/dashboard" element={<TeacherHome />} />
