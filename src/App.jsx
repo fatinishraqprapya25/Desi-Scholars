@@ -93,28 +93,159 @@ function App() {
 
         {/* admin dashboard routes */}
         <Route path="/admin/login" element={<Login />} />
-        <Route path="/admin/dashboard" element={<ProtectedAdmin>
-          <AdminHome />
-        </ProtectedAdmin>} />
-        <Route path="/admin/students" element={<StudentsPage />} />
-        <Route path="/admin/teachers" element={<TeachersPage />} />
-        <Route path="/admin/courses" element={<CoursesPage />} />
-        <Route path="/admin/courses/edit" element={<CourseEditor />} />
-        <Route path="/admin/courses/create" element={<CreateCoursePage />} />
-        <Route path="/admin/practicetests" element={<PracticeTest />} />
-        <Route path="/admin/practicetests/create" element={<CreatePracticeTestPage />} />
-        <Route path="/admin/practicetests/edit" element={<EditPracticeTestPage />} />
-        <Route path="/admin/resources" element={<ManageResourcesPage />} />
-        <Route path="/admin/resources/create" element={<CreateResourcePage />} />
-        <Route path="/admin/resources/edit" element={<EditResourcePage />} />
-        <Route path="/admin/payments" element={<PaymentApprovalPage />} />
-        <Route path="/admin/notifications" element={<ManageBroadcastsPage />} />
-        <Route path="/admin/notifications/create" element={<CreateBroadcastPage />} />
-        <Route path="/admin/notifications/create" element={<CreateBroadcastPage />} />
-        <Route path="/admin/notifications/edit" element={<EditBroadcastPage />} />
-        <Route path="/admin/settings" element={<SystemPage />} />
-        <Route path="/admin/admins" element={<Admins />} />
-        <Route path="/admin/admins/create-admin" element={<CreateAdminPage />} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedAdmin>
+              <AdminHome />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/students"
+          element={
+            <ProtectedAdmin>
+              <StudentsPage />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/teachers"
+          element={
+            <ProtectedAdmin>
+              <TeachersPage />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/courses"
+          element={
+            <ProtectedAdmin>
+              <CoursesPage />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/courses/edit"
+          element={
+            <ProtectedAdmin>
+              <CourseEditor />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/courses/create"
+          element={
+            <ProtectedAdmin>
+              <CreateCoursePage />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/practicetests"
+          element={
+            <ProtectedAdmin>
+              <PracticeTest />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/practicetests/create"
+          element={
+            <ProtectedAdmin>
+              <CreatePracticeTestPage />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/practicetests/edit"
+          element={
+            <ProtectedAdmin>
+              <EditPracticeTestPage />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/resources"
+          element={
+            <ProtectedAdmin>
+              <ManageResourcesPage />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/resources/create"
+          element={
+            <ProtectedAdmin>
+              <CreateResourcePage />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/resources/edit"
+          element={
+            <ProtectedAdmin>
+              <EditResourcePage />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/payments"
+          element={
+            <ProtectedAdmin>
+              <PaymentApprovalPage />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/notifications"
+          element={
+            <ProtectedAdmin>
+              <ManageBroadcastsPage />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/notifications/create"
+          element={
+            <ProtectedAdmin>
+              <CreateBroadcastPage />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/notifications/edit"
+          element={
+            <ProtectedAdmin>
+              <EditBroadcastPage />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/settings"
+          element={
+            <ProtectedAdmin>
+              <SystemPage />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/admins"
+          element={
+            <ProtectedAdmin>
+              <Admins />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/admins/create-admin"
+          element={
+            <ProtectedAdmin>
+              <CreateAdminPage />
+            </ProtectedAdmin>
+          }
+        />
+
 
         {/* teachers dashboard routess */}
         <Route path="/teacher/dashboard" element={<TeacherHome />} />

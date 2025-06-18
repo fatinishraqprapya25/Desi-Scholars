@@ -15,7 +15,7 @@ export default function ProtectedAdmin({ children }) {
                 setLoading(false);
             }
         };
-        checkAdmin(); 
+        checkAdmin();
     }, [navigate]);
 
     if (loading) return null;
