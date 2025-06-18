@@ -10,10 +10,13 @@ const AuthPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const isUserLoggedIn = validateToken();
-    if (isUserLoggedIn) {
-      navigate("/");
-    }
+    const isUserLoggedIn = async () => {
+      if (await validateToken()) {
+        navigate("/");
+      }
+    };
+    isUserLoggedIn();
+
   }, []);
 
   const panelVariants = {
