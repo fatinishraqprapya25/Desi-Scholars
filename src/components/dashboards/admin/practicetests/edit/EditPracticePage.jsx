@@ -15,6 +15,8 @@ export default function EditPracticeTestPage() {
     const [testDetails, setTestDetails] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
+    console.log(testDetails);
+
     const { testId } = useParams();
 
     useEffect(() => {
@@ -24,7 +26,7 @@ export default function EditPracticeTestPage() {
                 const response = await fetch(`http://localhost:5000/api/tests/${testId}`);
                 if (!response.ok) throw new Error("Failed to fetch test data");
                 const data = await response.json();
-                setTestDetails(data);
+                setTestDetails(data.data);
             } catch (error) {
                 console.error("Error loading test:", error);
                 setTestDetails(null);
@@ -38,7 +40,7 @@ export default function EditPracticeTestPage() {
 
     if (isLoading) {
         return (
-            <UserDashboardContainer admin={true}>
+            <UserDashboardContainer role="admin">
                 <motion.div
                     className="p-8 font-sans w-full max-w-7xl mx-auto flex justify-center items-center h-screen"
                     initial={{ opacity: 0 }}
@@ -52,7 +54,7 @@ export default function EditPracticeTestPage() {
 
     if (!testDetails) {
         return (
-            <UserDashboardContainer admin={true}>
+            <UserDashboardContainer role="admin">
                 <motion.div
                     className="p-8 font-sans w-full max-w-7xl mx-auto flex justify-center items-center h-screen"
                     initial={{ opacity: 0 }}
@@ -65,7 +67,7 @@ export default function EditPracticeTestPage() {
     }
 
     return (
-        <UserDashboardContainer admin={true}>
+        <UserDashboardContainer role="admin">
             <motion.div
                 className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-7xl mx-auto"
                 variants={sectionVariants}

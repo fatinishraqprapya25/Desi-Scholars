@@ -33,7 +33,7 @@ const TestDetailsForm = ({ testDetails, handleChange }) => {
                     type="number"
                     id="durationMinutes"
                     name="durationMinutes"
-                    value={testDetails.durationMinutes}
+                    value={testDetails.duration}
                     onChange={handleChange}
                     min="1"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-gray-900"
