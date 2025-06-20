@@ -1,34 +1,37 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText } from 'lucide-react';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
 
-// Import new components
 import PracticeTestHeader from '../PracticeTests/PracticeTestHeader';
 import PracticeTestCard from "../PracticeTests/PracticeTestCard";
 import NoTestsFoundMessage from "../PracticeTests/NoTestFound";
 
-// Import constants
-import { sectionVariants, itemVariants, cardVariants, practiceTestsData } from '../practicetests/PracticeTestConstants';
-
+import { sectionVariants, itemVariants, cardVariants } from '../practicetests/PracticeTestConstants';
 
 export default function ManagePracticeTestsPage() {
-    const [searchTerm, setSearchTerm] = useState('');
+    const [practiceTestsData, setPracticeTestsData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    // Filtering logic for practice tests
-    const filteredTests = useMemo(() => {
-        let processedTests = [...practiceTestsData];
+    useEffect(() => {
+        const fetchPracticeTests = async () => {
+            try {
+                const res = await fetch("http://localhost:5000/api/tests");
+                const data = await res.json();
+                if (res.ok) {
+                    setPracticeTestsData(data.data || []);
+                } else {
+                    console.error("Failed to fetch practice tests:", data.message);
+                }
+            } catch (err) {
+                console.error("Error fetching practice tests:", err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-        if (searchTerm) {
-            processedTests = processedTests.filter(test =>
-                test.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                test.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                test.createdBy.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                test.id.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-        }
-        return processedTests;
-    }, [searchTerm]);
+        fetchPracticeTests();
+    }, []);
 
     return (
         <UserDashboardContainer role={"admin"}>
@@ -39,10 +42,11 @@ export default function ManagePracticeTestsPage() {
                 animate="visible"
             >
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-gray-900 mb-3 sm:mb-5 flex items-center">
-                    <FileText className="mr-2 sm:mr-3 h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-indigo-600" /> Manage Practice Tests
+                    <FileText className="mr-2 sm:mr-3 h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-indigo-600" />
+                    Manage Practice Tests
                 </h2>
                 <p className="text-sm sm:text-base lg:text-lg text-gray-700 mb-5 sm:mb-7 max-w-3xl leading-relaxed">
-                    Oversee and organize all practice tests on your platform. Easily search, create, and manage test content.
+                    Oversee and organize all practice tests on your platform.
                 </p>
 
                 <motion.div
@@ -51,13 +55,11 @@ export default function ManagePracticeTestsPage() {
                     initial="hidden"
                     animate="visible"
                 >
-                    <PracticeTestHeader
-                        searchTerm={searchTerm}
-                        setSearchTerm={setSearchTerm}
-                    />
+                    <PracticeTestHeader />
 
-                    {/* Practice Test Cards Grid */}
-                    {filteredTests.length > 0 ? (
+                    {loading ? (
+                        <p className="text-gray-600 mt-4">Loading practice tests...</p>
+                    ) : practiceTestsData.length > 0 ? (
                         <motion.div
                             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
                             initial="hidden"
@@ -71,9 +73,9 @@ export default function ManagePracticeTestsPage() {
                             }}
                         >
                             <AnimatePresence>
-                                {filteredTests.map((test) => (
+                                {practiceTestsData.map((test) => (
                                     <PracticeTestCard
-                                        key={test.id}
+                                        key={test._id}
                                         test={test}
                                         variants={cardVariants}
                                     />
