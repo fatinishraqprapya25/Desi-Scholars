@@ -6,6 +6,7 @@ import UserDashboardContainer from '../../common/UserDashboardContainer';
 export default function CourseEditor() {
     const { id } = useParams();
     const [courseData, setCourseData] = useState(null);
+    const [courseModules, setCourseModules] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -15,6 +16,8 @@ export default function CourseEditor() {
     // live courses option
     const [showVideoForm, setShowVideoForm] = useState(false);
     const [newVideo, setNewVideo] = useState({ title: '', link: '' });
+
+    const adminToken = localStorage.getItem("ASDFDKFFJF");
 
     useEffect(() => {
         const fetchCourseDetails = async () => {
@@ -38,8 +41,29 @@ export default function CourseEditor() {
             }
         };
 
+        const fetchCourseModules = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/modules/${id}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "Application/json",
+                        "Authorization": `Bearer ${adminToken}`
+                    }
+                });
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success) {
+                        setCourseModules(result.data);
+                    }
+                }
+            } catch (err) {
+                alert(err.message);
+            }
+        }
+
         if (id) {
             fetchCourseDetails();
+            fetchCourseModules();
         } else {
             setError("No course ID provided in the URL.");
             setLoading(false);
@@ -62,7 +86,7 @@ export default function CourseEditor() {
     const handleUpdate = async () => {
         setIsSubmitting(true);
         try {
-            const adminToken = localStorage.getItem("ASDFDKFFJF");
+            // updating course
             const formData = new FormData();
             for (let key in courseData) {
                 if (key === 'startTime' && courseData[key]) {
@@ -92,6 +116,8 @@ export default function CourseEditor() {
         } finally {
             setIsSubmitting(false);
         }
+
+        // updating course module
     };
 
     if (loading) {
