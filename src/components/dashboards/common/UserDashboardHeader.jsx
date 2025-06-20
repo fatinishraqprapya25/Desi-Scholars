@@ -48,16 +48,6 @@ function UserDashboardHeader({ setActiveSection, toggleSidebar, isSidebarOpen, r
 
             {/* Right Side: Notification and User Profile */}
             <div className="flex items-center space-x-3 sm:space-x-4">
-                {/* Notification Icon */}
-                <button
-                    className="relative p-2 rounded-full text-gray-600 hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                    aria-label="View notifications"
-                >
-                    <Bell className="h-6 w-6" />
-                    {/* Notification Dot - change bg-red-400 to a more subtle alert color if desired */}
-                    <span className="absolute top-0 right-0 block h-3 w-3 rounded-full ring-2 ring-white bg-red-500 animate-pulse"></span>
-                </button>
-
                 {/* User Profile Icon/Avatar */}
                 <button
                     onClick={() => { setActiveSection('profile'); /* setIsSidebarOpen(false); // Only if you want to force close on profile click */ }}
