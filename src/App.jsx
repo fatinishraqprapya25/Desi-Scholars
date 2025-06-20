@@ -158,7 +158,7 @@ function App() {
           }
         />
         <Route
-          path="/admin/practicetests/edit"
+          path="/admin/practicetests/edit/:testId"
           element={
             <ProtectedAdmin>
               <EditPracticeTestPage />

@@ -90,7 +90,7 @@ const PracticeTestCard = ({ test, onEditTest, variants, onDeleted }) => {
 
             {/* Action Buttons: Edit & Delete */}
             <div className="flex justify-end pt-2 space-x-3">
-                <Link to="/admin/practicetests/edit">
+                <Link to={`/admin/practicetests/edit/${test._id}`}>
                     <motion.button
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}
