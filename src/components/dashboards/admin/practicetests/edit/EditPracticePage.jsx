@@ -15,9 +15,16 @@ export default function EditPracticeTestPage() {
     const [testDetails, setTestDetails] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    console.log(testDetails);
-
     const { testId } = useParams();
+    const adminToken = localStorage.getItem("ASDFDKFFJF");
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setTestDetails(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }
 
     useEffect(() => {
         const fetchTestData = async () => {
@@ -37,6 +44,29 @@ export default function EditPracticeTestPage() {
 
         fetchTestData();
     }, [testId]);
+
+    const handleSave = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/tests/${testId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${adminToken}`
+                },
+                body: JSON.stringify(testDetails),
+            });
+
+            if (!response.ok) {
+                const result = await response.json();
+                throw new Error(result.message || 'Failed to update test.');
+            }
+
+            alert('Test updated successfully!');
+        } catch (error) {
+            console.error('Update Error:', error);
+            alert('An error occurred while updating the test.');
+        }
+    };
 
     if (isLoading) {
         return (
@@ -85,8 +115,9 @@ export default function EditPracticeTestPage() {
                     {/* Show test details in read-only mode */}
                     <TestDetailsForm
                         testDetails={testDetails}
-                        handleChange={() => { }} // no-op, readonly
+                        handleChange={handleChange} // no-op, readonly
                         readOnly={true}
+                        handleSave={handleSave}
                     />
 
                     {/* Show questions in read-only mode */}
