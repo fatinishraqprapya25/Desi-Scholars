@@ -1,8 +1,42 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Hash, Send, Calendar, Edit } from 'lucide-react';
+import { Hash, Send, Calendar, Edit, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-export default function BroadcastCard({ broadcast, onEditBroadcast, cardVariants, getStatusBadge }) {
+export default function BroadcastCard({ broadcast, cardVariants, getStatusBadge }) {
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    const adminToken = localStorage.getItem('ASDFDKFFJF');
+
+    const handleDelete = async () => {
+        const confirmed = window.confirm('Are you sure you want to delete this broadcast? This action cannot be undone.');
+        if (!confirmed) return;
+
+        setIsDeleting(true);
+        try {
+            const res = await fetch(`http://localhost:5000/api/broadcasts/${broadcast.id}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${adminToken}`,
+                },
+            });
+            const data = await res.json();
+
+            if (res.ok && data.success) {
+                alert('Broadcast deleted successfully!');
+                // Optional: Reload page or emit event to parent to refresh list
+                window.location.reload();  // Simple way if no parent update
+            } else {
+                alert(`Failed to delete broadcast: ${data.message || 'Unknown error'}`);
+            }
+        } catch (err) {
+            console.error('Error deleting broadcast:', err);
+            alert('An error occurred while deleting broadcast.');
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
     return (
         <motion.div
             key={broadcast.id}
@@ -39,15 +73,25 @@ export default function BroadcastCard({ broadcast, onEditBroadcast, cardVariants
                 <div className="flex items-center"><Calendar className="h-3.5 w-3.5 mr-1.5 text-orange-500" /> Date: {broadcast.sendDate}</div>
             </div>
 
-            {/* Action Button: Edit Broadcast */}
-            <div className="flex justify-end pt-2">
+            {/* Action Buttons: Edit and Delete */}
+            <div className="flex justify-end gap-2 pt-2">
                 <Link to={`/admin/notifications/edit/${broadcast.id}`}>
                     <button
                         className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-medium text-sm"
                         title="Edit Broadcast"
                     >
-                        <Edit className="h-4 w-4 mr-2" /> Edit Broadcast
-                    </button></Link>
+                        <Edit className="h-4 w-4 mr-2" /> Edit
+                    </button>
+                </Link>
+                <button
+                    onClick={handleDelete}
+                    disabled={isDeleting}
+                    className={`flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 shadow-md font-medium text-sm ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''
+                        }`}
+                    title="Delete Broadcast"
+                >
+                    <Trash2 className="h-4 w-4 mr-2" /> {isDeleting ? 'Deleting...' : 'Delete'}
+                </button>
             </div>
         </motion.div>
     );

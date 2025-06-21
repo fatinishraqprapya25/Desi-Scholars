@@ -65,7 +65,7 @@ export default function ManageBroadcastsPage() {
     };
 
     const handleCreateBroadcast = () => {
-        navigate('/admin/create-broadcast');
+        navigate('/admin/notifications/create');
     };
 
     // Helper function to render status badges (can be moved to a utility or component)
