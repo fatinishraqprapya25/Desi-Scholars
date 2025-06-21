@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { BookOpen, Image, Trash2, PlusCircle } from 'lucide-react'; // Added PlusCircle icon
+import { BookOpen, Image, Trash2, PlusCircle } from 'lucide-react';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
 
 export default function CourseEditor() {
     const { id } = useParams();
+
     const [courseData, setCourseData] = useState(null);
-    const [courseModules, setCourseModules] = useState([]); // Initialize as empty array
+    const [courseModules, setCourseModules] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [imageFile, setImageFile] = useState(null);
 
-    // Live courses options
     const [showVideoForm, setShowVideoForm] = useState(false);
     const [newVideo, setNewVideo] = useState({ title: '', link: '' });
 
-    const adminToken = localStorage.getItem("ASDFDKFFJF"); // Consider more secure token storage in production
+    const adminToken = localStorage.getItem("ASDFDKFFJF");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,9 +30,8 @@ export default function CourseEditor() {
             try {
                 // Fetch Course Details
                 const courseResponse = await fetch(`http://localhost:5000/api/courses/${id}`);
-                if (!courseResponse.ok) {
-                    throw new Error(`HTTP error! status: ${courseResponse.status}`);
-                }
+                if (!courseResponse.ok) throw new Error(`HTTP error! status: ${courseResponse.status}`);
+
                 const courseResult = await courseResponse.json();
                 if (courseResult.success) {
                     setCourseData(courseResult.data);
@@ -51,13 +50,14 @@ export default function CourseEditor() {
                         "Authorization": `Bearer ${adminToken}`
                     }
                 });
+
                 if (modulesResponse.ok) {
                     const modulesResult = await modulesResponse.json();
                     if (modulesResult.success) {
                         setCourseModules(modulesResult.data);
                     } else {
                         console.warn("Failed to fetch course modules:", modulesResult.message);
-                        setCourseModules([]); // Ensure it's an empty array if no modules
+                        setCourseModules([]);
                     }
                 } else {
                     console.error("Error fetching course modules:", modulesResponse.statusText);
@@ -72,7 +72,7 @@ export default function CourseEditor() {
         };
 
         fetchData();
-    }, [id, adminToken]); // Added adminToken to dependencies
+    }, [id, adminToken]);
 
     const addModule = async () => {
         if (!newVideo.title || !newVideo.link) {
@@ -94,11 +94,12 @@ export default function CourseEditor() {
                 },
                 body: JSON.stringify(moduleToAdd)
             });
+
             const result = await response.json();
             if (response.ok && result.success) {
                 setCourseModules((prevModules) => [...prevModules, result.data]);
                 setNewVideo({ title: '', link: '' });
-                setShowVideoForm(false); // Hide form after successful add
+                setShowVideoForm(false);
                 alert("Module added successfully!");
             } else {
                 throw new Error(result.message || "Failed to add module.");
@@ -120,6 +121,7 @@ export default function CourseEditor() {
                     "Authorization": `Bearer ${adminToken}`
                 }
             });
+
             const result = await response.json();
             if (response.ok && result.success) {
                 setCourseModules((prevModules) => prevModules.filter((module) => module._id !== moduleId));
@@ -153,7 +155,7 @@ export default function CourseEditor() {
             for (let key in courseData) {
                 if (key === 'startTime' && courseData[key]) {
                     formData.append(key, new Date(courseData[key]).toISOString());
-                } else if (key !== 'courseImage') { // Avoid re-appending existing image path
+                } else if (key !== 'courseImage') {
                     formData.append(key, courseData[key]);
                 }
             }
@@ -196,7 +198,6 @@ export default function CourseEditor() {
         );
     }
 
-    // Ensure courseData is not null before rendering form elements
     if (!courseData) {
         return (
             <UserDashboardContainer role="admin">
@@ -304,13 +305,40 @@ export default function CourseEditor() {
                             id="isPaid"
                             name="isPaid"
                             value={courseData.isPaid ? 'true' : 'false'}
-                            onChange={(e) => setCourseData((prev) => ({ ...prev, isPaid: e.target.value === 'true' }))}
+                            onChange={(e) => {
+                                const isPaid = e.target.value === 'true';
+                                setCourseData((prev) => ({
+                                    ...prev,
+                                    isPaid,
+                                    price: isPaid ? prev.price : '', // clear price if not paid
+                                }));
+                            }}
                             className="w-full p-3 border border-gray-300 rounded-lg appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
                         >
                             <option value="true">Paid</option>
                             <option value="false">Free</option>
                         </select>
                     </div>
+
+                    {/* Price - only if paid */}
+                    {courseData.isPaid && (
+                        <div>
+                            <label htmlFor="price" className="block text-sm font-semibold text-gray-700 mb-2">
+                                Price (in your currency)
+                            </label>
+                            <input
+                                id="price"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                name="price"
+                                value={courseData.price || ''}
+                                onChange={handleChange}
+                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
+                                placeholder="Enter course price"
+                            />
+                        </div>
+                    )}
 
                     {/* Course Image Upload */}
                     <div className="md:col-span-2">
@@ -360,7 +388,7 @@ export default function CourseEditor() {
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="text-indigo-600 hover:text-indigo-800 text-sm truncate block"
-                                                style={{ maxWidth: 'calc(100% - 20px)' }} // Prevent text overflow
+                                                style={{ maxWidth: 'calc(100% - 20px)' }}
                                             >
                                                 {video.videoLink}
                                             </a>
@@ -425,7 +453,6 @@ export default function CourseEditor() {
                             </div>
                         )}
                     </div>
-                    
 
                     {/* Update Button */}
                     <div className="md:col-span-2 mt-6">
