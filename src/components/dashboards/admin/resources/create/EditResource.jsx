@@ -1,240 +1,221 @@
-// src/pages/EditSingleResourcePage.jsx
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Edit, FileText, Link, Image, Save, Lightbulb } from 'lucide-react';
+import { Edit, FileText, Link, Save, Lightbulb } from 'lucide-react';
 import UserDashboardContainer from '../../../common/UserDashboardContainer';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate, useParams } from 'react-router-dom';
 
-let editableResource = {
-    id: 'RES-001',
-    title: 'Initial React Hooks Cheatsheet',
-    description: 'This is the initial description of the React Hooks Cheatsheet. Feel free to modify it directly.',
-    type: 'PDF', 
-    resourceLink: '', 
-    currentFileName: 'react-hooks-cheatsheet.pdf',
-    imageUrl: 'https://via.placeholder.com/150/8A4AF8/FFFFFF?text=Resource+Image' // Placeholder image
+const sectionVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut', delay: 0.2 } },
 };
 
 export default function EditSingleResourcePage() {
     const navigate = useNavigate();
-    const [title, setTitle] = useState(editableResource.title);
-    const [description, setDescription] = useState(editableResource.description);
-    const [resourceType, setResourceType] = useState(editableResource.resourceLink ? 'link' : 'file');
-    const [resourceLink, setResourceLink] = useState(editableResource.resourceLink);
+    const { id } = useParams();
+
+    const [loading, setLoading] = useState(true);
+    const [resourceData, setResourceData] = useState(null);
+
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [resourceType, setResourceType] = useState('file');
+    const [resourceLink, setResourceLink] = useState('');
     const [resourceFile, setResourceFile] = useState(null);
-    const [imageFile, setImageFile] = useState(null); 
-    const [submissionStatus, setSubmissionStatus] = useState(null); 
+    const [imageFile, setImageFile] = useState(null);
+    const [submissionStatus, setSubmissionStatus] = useState(null);
 
-    const sectionVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
-    };
+    const adminToken = localStorage.getItem("ASDFDKFFJF");
 
-    const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut', delay: 0.2 } },
-    };
+    // Fetch resource data on load
+    useEffect(() => {
+        const fetchResource = async () => {
+            try {
+                const res = await fetch(`http://localhost:5000/api/resource/${id}`);
+                const data = await res.json();
+                if (data.success) {
+                    setResourceData(data.data);
+                    setTitle(data.data.title || '');
+                    setDescription(data.data.description || '');
+                    setResourceType(data.data.type === 'link' ? 'link' : 'file');
+                    setResourceLink(data.data.url || '');
+                }
+            } catch (err) {
+                console.error('Failed to fetch resource:', err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchResource();
+    }, [id]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmissionStatus('loading');
 
-        editableResource.title = title;
-        editableResource.description = description;
-        editableResource.resourceLink = resourceType === 'link' ? resourceLink : ''; 
-        setTimeout(() => {
-            setSubmissionStatus('success');
-            console.log('Updated Resource Data:', editableResource);
-            alert(`Resource "${editableResource.title}" (ID: ${editableResource.id}) updated successfully!`);
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('type', resourceType);
+        if (resourceType === 'link') {
+            formData.append('url', resourceLink);
+        }
+        if (resourceFile) {
+            formData.append('resourceFile', resourceFile);
+        }
+        if (imageFile) {
+            formData.append('coverPhoto', imageFile);
+        }
 
-       
-            setTimeout(() => setSubmissionStatus(null), 2000);
-        }, 1000);
+        try {
+            const res = await fetch(`http://localhost:5000/api/resource/${id}`, {
+                method: 'PUT',
+                headers: {
+                    Authorization: `Bearer ${adminToken}`,
+                },
+                body: formData,
+            });
+
+            const result = await res.json();
+            if (res.ok) {
+                setSubmissionStatus('success');
+                setTimeout(() => navigate('/admin/resources'), 1500);
+            } else {
+                throw new Error(result.message || 'Update failed');
+            }
+        } catch (err) {
+            console.error(err);
+            setSubmissionStatus('error');
+        }
     };
 
+    if (loading || !resourceData) {
+        return <div className="text-center py-10 text-gray-600">Loading resource...</div>;
+    }
+
     return (
-        <UserDashboardContainer admin={true}>
+        <UserDashboardContainer role="admin">
             <motion.div
                 className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-4xl mx-auto"
                 variants={sectionVariants}
                 initial="hidden"
                 animate="visible"
             >
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-gray-900 mb-3 sm:mb-5 flex items-center">
-                    <Edit className="mr-2 sm:mr-3 h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-purple-600" /> Edit Resource: {editableResource.title}
+                <h2 className="text-2xl font-bold mb-4 flex items-center">
+                    <Edit className="mr-2 text-purple-600" /> Edit Resource
                 </h2>
-                <p className="text-sm sm:text-base lg:text-lg text-gray-700 mb-5 sm:mb-7 max-w-2xl leading-relaxed">
-                    Modify the details of the **single hardcoded resource**. Changes will update the data in memory.
-                </p>
 
                 <motion.div
-                    className="bg-white rounded-xl shadow-md p-4 sm:p-6 border border-gray-100"
+                    className="bg-white rounded-xl shadow-md p-6 border"
                     variants={itemVariants}
                     initial="hidden"
                     animate="visible"
                 >
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Title */}
                         <div>
-                            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-                                Resource Title
-                            </label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
                             <input
                                 type="text"
-                                id="title"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
-                                placeholder="Enter resource title"
+                                className="w-full px-3 py-2 border rounded-lg"
                             />
                         </div>
 
-                        {/* Description */}
                         <div>
-                            <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-                                Description
-                            </label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                             <textarea
-                                id="description"
-                                rows="4"
+                                rows="3"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 resize-y"
-                                placeholder="Provide a description of the resource content."
-                            ></textarea>
+                                className="w-full px-3 py-2 border rounded-lg resize-y"
+                            />
                         </div>
 
-                        {/* Resource File/Link Selection */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Resource Content Type
-                            </label>
-                            <div className="flex space-x-4">
-                                <label className="inline-flex items-center">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Resource Type</label>
+                            <div className="flex gap-4">
+                                <label className="flex items-center">
                                     <input
                                         type="radio"
-                                        className="form-radio h-4 w-4 text-indigo-600"
-                                        name="resourceType"
                                         value="file"
                                         checked={resourceType === 'file'}
                                         onChange={() => setResourceType('file')}
+                                        className="mr-1"
                                     />
-                                    <span className="ml-2 text-gray-800 flex items-center"><FileText className="h-4 w-4 mr-1" /> File Upload</span>
+                                    <FileText className="w-4 h-4 mr-1" /> File
                                 </label>
-                                <label className="inline-flex items-center">
+                                <label className="flex items-center">
                                     <input
                                         type="radio"
-                                        className="form-radio h-4 w-4 text-indigo-600"
-                                        name="resourceType"
                                         value="link"
                                         checked={resourceType === 'link'}
                                         onChange={() => setResourceType('link')}
+                                        className="mr-1"
                                     />
-                                    <span className="ml-2 text-gray-800 flex items-center"><Link className="h-4 w-4 mr-1" /> External Link</span>
+                                    <Link className="w-4 h-4 mr-1" /> Link
                                 </label>
                             </div>
                         </div>
-
-                        {/* Conditional File Upload or Link Input */}
-                        {resourceType === 'file' && (
-                            <div>
-                                <label htmlFor="resourceFile" className="block text-sm font-medium text-gray-700 mb-1">
-                                    Upload New Resource File (for demonstration only)
-                                </label>
-                                <input
-                                    type="file"
-                                    id="resourceFile"
-                                    onChange={(e) => setResourceFile(e.target.files[0])}
-                                    className="block w-full text-sm text-gray-500
-                                        file:mr-4 file:py-2 file:px-4
-                                        file:rounded-full file:border-0
-                                        file:text-sm file:font-semibold
-                                        file:bg-indigo-50 file:text-indigo-700
-                                        hover:file:bg-indigo-100"
-                                />
-                                {resourceFile ? (
-                                    <p className="mt-2 text-sm text-gray-600">New file selected: <span className="font-medium">{resourceFile.name}</span></p>
-                                ) : (
-                                    editableResource.currentFileName && <p className="mt-2 text-sm text-gray-600">Currently associated file (mock): <span className="font-medium">{editableResource.currentFileName}</span></p>
-                                )}
-                            </div>
-                        )}
 
                         {resourceType === 'link' && (
                             <div>
-                                <label htmlFor="resourceLink" className="block text-sm font-medium text-gray-700 mb-1">
-                                    Resource Link
-                                </label>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Resource URL</label>
                                 <input
                                     type="url"
-                                    id="resourceLink"
                                     value={resourceLink}
                                     onChange={(e) => setResourceLink(e.target.value)}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
-                                    placeholder="E.g., https://example.com/my-resource.pdf"
+                                    className="w-full px-3 py-2 border rounded-lg"
+                                    placeholder="https://..."
                                 />
                             </div>
                         )}
 
-                        {/* Image Upload (Optional) */}
+                        {resourceType === 'file' && (
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">New File (optional)</label>
+                                <input type="file" onChange={(e) => setResourceFile(e.target.files[0])} />
+                            </div>
+                        )}
+
                         <div>
-                            <label htmlFor="imageFile" className="block text-sm font-medium text-gray-700 mb-1">
-                                Upload New Thumbnail Image (Optional - for demonstration only)
-                            </label>
-                            <input
-                                type="file"
-                                id="imageFile"
-                                accept="image/*"
-                                onChange={(e) => setImageFile(e.target.files[0])}
-                                className="block w-full text-sm text-gray-500
-                                    file:mr-4 file:py-2 file:px-4
-                                    file:rounded-full file:border-0
-                                    file:text-sm file:font-semibold
-                                    file:bg-indigo-50 file:text-indigo-700
-                                    hover:file:bg-indigo-100"
-                            />
-                            {imageFile ? (
-                                <p className="mt-2 text-sm text-gray-600">New image selected: <span className="font-medium">{imageFile.name}</span></p>
-                            ) : (
-                                editableResource.imageUrl && (
-                                    <div className="mt-2 flex items-center space-x-2">
-                                        <p className="text-sm text-gray-600">Current image preview:</p>
-                                        <img src={editableResource.imageUrl} alt="Current Thumbnail" className="h-16 w-16 object-cover rounded-md border border-gray-200" />
-                                    </div>
-                                )
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Cover Image (optional)</label>
+                            <input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files[0])} />
+                            {!imageFile && resourceData.coverPhoto && (
+                                <div className="mt-3">
+                                    <p className="text-sm text-gray-500 mb-1">Current Cover:</p>
+                                    <img
+                                        src={`http://localhost:5000/${resourceData.coverPhoto.replace(/\\/g, '/')}`}
+                                        alt="Current Cover"
+                                        className="h-32 w-32 object-cover rounded-md border"
+                                    />
+                                </div>
                             )}
                         </div>
 
-                        {/* Submission Status Message */}
                         {submissionStatus === 'loading' && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="p-3 bg-blue-100 text-blue-800 rounded-lg flex items-center text-sm"
-                            >
-                                <Lightbulb className="h-4 w-4 mr-2" /> Saving changes to the single resource...
-                            </motion.div>
+                            <p className="text-blue-600 text-sm flex items-center gap-2">
+                                <Lightbulb className="h-4 w-4" /> Updating resource...
+                            </p>
                         )}
                         {submissionStatus === 'success' && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="p-3 bg-green-100 text-green-800 rounded-lg flex items-center text-sm"
-                            >
-                                <Lightbulb className="h-4 w-4 mr-2" /> Resource updated successfully!
-                            </motion.div>
+                            <p className="text-green-600 text-sm">Resource updated successfully!</p>
+                        )}
+                        {submissionStatus === 'error' && (
+                            <p className="text-red-600 text-sm">Failed to update. Please try again.</p>
                         )}
 
-                        {/* Submit Button */}
-                        <div className="pt-4">
-                            <button
-                                type="submit"
-                                className="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200"
-                                disabled={submissionStatus === 'loading'}
-                            >
-                                <Save className="h-5 w-5 mr-2" /> Save Changes
-                            </button>
-                        </div>
+                        <button
+                            type="submit"
+                            className="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition"
+                            disabled={submissionStatus === 'loading'}
+                        >
+                            <Save className="inline-block mr-2 h-4 w-4" /> Save Changes
+                        </button>
                     </form>
                 </motion.div>
             </motion.div>

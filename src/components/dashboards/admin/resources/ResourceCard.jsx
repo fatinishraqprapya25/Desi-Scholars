@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Clock, Edit, HardDrive, User, Calendar, Trash } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const cardVariants = {
     hidden: { opacity: 0, scale: 0.95 },
@@ -80,13 +81,14 @@ function ResourceCard({ resource, onEditResource, deleteResource }) {
 
             {/* Action Button: Edit Resource */}
             <div className="flex justify-end pt-2">
-                <button
-                    className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-medium text-sm"
-                    onClick={() => onEditResource(resource._id)}
-                    title="Edit Resource"
-                >
-                    <Edit className="h-4 w-4 mr-2" /> Edit Resource
-                </button>
+                <Link to={`/admin/resources/edit/${resource._id}`}>
+                    <button
+                        className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-medium text-sm"
+                        onClick={() => onEditResource(resource._id)}
+                        title="Edit Resource"
+                    >
+                        <Edit className="h-4 w-4 mr-2" /> Edit Resource
+                    </button></Link>
 
                 <button onClick={() => deleteResource(resource._id)}
                     className="

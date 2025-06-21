@@ -182,7 +182,7 @@ function App() {
           }
         />
         <Route
-          path="/admin/resources/edit"
+          path="/admin/resources/edit/:id"
           element={
             <ProtectedAdmin>
               <EditResourcePage />
