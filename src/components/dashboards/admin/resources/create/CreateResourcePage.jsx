@@ -1,10 +1,19 @@
-// src/pages/CreateResourcePage.jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
     PlusCircle, FileText, Link, Image, Lightbulb, Save
 } from 'lucide-react';
-import UserDashboardContainer from '../../../common/UserDashboardContainer'; 
+import UserDashboardContainer from '../../../common/UserDashboardContainer';
+
+const sectionVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut', delay: 0.2 } },
+};
 
 export default function CreateResourcePage() {
     const [title, setTitle] = useState('');
@@ -14,17 +23,9 @@ export default function CreateResourcePage() {
     const [resourceLink, setResourceLink] = useState('');
     const [imageFile, setImageFile] = useState(null);
     const [errors, setErrors] = useState({});
-    const [submissionStatus, setSubmissionStatus] = useState(null); // 'success' or 'error'
+    const [submissionStatus, setSubmissionStatus] = useState(null);
 
-    const sectionVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
-    };
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut', delay: 0.2 } },
-    };
+    const adminToken = localStorage.getItem("ASDFDKFFJF");
 
     const validateForm = () => {
         let newErrors = {};
@@ -46,26 +47,48 @@ export default function CreateResourcePage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmissionStatus(null); // Reset status
+        setSubmissionStatus(null);
 
         if (!validateForm()) {
             setSubmissionStatus('error');
             return;
         }
 
-        console.log('Submitting Resource Data:', {
-            title,
-            description,
-            resourceType,
-            resourceFile: resourceFile ? resourceFile.name : null,
-            resourceLink,
-            imageFile: imageFile ? imageFile.name : null,
-        });
+        const formData = new FormData();
+        formData.append('type', resourceType);
+        formData.append('description', description);
+        formData.append('title', title);
 
-        setTimeout(() => {
-            alert('Resource created successfully! (Check console for data)');
+        if (resourceType === 'file') {
+            formData.append('resourceFile', resourceFile);
+        } else if (resourceType === 'link') {
+            formData.append('url', resourceLink);
+        }
+
+        if (imageFile) {
+            formData.append('coverPhoto', imageFile);
+        }
+        console.log(formData);
+        try {
+            const response = await fetch('http://localhost:5000/api/resource', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    "Authorization": `Bearer ${adminToken}`
+                }
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                setSubmissionStatus('error');
+                setErrors({ general: result.message || 'Failed to create resource.' });
+
+            }
+
             setSubmissionStatus('success');
-            // Clear form after successful submission
+            alert('Resource created successfully!');
+
             setTitle('');
             setDescription('');
             setResourceType('file');
@@ -73,11 +96,15 @@ export default function CreateResourcePage() {
             setResourceLink('');
             setImageFile(null);
             setErrors({});
-        }, 1000);
+        } catch (error) {
+            setSubmissionStatus('error');
+            console.log(error.message);
+            setErrors({ general: 'Something went wrong. Please try again.' });
+        }
     };
 
     return (
-        <UserDashboardContainer admin={true}>
+        <UserDashboardContainer role="admin">
             <motion.div
                 className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-4xl mx-auto"
                 variants={sectionVariants}
