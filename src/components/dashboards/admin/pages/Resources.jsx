@@ -1,60 +1,11 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FolderKanban, FileText, Video, Book } from 'lucide-react';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
 import ResourceGrid from '../resources/ResourceGrid';
 import ResourceSearchBar from '../resources/ResourceSearchBar';
+import { useNavigate } from 'react-router-dom';
 
-// Mock data for resources
-const resourcesData = [
-    {
-        id: 'RES-001',
-        title: 'React Hooks Cheatsheet',
-        description: 'A concise PDF guide for quick reference on all essential React Hooks and their usage.',
-        type: 'PDF',
-        author: 'Dr. Emily White',
-        uploadDate: '2025-05-25',
-        fileSize: '1.2 MB'
-    },
-    {
-        id: 'RES-002',
-        title: 'Advanced JavaScript Video Series',
-        description: 'A series of video tutorials covering advanced topics like closures, async/await, and design patterns.',
-        type: 'Video Guide',
-        author: 'Prof. David Lee',
-        uploadDate: '2025-06-01',
-        duration: '45 mins'
-    },
-    {
-        id: 'RES-003',
-        title: 'Data Structures & Algorithms Ebook',
-        description: 'An interactive ebook explaining fundamental data structures and algorithms with Python examples.',
-        type: 'Ebook',
-        author: 'Ms. Sarah Chen',
-        uploadDate: '2025-04-18',
-        fileSize: '8.5 MB'
-    },
-    {
-        id: 'RES-004',
-        title: 'Machine Learning Concepts PDF',
-        description: 'An introductory PDF document on core machine learning concepts, models, and evaluation metrics.',
-        type: 'PDF',
-        author: 'Mr. Alex Kim',
-        uploadDate: '2025-05-10',
-        fileSize: '2.5 MB'
-    },
-    {
-        id: 'RES-005',
-        title: 'UI/UX Design Principles Video',
-        description: 'A video guide exploring the foundational principles of user interface and user experience design.',
-        type: 'Video Guide',
-        author: 'Dr. Olivia Brown',
-        uploadDate: '2025-03-22',
-        duration: '30 mins'
-    },
-];
-
-// Helper functions (can be moved to a utilities file if needed elsewhere)
 const getResourceIcon = (type) => {
     switch (type) {
         case 'PDF': return <FileText className="h-4 w-4 mr-1.5 text-red-500" />;
@@ -64,9 +15,6 @@ const getResourceIcon = (type) => {
     }
 };
 
-
-
-// Animation variants (can be centralized in a constants/animations file)
 const sectionVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
@@ -80,31 +28,59 @@ const itemVariants = {
 
 export default function ManageResourcesPage() {
     const [searchTerm, setSearchTerm] = useState('');
+    const [resources, setResources] = useState([]);
 
-    // Filtering logic for resources
-    const filteredResources = useMemo(() => {
-        let processedResources = [...resourcesData];
+    const navigate = useNavigate();
+    const adminToken = localStorage.getItem("ASDFDKFFJF");
 
-        if (searchTerm) {
-            processedResources = processedResources.filter(resource =>
-                resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                resource.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                resource.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                resource.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                resource.id.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+    const loadResources = () => {
+        const fetchResources = async () => {
+            try {
+                const response = await fetch("http://localhost:5000/api/resource");
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success) {
+                        setResources(result.data);
+                    }
+                }
+            } catch (err) {
+                alert(err.message);
+            }
         }
-        return processedResources;
-    }, [searchTerm]); // No need to include resourcesData in dependency array if it's constant
+        fetchResources();
+    }
 
-    // Handlers for resource actions
+    useEffect(() => {
+        loadResources();
+    }, []);
+
     const handleAddResource = () => {
-        alert('Prompt to add a new resource (e.g., open a form modal)!');
+        navigate("/admin/resources/create")
     };
 
-    const handleEditResource = (resourceId) => {
-        alert(`Edit resource with ID: ${resourceId}`);
-    };
+    const deleteResource = (id) => {
+        const dltResource = async () => {
+            const response = await fetch(`http://localhost:5000/api/resource/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "Application/json",
+                    "Authorization": `Bearer ${adminToken}`
+                }
+            });
+            if (response.ok) {
+                const result = await response.json();
+                if (result.success) {
+                    alert("resource deleted successfully!");
+                    loadResources();
+                } else {
+                    alert("failed to delete resource");
+                }
+            } else {
+                alert("failed to delete resource");
+            }
+        }
+        dltResource();
+    }
 
     return (
         <UserDashboardContainer role={"admin"}>
@@ -133,8 +109,8 @@ export default function ManageResourcesPage() {
                         onAddResource={handleAddResource}
                     />
                     <ResourceGrid
-                        resources={filteredResources}
-                        onEditResource={handleEditResource}
+                        resources={resources}
+                        deleteResource={deleteResource}
                     />
                 </motion.div>
             </motion.div>

@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Lightbulb } from "lucide-react";
 import ResourceCard from "./ResourceCard";
 
-function ResourceGrid({ resources, onEditResource }) {
+function ResourceGrid({ resources, onEditResource, deleteResource }) {
     if (resources.length === 0) {
         return (
             <div className="text-center py-10 text-gray-500 text-base">
@@ -31,6 +31,7 @@ function ResourceGrid({ resources, onEditResource }) {
             <AnimatePresence>
                 {resources.map((resource) => (
                     <ResourceCard
+                        deleteResource={deleteResource}
                         key={resource.id}
                         resource={resource}
                         onEditResource={onEditResource}
