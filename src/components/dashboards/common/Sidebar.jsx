@@ -29,7 +29,6 @@ export default function Sidebar({ role, isOpenSideBar, toggleSidebar }) {
     ];
     const adminNavItems = [
         { name: 'Admin Dashboard', icon: LayoutDashboard, path: '/admin/dashboard' },
-        { name: 'Manage Students', icon: Users, path: '/admin/students' },
         { name: 'Manage Admins', icon: Users, path: '/admin/admins' },
         { name: 'Manage Teachers', icon: UserCog, path: '/admin/teachers' },
         { name: 'Manage Courses', icon: BookOpen, path: '/admin/courses' },

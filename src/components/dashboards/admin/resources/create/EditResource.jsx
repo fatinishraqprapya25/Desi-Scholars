@@ -314,7 +314,7 @@ export default function EditSingleResourcePage() {
                                 <div className="mt-3">
                                     <p className="text-sm text-gray-500 mb-1">Current Cover:</p>
                                     <img
-                                        src={`http://localhost:5000/${resourceData.coverPhoto.replace(/\\/g, '/')}`}
+                                        src={`${resourceData.coverPhoto.replace(/\\/g, '/')}`}
                                         alt="Current Cover"
                                         className="h-32 w-32 object-cover rounded-lg border border-gray-200 shadow-sm"
                                     />
