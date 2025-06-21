@@ -33,7 +33,7 @@ const QuestionCard = ({
                 <label htmlFor={`question-${qIndex}`} className="block text-sm font-medium text-gray-700 mb-1">Question Text</label>
                 <textarea
                     id={`question-${qIndex}`}
-                    value={question.questionText}
+                    value={question.question}
                     onChange={(e) => handleQuestionTextChange(qIndex, e.target.value)}
                     placeholder="Enter your question here..."
                     rows="2"
@@ -51,7 +51,7 @@ const QuestionCard = ({
                             type="radio"
                             id={`q${qIndex}-option${oIndex}`}
                             name={`q${qIndex}-correct-answer`}
-                            checked={question.correctAnswerIndex === oIndex}
+                            checked={question.correctAnswers.includes(oIndex)}
                             onChange={() => handleCorrectAnswerChange(qIndex, oIndex)}
                             className="h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
                         />

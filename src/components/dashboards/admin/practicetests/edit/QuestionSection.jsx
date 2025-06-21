@@ -31,8 +31,9 @@ const QuestionsSection = ({
             )}
 
             <AnimatePresence>
-                {questions.map((question, qIndex) => (
-                    <QuestionCard
+                {questions.map((question, qIndex) => {
+                    console.log(question)
+                    return <QuestionCard
                         key={qIndex} // Consider unique IDs for questions in a real app
                         question={question}
                         qIndex={qIndex}
@@ -44,7 +45,7 @@ const QuestionsSection = ({
                         handleCorrectAnswerChange={handleCorrectAnswerChange}
                         variants={formItemVariants}
                     />
-                ))}
+                })}
             </AnimatePresence>
 
             <motion.button
