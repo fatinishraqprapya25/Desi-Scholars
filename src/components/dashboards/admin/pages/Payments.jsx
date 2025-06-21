@@ -87,7 +87,7 @@ const PaymentApprovalPage = () => {
 
     return (
         // Main container
-        <UserDashboardContainer>
+        <UserDashboardContainer role="admin">
             {/* Removed background color classes from this div */}
             <div className="min-h-screen p-6 font-sans antialiased">
                 <div className="max-w-6xl mx-auto bg-white shadow-xl rounded-2xl p-6 md:p-8">
