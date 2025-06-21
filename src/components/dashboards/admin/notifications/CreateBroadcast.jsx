@@ -64,7 +64,7 @@ export default function CreateBroadcastPage() {
     };
 
     return (
-        <UserDashboardContainer admin={true}>
+        <UserDashboardContainer role="admin">
             <motion.div
                 className="p-6 max-w-3xl mx-auto"
                 initial={{ opacity: 0, y: 20 }}

@@ -1,65 +1,44 @@
-import { useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BellRing, Lightbulb } from 'lucide-react';
+import { BellRing, Lightbulb, Plus } from 'lucide-react';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
-import BroadcastControls from '../notifications/BroadCastControlls';
 import BroadcastCard from '../notifications/BroadCastCard';
-
-const broadcastsData = [
-    {
-        id: 'BR-001',
-        title: 'System Maintenance Alert',
-        message: 'Scheduled system maintenance will occur on 2025-07-10 from 2:00 AM to 4:00 AM UTC. Expect brief service interruptions.',
-        sender: 'Admin Team',
-        sendDate: '2025-07-01',
-        status: 'Scheduled'
-    },
-    {
-        id: 'BR-002',
-        title: 'New Course Release: AI Ethics',
-        message: 'Exciting news! Our new course "AI Ethics and Society" is now available. Enroll today to explore critical topics.',
-        sender: 'Course Management',
-        sendDate: '2025-06-28',
-        status: 'Sent'
-    },
-    {
-        id: 'BR-003',
-        title: 'Platform Update: New Features',
-        message: 'We\'ve rolled out new features including enhanced analytics and a redesigned dashboard. Check out the release notes!',
-        sender: 'Product Team',
-        sendDate: '2025-06-25',
-        status: 'Sent'
-    },
-    {
-        id: 'BR-004',
-        title: 'Urgent Security Patch',
-        message: 'An urgent security patch has been deployed to address a critical vulnerability. No user action is required.',
-        sender: 'Security Team',
-        sendDate: '2025-06-20',
-        status: 'Sent'
-    },
-    {
-        id: 'BR-005',
-        title: 'Community Forum Guidelines',
-        message: 'Please review the updated community forum guidelines to ensure a positive and respectful environment for all users.',
-        sender: 'Community Moderation',
-        sendDate: '2025-06-15',
-        status: 'Draft'
-    },
-];
+import { useNavigate } from 'react-router-dom';
 
 export default function ManageBroadcastsPage() {
-    const [searchTerm, setSearchTerm] = useState('');
+    const [broadcasts, setBroadcasts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
-    // Framer Motion variants
+    const adminToken = localStorage.getItem('ASDFDKFFJF');
+
+    useEffect(() => {
+        const fetchBroadcasts = async () => {
+            try {
+                const res = await fetch('http://localhost:5000/api/broadcasts', {
+                    headers: {
+                        Authorization: `Bearer ${adminToken}`,
+                    },
+                });
+                const result = await res.json();
+                if (res.ok && result.success) {
+                    setBroadcasts(result.data);
+                } else {
+                    console.error(result.message || 'Failed to fetch broadcasts');
+                }
+            } catch (err) {
+                console.error('Error fetching broadcasts:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchBroadcasts();
+    }, []);
+
     const sectionVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
-    };
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut', delay: 0.2 } },
     };
 
     const cardVariants = {
@@ -68,70 +47,39 @@ export default function ManageBroadcastsPage() {
         exit: { opacity: 0, scale: 0.95, transition: { duration: 0.3, ease: 'easeIn' } },
     };
 
-    // Filtering logic for broadcasts (memoized for performance)
-    const filteredBroadcasts = useMemo(() => {
-        let processedBroadcasts = [...broadcastsData];
-
-        if (searchTerm) {
-            processedBroadcasts = processedBroadcasts.filter(broadcast =>
-                broadcast.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                broadcast.message.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                broadcast.sender.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                broadcast.id.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-        }
-        return processedBroadcasts;
-    }, [searchTerm]);
-    const handleCreateBroadcast = () => {
-        alert('Action: Open a form or modal to create a new broadcast!');
-    };
-
     const handleEditBroadcast = (broadcastId) => {
-        alert(`Action: Edit broadcast with ID: ${broadcastId}. You would typically navigate to an edit page.`);
+        navigate(`/admin/edit-broadcast/${broadcastId}`);
     };
 
-    const getStatusBadge = (status) => {
-        switch (status) {
-            case 'Sent':
-                return 'bg-green-100 text-green-800';
-            case 'Scheduled':
-                return 'bg-blue-100 text-blue-800';
-            case 'Draft':
-                return 'bg-orange-100 text-orange-800';
-            case 'Archived':
-                return 'bg-gray-100 text-gray-800';
-            default:
-                return 'bg-gray-100 text-gray-800';
-        }
+    const handleCreateBroadcast = () => {
+        navigate('/admin/create-broadcast');
     };
 
     return (
-        <UserDashboardContainer role={"admin"}>
+        <UserDashboardContainer role="admin">
             <motion.div
                 className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-7xl mx-auto"
                 variants={sectionVariants}
                 initial="hidden"
                 animate="visible"
             >
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-gray-900 mb-3 sm:mb-5 flex items-center">
-                    <BellRing className="mr-2 sm:mr-3 h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-indigo-600" /> Manage Broadcasts & Notifications
-                </h2>
-                <p className="text-sm sm:text-base lg:text-lg text-gray-700 mb-5 sm:mb-7 max-w-3xl leading-relaxed">
-                    Centralized management for all platform-wide broadcasts and user notifications. Easily search, create, and update messages.
-                </p>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6">
+                    <h2 className="text-2xl font-extrabold text-gray-900 flex items-center">
+                        <BellRing className="mr-2 text-indigo-600" /> Manage Broadcasts
+                    </h2>
+                    <button
+                        onClick={handleCreateBroadcast}
+                        className="mt-3 sm:mt-0 inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                    >
+                        <Plus className="h-4 w-4 mr-2" /> Create Broadcast
+                    </button>
+                </div>
 
-                {/* Broadcast Controls Component */}
-                <BroadcastControls
-                    searchTerm={searchTerm}
-                    onSearchChange={setSearchTerm}
-                    onCreateBroadcast={handleCreateBroadcast}
-                    itemVariants={itemVariants}
-                />
-
-                {/* Broadcast Cards Grid */}
-                {filteredBroadcasts.length > 0 ? (
+                {loading ? (
+                    <div className="text-center text-gray-500 mt-10">Loading broadcasts...</div>
+                ) : broadcasts.length > 0 ? (
                     <motion.div
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-6"
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6"
                         initial="hidden"
                         animate="visible"
                         variants={{
@@ -143,24 +91,29 @@ export default function ManageBroadcastsPage() {
                         }}
                     >
                         <AnimatePresence>
-                            {filteredBroadcasts.map((broadcast) => (
+                            {broadcasts.map((broadcast) => (
                                 <BroadcastCard
-                                    key={broadcast.id}
-                                    broadcast={broadcast}
+                                    key={broadcast._id}
+                                    broadcast={{
+                                        id: broadcast._id,
+                                        title: broadcast.title,
+                                        message: broadcast.description,
+                                        sender: 'Admin',
+                                        sendDate: new Date(broadcast.createdAt).toLocaleDateString(),
+                                        status: 'Sent',
+                                    }}
                                     onEditBroadcast={handleEditBroadcast}
                                     cardVariants={cardVariants}
-                                    getStatusBadge={getStatusBadge}
+                                    getStatusBadge={(status) => 'bg-green-100 text-green-800'}
                                 />
                             ))}
                         </AnimatePresence>
                     </motion.div>
                 ) : (
-                    <div className="text-center py-10 text-gray-500 text-base mt-6">
+                    <div className="text-center py-10 text-gray-500 mt-6">
                         <Lightbulb className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                        <h3 className="mt-2 text-lg font-medium text-gray-900">No broadcasts found</h3>
-                        <p className="mt-1 text-sm text-gray-500">
-                            Adjust your search or create a new broadcast!
-                        </p>
+                        <h3 className="text-lg font-medium text-gray-900">No broadcasts found</h3>
+                        <p className="mt-1 text-sm text-gray-500">Click "Create Broadcast" to send your first one.</p>
                     </div>
                 )}
             </motion.div>
