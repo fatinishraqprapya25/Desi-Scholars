@@ -34,7 +34,7 @@ const QuestionsSection = ({
                 {questions.map((question, qIndex) => {
                     console.log(question)
                     return <QuestionCard
-                        key={qIndex} // Consider unique IDs for questions in a real app
+                        key={qIndex}
                         question={question}
                         qIndex={qIndex}
                         handleRemoveQuestion={handleRemoveQuestion}
