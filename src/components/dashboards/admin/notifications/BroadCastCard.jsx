@@ -41,7 +41,7 @@ export default function BroadcastCard({ broadcast, onEditBroadcast, cardVariants
 
             {/* Action Button: Edit Broadcast */}
             <div className="flex justify-end pt-2">
-                <Link to="/admin/notifications/edit">
+                <Link to={`/admin/notifications/edit/${broadcast.id}`}>
                     <button
                         className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-medium text-sm"
                         title="Edit Broadcast"

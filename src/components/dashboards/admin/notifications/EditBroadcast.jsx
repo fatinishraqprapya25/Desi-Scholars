@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
     BellRing, Send, UploadCloud, Users, CheckCircle, XCircle, Lightbulb, Edit
@@ -6,30 +7,43 @@ import {
 import UserDashboardContainer from '../../common/UserDashboardContainer';
 
 export default function EditBroadcastPage() {
-    // Dummy broadcast data for demonstration
-    const dummyBroadcast = {
-        id: 'BROADCAST-XYZ-123', // A fixed dummy ID
-        title: 'Important Update: School Closure',
-        message: 'Dear all, please be informed that the school will remain closed tomorrow, June 12, 2025, due to unforeseen circumstances. All classes and activities are cancelled. We apologize for any inconvenience.',
-        image: 'school_notice.jpg', // Dummy existing image name
-        audience: 'both', // 'teachers', 'students', 'both'
-    };
-
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [message, setMessage] = useState('');
     const [imageFile, setImageFile] = useState(null);
     const [existingImage, setExistingImage] = useState('');
     const [audience, setAudience] = useState('both');
     const [errors, setErrors] = useState({});
-    const [submissionStatus, setSubmissionStatus] = useState(null); // 'success', 'error', 'loading'
+    const [submissionStatus, setSubmissionStatus] = useState(null);
 
-    // Populate form fields with dummy data on initial render
+    const adminToken = localStorage.getItem('ASDFDKFFJF');
+
     useEffect(() => {
-        setTitle(dummyBroadcast.title);
-        setMessage(dummyBroadcast.message);
-        setExistingImage(dummyBroadcast.image);
-        setAudience(dummyBroadcast.audience);
-    }, []); // Empty dependency array means this runs only once on mount
+        const fetchBroadcast = async () => {
+            try {
+                const res = await fetch(`http://localhost:5000/api/broadcasts/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${adminToken}`
+                    }
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    const broadcast = data.data;
+                    setTitle(broadcast.title);
+                    setMessage(broadcast.description);
+                    setAudience(broadcast.audience || 'both');
+                    setExistingImage(broadcast.image || '');
+                } else {
+                    console.error(data.message);
+                }
+            } catch (err) {
+                console.error('Failed to fetch broadcast:', err);
+            }
+        };
+
+        fetchBroadcast();
+    }, [id]);
 
     const sectionVariants = {
         hidden: { opacity: 0, y: 20 },
@@ -61,21 +75,36 @@ export default function EditBroadcastPage() {
             return;
         }
 
-        // Simulate API call to update broadcast with dummy ID
-        console.log('Updating Broadcast:', {
-            id: dummyBroadcast.id, // Use the dummy ID
-            title,
-            message,
-            audience,
-            imageFile: imageFile ? imageFile.name : null,
-            existingImage, // Can be sent to help backend decide if image changed
-        });
+        try {
+            const payload = {
+                title,
+                description: message,
+                for: audience,
+                existingImage,
+            };
 
-        setTimeout(() => {
-            alert('Broadcast updated successfully! (Check console for data)');
-            setSubmissionStatus('success');
-            // In a real app, you might clear submissionStatus or redirect after a delay
-        }, 1500);
+            const res = await fetch(`http://localhost:5000/api/broadcasts/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${adminToken}`,
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const data = await res.json();
+
+            if (res.ok && data.success) {
+                setSubmissionStatus('success');
+                setTimeout(() => navigate('/admin/notifications'), 1500);
+            } else {
+                setSubmissionStatus('error');
+                setErrors({ general: data.message });
+            }
+        } catch (err) {
+            setSubmissionStatus('error');
+            setErrors({ general: 'Something went wrong while updating.' });
+        }
     };
 
     return (
@@ -100,7 +129,6 @@ export default function EditBroadcastPage() {
                     animate="visible"
                 >
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Title */}
                         <div>
                             <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
                                 Broadcast Title <span className="text-red-500">*</span>
@@ -116,7 +144,6 @@ export default function EditBroadcastPage() {
                             {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title}</p>}
                         </div>
 
-                        {/* Message/Description */}
                         <div>
                             <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
                                 Message <span className="text-red-500">*</span>
@@ -132,31 +159,7 @@ export default function EditBroadcastPage() {
                             {errors.message && <p className="mt-1 text-sm text-red-600">{errors.message}</p>}
                         </div>
 
-                        {/* Image Upload (Optional) */}
-                        <div>
-                            <label htmlFor="imageFile" className="block text-sm font-medium text-gray-700 mb-1">
-                                Upload New Image (Optional)
-                            </label>
-                            <input
-                                type="file"
-                                id="imageFile"
-                                accept="image/*"
-                                onChange={(e) => setImageFile(e.target.files[0])}
-                                className="block w-full text-sm text-gray-500
-                                    file:mr-4 file:py-2 file:px-4
-                                    file:rounded-full file:border-0
-                                    file:text-sm file:font-semibold
-                                    file:bg-purple-50 file:text-purple-700
-                                    hover:file:bg-purple-100"
-                            />
-                            {imageFile ? (
-                                <p className="mt-2 text-sm text-gray-600">New image selected: <span className="font-medium">{imageFile.name}</span></p>
-                            ) : existingImage && (
-                                <p className="mt-2 text-sm text-gray-600">Existing image: <span className="font-medium">{existingImage}</span></p>
-                            )}
-                        </div>
 
-                        {/* Audience Selection */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Send To <span className="text-red-500">*</span>
@@ -199,37 +202,23 @@ export default function EditBroadcastPage() {
                             {errors.audience && <p className="mt-1 text-sm text-red-600">{errors.audience}</p>}
                         </div>
 
-                        {/* Submission Status Message */}
                         {submissionStatus === 'loading' && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="p-3 bg-blue-100 text-blue-800 rounded-lg flex items-center text-sm"
-                            >
+                            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="p-3 bg-blue-100 text-blue-800 rounded-lg flex items-center text-sm">
                                 <Lightbulb className="h-4 w-4 mr-2" /> Updating broadcast...
                             </motion.div>
                         )}
                         {submissionStatus === 'success' && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="p-3 bg-green-100 text-green-800 rounded-lg flex items-center text-sm"
-                            >
+                            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="p-3 bg-green-100 text-green-800 rounded-lg flex items-center text-sm">
                                 <CheckCircle className="h-4 w-4 mr-2" /> Broadcast updated successfully!
                             </motion.div>
                         )}
                         {submissionStatus === 'error' && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="p-3 bg-red-100 text-red-800 rounded-lg flex items-center text-sm"
-                            >
+                            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="p-3 bg-red-100 text-red-800 rounded-lg flex items-center text-sm">
                                 <XCircle className="h-4 w-4 mr-2" /> Please fix the errors above.
                                 {errors.general && <span className="ml-2">{errors.general}</span>}
                             </motion.div>
                         )}
 
-                        {/* Submit Button */}
                         <div className="pt-4">
                             <button
                                 type="submit"

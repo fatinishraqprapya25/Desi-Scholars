@@ -214,7 +214,7 @@ function App() {
           }
         />
         <Route
-          path="/admin/notifications/edit"
+          path="/admin/notifications/edit/:id"
           element={
             <ProtectedAdmin>
               <EditBroadcastPage />
