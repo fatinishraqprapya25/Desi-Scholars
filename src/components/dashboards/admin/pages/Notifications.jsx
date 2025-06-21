@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 export default function ManageBroadcastsPage() {
     const [broadcasts, setBroadcasts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null); // State for handling fetch errors
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const adminToken = localStorage.getItem('ASDFDKFFJF');
@@ -39,15 +39,13 @@ export default function ManageBroadcastsPage() {
             }
         };
 
-        if (adminToken) { // Only fetch if token exists
+        if (adminToken) {
             fetchBroadcasts();
         } else {
             setLoading(false);
             setError('Authentication token not found. Please log in.');
-            // Optionally redirect to login if token is missing
-            // navigate('/admin/login');
         }
-    }, [adminToken]); // Added adminToken to dependencies
+    }, [adminToken]); 
 
     const sectionVariants = {
         hidden: { opacity: 0, y: 20 },
