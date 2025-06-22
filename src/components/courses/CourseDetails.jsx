@@ -3,6 +3,7 @@ import { FaStar, FaClock, FaUser, FaCheckCircle, FaChevronRight, FaLinkedinIn, F
 import { motion } from 'framer-motion';
 import Header from '../common/Header'; // Assuming Header component exists at this path
 import Footer from '../common/Footer'; // Assuming Footer component exists at this path
+import { Link } from 'react-router-dom';
 
 // Animation variants for sections to appear when scrolled into view
 const sectionVariants = {
@@ -208,7 +209,7 @@ const CourseDetailsPage = () => {
 
   return (
     <>
-      <Header/>
+      <Header />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50 font-sans antialiased text-gray-900">
         <main className="pb-10">
           {/* Combined Course Banner and Overview Section - Revamped */}
@@ -222,8 +223,8 @@ const CourseDetailsPage = () => {
           >
             {/* Abstract Background Elements */}
             <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
-              <svg className="absolute top-1/4 left-1/4 w-32 h-32 text-purple-300 transform rotate-45" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8.707 13.293a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L10 10.586 7.707 8.293a1 1 0 00-1.414 1.414l3 3z"/></svg>
-              <svg className="absolute bottom-1/3 right-1/4 w-48 h-48 text-indigo-300 transform -rotate-30" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z"/></svg>
+              <svg className="absolute top-1/4 left-1/4 w-32 h-32 text-purple-300 transform rotate-45" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8.707 13.293a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L10 10.586 7.707 8.293a1 1 0 00-1.414 1.414l3 3z" /></svg>
+              <svg className="absolute bottom-1/3 right-1/4 w-48 h-48 text-indigo-300 transform -rotate-30" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" /></svg>
             </div>
 
             <div className="max-w-7xl mx-auto px-6 text-white text-center md:text-left flex flex-col md:flex-row items-center justify-between z-10 relative">
@@ -252,14 +253,14 @@ const CourseDetailsPage = () => {
                 </div>
 
                 {/* Enroll Button */}
-                <motion.button
+                <Link to="/checkout"> <motion.button
                   whileHover={{ scale: 1.1, y: -7, boxShadow: "0 20px 40px rgba(128, 0, 128, 0.8)" }}
                   whileTap={{ scale: 0.9 }}
                   className="bg-white text-purple-900 px-14 py-6 rounded-full shadow-2xl hover:bg-gray-100 transition-all duration-300 text-2xl font-extrabold transform hover:rotate-2 relative overflow-hidden group"
                 >
                   <span className="absolute inset-0 bg-gradient-to-r from-purple-500 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                   <span className="relative z-10">Enroll Now for $49.99</span>
-                </motion.button>
+                </motion.button></Link>
               </div>
 
               {/* Instructor Image */}
@@ -292,8 +293,8 @@ const CourseDetailsPage = () => {
             <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-gray-900 text-center relative z-10">What You'll Learn</h2>
             {/* Subtle background elements */}
             <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
-              <svg className="absolute top-1/4 left-1/4 w-24 h-24 text-purple-200 transform rotate-12" fill="currentColor" viewBox="0 0 20 20"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM11 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2h-2zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2h-2z"/></svg>
-              <svg className="absolute bottom-1/3 right-1/4 w-28 h-28 text-indigo-200 transform -rotate-24" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8.707 13.293a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L10 10.586 7.707 8.293a1 1 0 00-1.414 1.414l3 3z"/></svg>
+              <svg className="absolute top-1/4 left-1/4 w-24 h-24 text-purple-200 transform rotate-12" fill="currentColor" viewBox="0 0 20 20"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM11 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2h-2zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2h-2z" /></svg>
+              <svg className="absolute bottom-1/3 right-1/4 w-28 h-28 text-indigo-200 transform -rotate-24" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8.707 13.293a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L10 10.586 7.707 8.293a1 1 0 00-1.414 1.414l3 3z" /></svg>
             </div>
 
             <motion.div
@@ -599,7 +600,7 @@ const CourseDetailsPage = () => {
           </motion.section>
 
         </main>
-        <Footer/>
+        <Footer />
       </div>
     </>
   );
