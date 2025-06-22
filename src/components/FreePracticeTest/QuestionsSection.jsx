@@ -67,8 +67,7 @@ const SubjectCard = ({ subjectData }) => {
                 </h3>
             </div>
 
-            {/* Topics List */}
-            <div className="flex-grow"> {/* Allows the list to grow and fill available space */}
+            <div className="flex-grow">
                 {subjectData.topics.map((topic) => (
                     <div key={topic.id} className="flex items-center mb-3">
                         <span className="bg-pink-500 text-white text-xs font-semibold px-2 py-1 rounded-full mr-3 min-w-[36px] text-center">
