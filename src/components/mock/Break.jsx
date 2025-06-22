@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Coffee, Brain, Droplet, PersonStanding, Hourglass } from 'lucide-react';
 import FlipCountdown from './FlipCountDown';
 
-const App = () => {
+const App = ({ handleResumeFromBreak }) => {
     const totalBreakTime = 10 * 60; // 10 minutes in seconds
     const [remainingTime, setRemainingTime] = useState(totalBreakTime);
     const [isBreakActive, setIsBreakActive] = useState(true);
@@ -19,23 +19,6 @@ const App = () => {
             setIsBreakActive(false);
         }
     }, [isBreakActive, remainingTime]);
-
-    const formatTime = (seconds) => {
-        const minutes = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-    };
-
-    const calculateProgress = () => {
-        return ((totalBreakTime - remainingTime) / totalBreakTime) * 100;
-    };
-
-    const handleSkipBreak = () => {
-        setIsBreakActive(false);
-        setRemainingTime(0);
-        // In a real application, you would navigate to the next section or trigger a callback
-        console.log("Break skipped. Continuing to the next section!");
-    };
 
     return (
         <div className="min-h-screen bg-gray-100 p-4 font-inter">
@@ -224,13 +207,12 @@ const App = () => {
                 {/* Skip Button */}
                 <div className="p-6 md:p-8 pt-0 flex justify-center">
                     <motion.button
-                        onClick={handleSkipBreak}
+                        onClick={handleResumeFromBreak}
                         className="flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-purple-300"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         disabled={!isBreakActive}
                     >
-                        <span className="text-xl">≫</span>
                         <span className="ml-3 text-lg">Skip Break & Continue</span>
                     </motion.button>
                 </div>
