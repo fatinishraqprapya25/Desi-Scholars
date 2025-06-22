@@ -56,9 +56,9 @@ const questionsData = [
 // Component to display a single subject card
 const SubjectCard = ({ subjectData }) => {
     return (
-        <div className="bg-white rounded-lg shadow-md p-6 flex flex-col h-full">
+        <div className="bg-white rounded-lg shadow-md p-6 flex flex-col h-fit">
             {/* Subject Header */}
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4"  >
                 <span className="bg-purple-600 text-white text-xs font-semibold px-2 py-1 rounded-full mr-2">
                     {subjectData.id}
                 </span>
@@ -67,7 +67,7 @@ const SubjectCard = ({ subjectData }) => {
                 </h3>
             </div>
 
-            <div className="flex-grow">
+            <div className="flex-grow fit-content">
                 {subjectData.topics.map((topic) => (
                     <div key={topic.id} className="flex items-center mb-3">
                         <span className="bg-pink-500 text-white text-xs font-semibold px-2 py-1 rounded-full mr-3 min-w-[36px] text-center">
