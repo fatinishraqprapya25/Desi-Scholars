@@ -57,12 +57,13 @@ import Admins from "./components/dashboards/admin/pages/Admin";
 import CreateAdminPage from "./components/dashboards/admin/admins/CreateAdmin";
 import Login from "./components/dashboards/admin/pages/Login";
 import ProtectedAdmin from "./components/dashboards/admin/pages/ProtectedAdmin";
-
+import CombinedCalculator from "./pages/CombinedCalculator";
 function App() {
   return (
     <>
       <Routes>
         {/* general routes */}
+        <Route path="/calculator" element={<CombinedCalculator />} />
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/courses" element={<CourseListingPage />} />
