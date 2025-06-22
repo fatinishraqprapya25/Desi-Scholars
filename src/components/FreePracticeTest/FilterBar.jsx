@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 
 // Main FilterBar component
 export default function FilterBar() {
@@ -10,31 +10,21 @@ export default function FilterBar() {
     const [markedForReview, setMarkedForReview] = useState('All');
     const [answeredIncorrectly, setAnsweredIncorrectly] = useState('All');
 
-    // Function to handle filter selection
-    // This is a reusable component to render filter groups
-    const FilterGroup = ({ title, options, selected, onSelect, colorMap = {} }) => {
+    // Reusable component to render filter groups
+    const FilterGroup = ({ title, options, selected, onSelect }) => {
         return (
-            // Changed mb-6 to mb-4 to decrease vertical distance
-            <div className="mb-4">
-                <h3 className="text-lg font-semibold text-gray-700 mb-3">{title}</h3>
+            // Adjusted mb-4 to mb-3 for slightly less space below each filter group
+            <div className="mb-3">
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">{title}</h3>
                 <div className="flex flex-wrap gap-2">
                     {options.map((option) => {
                         const isSelected = selected === option.value;
-                        // Determine button styling based on selection and colorMap
-                        let buttonClasses = `px-4 py-2 rounded-md transition-all duration-200 ease-in-out border border-gray-300`;
+                        let buttonClasses = `px-4 py-2 rounded-lg transition-all duration-200 ease-in-out text-sm font-medium border`;
 
                         if (isSelected) {
-                            buttonClasses += ` bg-blue-600 text-white shadow-md`;
-                            if (colorMap[option.value]) {
-                                buttonClasses = `px-4 py-2 rounded-md shadow-md text-white ${colorMap[option.value]} transition-all duration-200 ease-in-out`;
-                            }
+                            buttonClasses += ` bg-blue-600 text-white border-blue-600 shadow-md`;
                         } else {
-                            buttonClasses += ` bg-gray-100 text-gray-700 hover:bg-gray-200`;
-                        }
-
-                        // Apply specific colors for Difficulty and Score Band when not selected too
-                        if (!isSelected && colorMap[option.value]) {
-                            buttonClasses = `px-4 py-2 rounded-md transition-all duration-200 ease-in-out ${colorMap[option.value].replace('bg-', 'bg-').replace('text-white', 'text-gray-800')} border border-gray-300`;
+                            buttonClasses += ` bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200`;
                         }
 
                         return (
@@ -52,7 +42,7 @@ export default function FilterBar() {
         );
     };
 
-    // Define options for each filter category
+    // Define options for each filter category (unchanged)
     const activeQuestionsOptions = [
         { label: 'All', value: 'All' },
         { label: 'Bluebook Only', value: 'Bluebook Only' },
@@ -69,16 +59,9 @@ export default function FilterBar() {
     const difficultyOptions = [
         { label: 'All', value: 'All' },
         { label: 'Easy', value: 'Easy' },
-        { label: 'Medium', value: 'Medium' },
+        { label: 'Medium', 'value': 'Medium' },
         { label: 'Hard', value: 'Hard' },
     ];
-
-    // Define color mapping for Difficulty and Score Band based on the screenshot
-    const difficultyColorMap = {
-        'Easy': 'bg-green-500',
-        'Medium': 'bg-yellow-500',
-        'Hard': 'bg-red-500',
-    };
 
     const scoreBandOptions = [
         { label: 'All', value: 'All' },
@@ -90,17 +73,6 @@ export default function FilterBar() {
         { label: '6', value: '6' },
         { label: '7', value: '7' },
     ];
-
-    const scoreBandColorMap = {
-        '1': 'bg-gray-700', // Dark for 1
-        '2': 'bg-green-500', // Green for 2, 3
-        '3': 'bg-green-500',
-        '4': 'bg-yellow-500', // Yellow for 4, 5
-        '5': 'bg-yellow-500',
-        '6': 'bg-red-500', // Red for 6, 7
-        '7': 'bg-red-500',
-    };
-
 
     const markedForReviewOptions = [
         { label: 'All', value: 'All' },
@@ -136,19 +108,17 @@ export default function FilterBar() {
             answeredIncorrectly,
         };
         console.log('Applying filters:', filters);
-        // In a real application, you would typically pass these filters to a parent component
-        // or a data fetching function.
-        alert(`Applying filters: ${JSON.stringify(filters, null, 2)}`); // Using alert for demo, replace with custom modal
+        alert(`Applying filters: ${JSON.stringify(filters, null, 2)}`);
     }, [activeQuestions, version, difficulty, scoreBand, markedForReview, answeredIncorrectly]);
 
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-md max-w-5xl mx-auto my-8 font-inter">
+        <div className="bg-white p-6 rounded-lg shadow-xl max-w-5xl mx-auto my-8 font-inter border border-gray-100">
             {/* Filters Title */}
-            <h2 className="text-3xl font-bold text-gray-800 mb-6 pb-4 border-b border-gray-200">Filters</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 pb-4 border-b border-gray-200">Refine Your Search</h2>
 
-            {/* Changed gap-y-6 to gap-y-4 to decrease vertical distance between grid rows */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+            {/* Adjusted gap-y-4 to gap-y-3 for even less vertical space between grid rows */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
                 {/* Active Questions Filter */}
                 <FilterGroup
                     title="Active Questions"
@@ -171,7 +141,6 @@ export default function FilterBar() {
                     options={difficultyOptions}
                     selected={difficulty}
                     onSelect={setDifficulty}
-                    colorMap={difficultyColorMap}
                 />
 
                 {/* Score Band Filter */}
@@ -180,7 +149,6 @@ export default function FilterBar() {
                     options={scoreBandOptions}
                     selected={scoreBand}
                     onSelect={setScoreBand}
-                    colorMap={scoreBandColorMap}
                 />
 
                 {/* Marked for Review Filter */}
@@ -204,22 +172,22 @@ export default function FilterBar() {
             <div className="flex justify-end gap-4 mt-8 pt-6 border-t border-gray-200">
                 <button
                     onClick={handleResetAll}
-                    className="px-6 py-3 rounded-md text-red-600 border border-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
+                    className="px-6 py-3 rounded-lg text-red-600 border border-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 font-semibold"
                 >
                     Reset All
                 </button>
                 <button
                     onClick={handleApply}
-                    className="px-6 py-3 rounded-md bg-blue-600 text-white shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+                    className="px-6 py-3 rounded-lg bg-blue-600 text-white shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 font-semibold"
                 >
-                    Apply
+                    Apply Filters
                 </button>
             </div>
         </div>
     );
 }
 
-// App component to render the FilterBar and load Tailwind CSS
+// App component to render the FilterBar and load Tailwind CSS (unchanged)
 export function App() {
     return (
         <>
@@ -231,7 +199,7 @@ export function App() {
                 {`
           body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5; /* Light background for the page */
+            background-color: #f0f4f8; /* Softer, lighter background for the page */
             display: flex;
             justify-content: center;
             align-items: center;
