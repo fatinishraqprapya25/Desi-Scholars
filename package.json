@@ -13,6 +13,7 @@
     "@radix-ui/react-tabs": "^1.1.12",
     "@tailwindcss/vite": "^4.1.7",
     "desmos": "^1.5.4",
+    "flipdown": "^0.3.2",
     "framer-motion": "^12.12.1",
     "lucide-react": "^0.511.0",
     "mathjs": "^14.5.2",

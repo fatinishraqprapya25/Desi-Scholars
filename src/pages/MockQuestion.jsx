@@ -1,5 +1,4 @@
-// src/pages/MockQuestion.jsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import QuizHeader from "../components/mock/quiz/QuizHeader";
 import QuizFooter from "../components/mock/quiz/QuizFooter";
@@ -8,6 +7,7 @@ import QuizActionButtons from "../components/mock/quiz/QuizActionButtons";
 import QuizOption from "../components/mock/quiz/QuizOption";
 import QuestionPromptAndPassage from "../components/mock/quiz/QuestionPromptAndPassage";
 import CombinedCalculator from "./CombinedCalculator";
+import BreakQuiz from "../components/mock/Break";
 
 export default function MockQuestion() {
     const { id } = useParams();
@@ -17,14 +17,16 @@ export default function MockQuestion() {
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
 
-    const totalQuestions = 60;
+    const totalQuestions = 10;
+    const breakAt = totalQuestions / 2 + 1;
+
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
     const [selectedOptionId, setSelectedOptionId] = useState(null);
-    const [initialTime, setInitialTime] = useState(500);
+    const [initialTime] = useState(500);
     const [quizData, setQuizData] = useState({});
     const [showCal, setShowCal] = useState(false);
+    const [isOnBreak, setIsOnBreak] = useState(false);
 
-    // Mock function to simulate fetching question by index
     const fetchQuestionByIndex = (index) => {
         return {
             metadata: {
@@ -45,54 +47,19 @@ export default function MockQuestion() {
         };
     };
 
-    const navigate = useNavigate("");
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const data = fetchQuestionByIndex(currentQuestionIndex);
-        setQuizData(data);
-        setSelectedOptionId(null); // Clear selection on question change
+        if (currentQuestionIndex === breakAt) {
+            setIsOnBreak(true);
+        } else {
+            const data = fetchQuestionByIndex(currentQuestionIndex);
+            setQuizData(data);
+            setSelectedOptionId(null);
+        }
     }, [currentQuestionIndex]);
 
-    const handleQuizTimeUp = () => {
-        console.log("Quiz Time is Up!");
-    };
-
-    const handleChronologicalClick = () => {
-        console.log("Chronological button clicked!");
-    };
-
-    const handleToggleAttempted = () => {
-        console.log("Toggle Attempted/Unattempted clicked!");
-    };
-
-    const handleToggleMarkForReview = () => {
-        console.log("Toggle Mark for Review clicked!");
-    };
-
-    const handlePostDoubt = () => {
-        console.log("Post Doubt clicked!");
-    };
-
-    const handleReport = () => {
-        console.log("Report button clicked!");
-    };
-
-    const handleEdit = () => {
-        console.log("Edit button clicked!");
-    };
-
-    const handleOptionSelect = (optionId) => {
-        setSelectedOptionId(optionId);
-        console.log(`Option ${optionId} selected.`);
-    };
-
-    const handleExit = () => {
-        navigate("/mock");
-    };
-
-    const handleQuestionNav = () => {
-        console.log("Open question navigation/list modal!");
-    };
+    const handleExit = () => navigate("/mock");
 
     const handleBack = () => {
         if (currentQuestionIndex > 1) {
@@ -101,18 +68,28 @@ export default function MockQuestion() {
     };
 
     const handleNext = () => {
+        if (isOnBreak) return;
         if (currentQuestionIndex < totalQuestions) {
             setCurrentQuestionIndex(prev => prev + 1);
         } else {
-            console.log("This is the last question! Consider submitting quiz.");
+            console.log("End of quiz.");
         }
     };
 
-    const isBackBtnDisabled = currentQuestionIndex === 1;
-    const isNextBtnDisabled = currentQuestionIndex === totalQuestions;
+    const handleResumeFromBreak = () => {
+        setIsOnBreak(false);
+        setCurrentQuestionIndex(prev => prev + 1);
+    };
 
-    const showCalculator = () => {
-        setShowCal(!showCal);
+    const showCalculator = () => setShowCal(!showCal);
+
+    const isBackBtnDisabled = currentQuestionIndex === 1 || isOnBreak;
+    const isNextBtnDisabled = currentQuestionIndex === totalQuestions || isOnBreak;
+
+    if (isOnBreak) {
+        return (
+            <BreakQuiz handleResumeFromBreak={handleResumeFromBreak} />
+        );
     }
 
     return (
@@ -127,11 +104,11 @@ export default function MockQuestion() {
                     skill={quizData.metadata?.skill}
                     difficulty={quizData.metadata?.difficulty}
                     scoreBand={quizData.metadata?.scoreBand}
-                    onChronologicalClick={handleChronologicalClick}
+                    onChronologicalClick={() => console.log("Chronological clicked")}
                 />
 
                 <div className="flex flex-col lg:flex-row flex-grow mt-4 gap-6">
-                    <div className="lg:w-1/2 flex-shrink-0 relative bg-white rounded-lg shadow-sm p-6 overflow-hidden">
+                    <div className="lg:w-1/2 bg-white rounded-lg shadow-sm p-6 overflow-hidden">
                         <QuestionPromptAndPassage
                             passageText={quizData.passageText}
                             questionPrompt={quizData.questionPrompt}
@@ -140,18 +117,17 @@ export default function MockQuestion() {
                         />
                     </div>
 
-                    <div className="lg:w-1/2 flex-shrink-0 bg-white rounded-lg shadow-sm p-6 flex flex-col overflow-hidden">
+                    <div className="lg:w-1/2 bg-white rounded-lg shadow-sm p-6 flex flex-col overflow-hidden">
                         <QuizActionButtons
                             isUnattempted={false}
                             isMarkedForReview={false}
                             isPostDoubt={false}
-                            onToggleAttempted={handleToggleAttempted}
-                            onToggleMarkForReview={handleToggleMarkForReview}
-                            onPostDoubt={handlePostDoubt}
-                            onReport={handleReport}
-                            onEdit={handleEdit}
+                            onToggleAttempted={() => console.log("Attempted toggled")}
+                            onToggleMarkForReview={() => console.log("Mark for review toggled")}
+                            onPostDoubt={() => console.log("Post doubt")}
+                            onReport={() => console.log("Report")}
+                            onEdit={() => console.log("Edit")}
                         />
-
                         <div className="flex flex-col space-y-4">
                             {quizData.options?.map((option) => (
                                 <QuizOption
@@ -159,7 +135,7 @@ export default function MockQuestion() {
                                     optionLetter={option.id}
                                     optionText={option.text}
                                     isSelected={selectedOptionId === option.id}
-                                    onSelect={() => handleOptionSelect(option.id)}
+                                    onSelect={() => setSelectedOptionId(option.id)}
                                 />
                             ))}
                         </div>
@@ -171,7 +147,7 @@ export default function MockQuestion() {
                 currentQuestionIndex={currentQuestionIndex}
                 totalQuestions={totalQuestions}
                 onExitClick={handleExit}
-                onQuestionNavClick={handleQuestionNav}
+                onQuestionNavClick={() => console.log("Open question navigation/list modal")}
                 onBackClick={handleBack}
                 onNextClick={handleNext}
                 isBackDisabled={isBackBtnDisabled}
