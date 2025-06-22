@@ -68,7 +68,7 @@ export default function QuizMetadataBar({
             ))}
 
             <motion.div variants={itemVariants}>
-                <motion.button
+                {/* <motion.button
                     onClick={onChronologicalClick}
                     className="flex items-center px-4 py-2 rounded-full text-sm font-semibold shadow-md"
                     style={{ backgroundColor: COLORS.chronologicalBtnBg, color: COLORS.metadataText, border: `1px solid ${COLORS.chronologicalBorder}` }}
@@ -76,7 +76,7 @@ export default function QuizMetadataBar({
                     whileTap={{ scale: 0.95 }}
                 >
                     Chronological <FaChevronDown className="ml-2" />
-                </motion.button>
+                </motion.button> */}
             </motion.div>
         </motion.div>
     );

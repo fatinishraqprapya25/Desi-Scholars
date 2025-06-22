@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import Container from "./Container";
 import validateToken from "../../utils/ValidateToken";
@@ -7,16 +7,15 @@ export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [isSticky, setIsSticky] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
+    const [profileOpen, setProfileOpen] = useState(false);
+    const profileRef = useRef(null);
 
     useEffect(() => {
-        const isLoggedIn = async () => {
-            if (await validateToken()) {
-                setLoggedIn(true);
-            } else {
-                setLoggedIn(false);
-            }
+        const checkLogin = async () => {
+            const isLogged = await validateToken();
+            setLoggedIn(isLogged);
         };
-        isLoggedIn();
+        checkLogin();
     }, []);
 
     const navItems = [
@@ -32,16 +31,23 @@ export default function Header() {
         const handleScroll = () => {
             setIsSticky(window.scrollY > 150);
         };
-
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (profileRef.current && !profileRef.current.contains(event.target)) {
+                setProfileOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
     return (
         <header
-            className={`z-50 w-full bg-white transition-all duration-500 ${isSticky
-                ? "fixed top-0 py-3"
-                : "relative py-6"
+            className={`z-50 w-full bg-white transition-all duration-500 ${isSticky ? "fixed top-0 py-3 shadow-md" : "relative py-6"
                 }`}
         >
             <Container>
@@ -52,7 +58,7 @@ export default function Header() {
                         <span className="text-slate-700"> Scholar</span>
                     </div>
 
-                    {/* Desktop Navigation */}
+                    {/* Desktop Nav */}
                     <nav className="hidden md:flex gap-6 text-slate-700 text-base font-semibold">
                         {navItems.map((item) => (
                             <NavLink
@@ -70,27 +76,52 @@ export default function Header() {
                     </nav>
 
                     {/* Desktop Auth */}
-                    <div className="hidden md:flex items-center gap-4 text-base font-semibold">
+                    <div className="hidden md:flex items-center gap-4 text-base font-semibold relative" ref={profileRef}>
                         {loggedIn ? (
-                            <img
-                                src="https://randomuser.me/api/portraits/men/75.jpg"
-                                alt="User"
-                                className="w-10 h-10 rounded-full border-2 border-indigo-600 shadow"
-                            />
-                        ) : <>
-                            <NavLink
-                                to="/login"
-                                className="text-slate-700 hover:text-indigo-500 transition-colors"
-                            >
-                                Login
-                            </NavLink>
-                            <NavLink
-                                to="/signup"
-                                className="bg-indigo-600 text-white px-5 py-2 rounded-md hover:bg-indigo-700 transition"
-                            >
-                                Sign Up
-                            </NavLink>
-                        </>}
+                            <>
+                                <img
+                                    src="https://randomuser.me/api/portraits/men/75.jpg"
+                                    alt="User"
+                                    className="w-10 h-10 rounded-full border-2 border-indigo-600 shadow cursor-pointer"
+                                    onClick={() => setProfileOpen(!profileOpen)}
+                                />
+                                {profileOpen && (
+                                    <div className="absolute top-14 right-0 bg-white shadow-lg rounded-md py-2 w-48 border border-gray-200 z-50">
+                                        {[
+                                            { label: "Profile", path: "/dashboard/profile" },
+                                            { label: "Dashboard", path: "/dashboard" },
+                                            { label: "Practice Tests", path: "/practice-test" },
+                                            { label: "Progress", path: "/dashboard/progress" },
+                                            { label: "Resources", path: "/resources" },
+                                        ].map((item) => (
+                                            <NavLink
+                                                to={item.path}
+                                                key={item.label}
+                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                onClick={() => setProfileOpen(false)}
+                                            >
+                                                {item.label}
+                                            </NavLink>
+                                        ))}
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            <>
+                                <NavLink
+                                    to="/login"
+                                    className="text-slate-700 hover:text-indigo-500 transition-colors"
+                                >
+                                    Login
+                                </NavLink>
+                                <NavLink
+                                    to="/signup"
+                                    className="bg-indigo-600 text-white px-5 py-2 rounded-md hover:bg-indigo-700 transition"
+                                >
+                                    Sign Up
+                                </NavLink>
+                            </>
+                        )}
                     </div>
 
                     {/* Hamburger */}
@@ -134,20 +165,63 @@ export default function Header() {
                                 {item.name}
                             </NavLink>
                         ))}
-                        <NavLink
-                            to="/login"
-                            className="hover:text-indigo-500"
-                            onClick={() => setMenuOpen(false)}
-                        >
-                            Login
-                        </NavLink>
-                        <NavLink
-                            to="/signup"
-                            className="bg-indigo-600 text-white px-5 py-2 rounded-md hover:bg-indigo-700 transition text-center"
-                            onClick={() => setMenuOpen(false)}
-                        >
-                            Sign Up
-                        </NavLink>
+                        {!loggedIn ? (
+                            <>
+                                <NavLink
+                                    to="/login"
+                                    className="hover:text-indigo-500"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Login
+                                </NavLink>
+                                <NavLink
+                                    to="/signup"
+                                    className="bg-indigo-600 text-white px-5 py-2 rounded-md hover:bg-indigo-700 transition text-center"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Sign Up
+                                </NavLink>
+                            </>
+                        ) : (
+
+                            <>
+                                <NavLink
+                                    to="/dashboard/profile"
+                                    className="hover:text-indigo-500"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Profile
+                                </NavLink>
+                                <NavLink
+                                    to="/dashboard"
+                                    className="hover:text-indigo-500"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Dashboard
+                                </NavLink>
+                                <NavLink
+                                    to="/practice-test"
+                                    className="hover:text-indigo-500"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Practice Tests
+                                </NavLink>
+                                <NavLink
+                                    to="/progress"
+                                    className="hover:text-indigo-500"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Progress
+                                </NavLink>
+                                <NavLink
+                                    to="/resources"
+                                    className="hover:text-indigo-500"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Resources
+                                </NavLink>
+                            </>
+                        )}
                     </div>
                 </div>
             </Container>
