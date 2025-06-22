@@ -42,7 +42,6 @@ export default function QuizFooter({
     onExitClick,
     onQuestionNavClick,
     onBackClick,
-    onCheckClick,
     onNextClick,
     isBackDisabled = false,
     isNextDisabled = false,
@@ -113,20 +112,6 @@ export default function QuizFooter({
                     whileTap={!isBackDisabled ? { scale: 0.95 } : {}}
                 >
                     <FaArrowLeft /> Back
-                </motion.button>
-
-                <motion.button
-                    onClick={onCheckClick}
-                    disabled={isCheckDisabled}
-                    className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center gap-2 text-base shadow-md ${isCheckDisabled ? 'cursor-not-allowed' : ''}`}
-                    style={{
-                        backgroundColor: isCheckDisabled ? COLORS.disabledBg : COLORS.navBtnCheck,
-                        color: isCheckDisabled ? COLORS.disabledText : COLORS.navBtnText,
-                    }}
-                    whileHover={!isCheckDisabled ? { scale: 1.05, boxShadow: '0 5px 10px rgba(140,82,255,0.3)' } : {}}
-                    whileTap={!isCheckDisabled ? { scale: 0.95 } : {}}
-                >
-                    <FaCheckCircle /> Check
                 </motion.button>
 
                 <motion.button

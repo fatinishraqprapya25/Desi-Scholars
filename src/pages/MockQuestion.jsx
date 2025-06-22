@@ -1,53 +1,58 @@
 // src/pages/MockQuestion.jsx
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import QuizHeader from "../components/mock/quiz/QuizHeader"; // Adjust path if necessary
-import QuizFooter from "../components/mock/quiz/QuizFooter"; // Adjust path if necessary
-
-// Import the new quiz body components
+import QuizHeader from "../components/mock/quiz/QuizHeader";
+import QuizFooter from "../components/mock/quiz/QuizFooter";
 import QuizMetadataBar from "../components/mock/quiz/QuizMetabar";
 import QuizActionButtons from "../components/mock/quiz/QuizActionButtons";
 import QuizOption from "../components/mock/quiz/QuizOption";
 import QuestionPromptAndPassage from "../components/mock/quiz/QuestionPromptAndPassage";
 
-
 export default function MockQuestion() {
     const { id } = useParams();
 
-    // --- Format Quiz Title from ID ---
     const quizTitle = id
         .split("-")
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
 
-    // --- State for Quiz Data (Mock Data) ---
-    // In a real application, you would fetch this data based on 'id' and 'currentQuestionIndex'
-    const [quizData, setQuizData] = useState({
-        metadata: {
-            questionId: '628e1305', // Example from screenshot
-            domain: 'Information and Ideas',
-            skill: 'Command of Evidence',
-            difficulty: 'E',
-            scoreBand: '1',
-        },
-        passageText: `“Valia” is a 1907 short story by Leonid Andreyev. In the story, the author emphasizes that the setting where the character Valia is reading is nearly silent: ________`,
-        questionPrompt: `Which quotation from “Valia” most effectively illustrates the claim?`,
-        options: [
-            { id: 'A', text: `“The hand in which he carried his book was getting stiff with cold, but he would not ask his mother to take the book from him.”` },
-            { id: 'B', text: `“Valia was reading a huge, very huge book, almost half as large as himself.”` },
-            { id: 'C', text: `“He did not read very fast, and it might be said that he read quite slowly, but this did not bother him at all.”` },
-            { id: 'D', text: `“Outside the window it was quiet, and only the rustling of the leaves in the bare maple trees could be heard at times.”` }, // Corrected spelling for example
-        ],
-    });
-
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
     const totalQuestions = 60;
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
     const [selectedOptionId, setSelectedOptionId] = useState(null);
-    const [initialTime, setInitialTime] = useState(500); // 
+    const [initialTime, setInitialTime] = useState(500);
+    const [quizData, setQuizData] = useState({});
+
+    // Mock function to simulate fetching question by index
+    const fetchQuestionByIndex = (index) => {
+        return {
+            metadata: {
+                questionId: `question-${index}`,
+                domain: 'Information and Ideas',
+                skill: 'Command of Evidence',
+                difficulty: index % 2 === 0 ? 'M' : 'E',
+                scoreBand: index <= 20 ? '1' : index <= 40 ? '2' : '3',
+            },
+            passageText: `"Valia" is a 1907 short story by Leonid Andreyev. The setting where Valia is reading is nearly silent: ________.`,
+            questionPrompt: `Q${index}: Which quotation from “Valia” most effectively illustrates the claim?`,
+            options: [
+                { id: 'A', text: `Option A content for question ${index}` },
+                { id: 'B', text: `Option B content for question ${index}` },
+                { id: 'C', text: `Option C content for question ${index}` },
+                { id: 'D', text: `Option D content for question ${index}` },
+            ],
+        };
+    };
+
+    useEffect(() => {
+        const data = fetchQuestionByIndex(currentQuestionIndex);
+        setQuizData(data);
+        setSelectedOptionId(null); // Clear selection on question change
+    }, [currentQuestionIndex]);
 
     const handleQuizTimeUp = () => {
         console.log("Quiz Time is Up!");
     };
+
     const handleChronologicalClick = () => {
         console.log("Chronological button clicked!");
     };
@@ -55,15 +60,19 @@ export default function MockQuestion() {
     const handleToggleAttempted = () => {
         console.log("Toggle Attempted/Unattempted clicked!");
     };
+
     const handleToggleMarkForReview = () => {
         console.log("Toggle Mark for Review clicked!");
     };
+
     const handlePostDoubt = () => {
         console.log("Post Doubt clicked!");
     };
+
     const handleReport = () => {
         console.log("Report button clicked!");
     };
+
     const handleEdit = () => {
         console.log("Edit button clicked!");
     };
@@ -72,83 +81,61 @@ export default function MockQuestion() {
         setSelectedOptionId(optionId);
         console.log(`Option ${optionId} selected.`);
     };
+
     const handleExit = () => {
         if (window.confirm("Are you sure you want to exit the quiz? Your progress might not be saved.")) {
             console.log("Exiting quiz...");
-
         }
     };
 
     const handleQuestionNav = () => {
         console.log("Open question navigation/list modal!");
-        // Implement logic to open a modal with all questions
     };
 
     const handleBack = () => {
         if (currentQuestionIndex > 1) {
             setCurrentQuestionIndex(prev => prev - 1);
-            console.log("Navigating back...");
-            setSelectedOptionId(null); // Clear selection for new question
-            // Logic to load previous question data
         }
-    };
-
-    const handleCheck = () => {
-        console.log("Checking answer for current question!");
-        // Implement logic to check the current question's answer against correct one
     };
 
     const handleNext = () => {
         if (currentQuestionIndex < totalQuestions) {
-            setCurrentQIndex(prev => prev + 1);
-            console.log("Navigating next...");
-            setSelectedOptionId(null); // Clear selection for new question
-            // Logic to load next question data
+            setCurrentQuestionIndex(prev => prev + 1);
         } else {
             console.log("This is the last question! Consider submitting quiz.");
-            // Implement logic for quiz submission
         }
     };
 
-    // --- Determine button disabled states for Footer ---
     const isBackBtnDisabled = currentQuestionIndex === 1;
     const isNextBtnDisabled = currentQuestionIndex === totalQuestions;
-    const isCheckBtnDisabled = !selectedOptionId; // Disable check if no option is selected
-
 
     return (
-        <div className="flex flex-col min-h-screen bg-gray-50"> {/* Added a light background to the whole page */}
+        <div className="flex flex-col min-h-screen bg-gray-50">
             <QuizHeader initialTime={initialTime} quizTitle={quizTitle} />
 
-            {/* Quiz Body Section */}
             <main className="flex-grow flex flex-col pt-4 pb-2 px-4 md:px-6 lg:px-8">
-                {/* Metadata Bar */}
                 <QuizMetadataBar
-                    questionId={quizData.metadata.questionId}
-                    domain={quizData.metadata.domain}
-                    skill={quizData.metadata.skill}
-                    difficulty={quizData.metadata.difficulty}
-                    scoreBand={quizData.metadata.scoreBand}
+                    questionId={quizData.metadata?.questionId}
+                    domain={quizData.metadata?.domain}
+                    skill={quizData.metadata?.skill}
+                    difficulty={quizData.metadata?.difficulty}
+                    scoreBand={quizData.metadata?.scoreBand}
                     onChronologicalClick={handleChronologicalClick}
                 />
 
-                {/* Main Content Area: Passage/Prompt (Left) and Options/Actions (Right) */}
                 <div className="flex flex-col lg:flex-row flex-grow mt-4 gap-6">
-                    {/* Left Column: Passage and Question Prompt */}
                     <div className="lg:w-1/2 flex-shrink-0 relative bg-white rounded-lg shadow-sm p-6 overflow-hidden">
                         <QuestionPromptAndPassage
                             passageText={quizData.passageText}
                             questionPrompt={quizData.questionPrompt}
                             onArrowClick={() => console.log("Column toggle arrow clicked!")}
-                            arrowDirection="right" // You can make this dynamic based on column state
+                            arrowDirection="right"
                         />
                     </div>
 
-                    {/* Right Column: Action Buttons and Options */}
                     <div className="lg:w-1/2 flex-shrink-0 bg-white rounded-lg shadow-sm p-6 flex flex-col overflow-hidden">
-                        {/* Action Buttons */}
                         <QuizActionButtons
-                            isUnattempted={false} // Example state
+                            isUnattempted={false}
                             isMarkedForReview={false}
                             isPostDoubt={false}
                             onToggleAttempted={handleToggleAttempted}
@@ -158,9 +145,8 @@ export default function MockQuestion() {
                             onEdit={handleEdit}
                         />
 
-                        {/* Options */}
                         <div className="flex flex-col space-y-4">
-                            {quizData.options.map((option) => (
+                            {quizData.options?.map((option) => (
                                 <QuizOption
                                     key={option.id}
                                     optionLetter={option.id}
@@ -174,18 +160,15 @@ export default function MockQuestion() {
                 </div>
             </main>
 
-            {/* Footer */}
             <QuizFooter
                 currentQuestionIndex={currentQuestionIndex}
                 totalQuestions={totalQuestions}
                 onExitClick={handleExit}
                 onQuestionNavClick={handleQuestionNav}
                 onBackClick={handleBack}
-                onCheckClick={handleCheck}
                 onNextClick={handleNext}
                 isBackDisabled={isBackBtnDisabled}
                 isNextDisabled={isNextBtnDisabled}
-                isCheckDisabled={isCheckBtnDisabled}
             />
         </div>
     );

@@ -1,7 +1,5 @@
-// src/pages/Mock.jsx
-import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaLightbulb, FaChartLine, FaBook, FaBrain, FaLaptopCode, FaClock, FaPlayCircle, FaCheckCircle, FaStar, FaPuzzlePiece } from 'react-icons/fa'; // Added more icons
+import { FaLightbulb, FaChartLine, FaBook, FaBrain, FaLaptopCode, FaClock, FaPlayCircle, FaCheckCircle, FaStar, FaPuzzlePiece } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 import Header from "../components/common/Header";
@@ -11,7 +9,6 @@ import GeneralContents from '../components/mock/GeneralContents';
 import MockGrid from '../components/mock/MockGrid';
 import WhyUs from '../components/mock/WhyUs';
 
-// constant colors
 const COLORS = {
     primary: '#3B82F6', // blue-500
     primaryDarker: '#2563EB', // blue-600
@@ -25,7 +22,6 @@ const COLORS = {
     border: '#E5E7EB', // gray-200
 };
 
-// demo mock tests
 const mockTests = [
     {
         id: 'general-aptitude-1',
