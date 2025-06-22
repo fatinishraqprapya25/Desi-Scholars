@@ -8,6 +8,7 @@ import 'swiper/css/pagination';
 
 // import required modules
 import { Autoplay, EffectCoverflow, Pagination } from 'swiper/modules';
+import { Link } from "react-router-dom";
 
 const courses = [
     {
@@ -144,12 +145,12 @@ export default function TopCourses() {
                                         </div>
 
                                         <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mt-auto">
-                                            <button className="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-md cursor-pointer">
+                                            <Link to="/checkout"><button className="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-md cursor-pointer">
                                                 Enroll Now
-                                            </button>
-                                            <button className="flex-1 bg-gray-200 text-gray-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-all duration-300 transform hover:scale-105 shadow-md cursor-pointer">
+                                            </button></Link>
+                                            <Link to="/courses/1221"> <button className="flex-1 bg-gray-200 text-gray-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-all duration-300 transform hover:scale-105 shadow-md cursor-pointer">
                                                 Course Details
-                                            </button>
+                                            </button></Link>
                                         </div>
                                     </div>
                                 </div>
