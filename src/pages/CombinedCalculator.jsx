@@ -16,6 +16,7 @@ import {
     Box,
 } from "lucide-react";
 
+// All available calculators with icons
 const calculators = {
     "Four Function": {
         component: FourFunctionCalculator,
@@ -23,7 +24,7 @@ const calculators = {
     },
     Scientific: {
         component: ScientificCalculator,
-        icon: Sigma, // Represents summation, often associated with scientific calculators
+        icon: Sigma,
     },
     Graphing: {
         component: GraphingCalculator,
@@ -43,92 +44,89 @@ const calculators = {
     },
 };
 
+// Calculator Tab Interface
 const CombinedCalculator = () => {
     const [activeTab, setActiveTab] = useState("Four Function");
     const ActiveCalculatorComponent = calculators[activeTab].component;
 
     return (
-        <div className="min-h-screen bg-gray-100 p-6">
-            {/* Tab Buttons with Icons */}
-            <div className="flex flex-wrap justify-center gap-3 mb-6">
+        <div className="bg-gray-100 p-2">
+            {/* Calculator Tabs */}
+            <div className="flex flex-wrap justify-center gap-2 mb-6">
                 {Object.entries(calculators).map(([name, { icon: Icon }]) => (
                     <button
                         key={name}
                         onClick={() => setActiveTab(name)}
-                        className={`flex items-center justify-center px-4 py-2 rounded-full font-medium border transition-colors
+                        style={{ fontSize: "10px" }}
+                        className={`flex items-center justify-center px-3  py-2 rounded-full font-medium border transition-colors
                             ${activeTab === name
                                 ? "bg-blue-600 text-white border-blue-600"
                                 : "bg-white text-gray-700 border-gray-300 hover:bg-blue-100"
                             }`}
-                        title={name} // Add title for hover tooltip
+                        title={name}
                     >
-                        <Icon className="h-5 w-5" />
-                        <span className="sr-only">{name} Calculator</span> {/* For accessibility */}
+                        <Icon className="h-4 w-4 font-bold" />
+                        <span className="sr-only">{name} Calculator</span>
                     </button>
                 ))}
             </div>
 
-            {/* Active Calculator Component */}
-            <div className="bg-white p-4 rounded-xl shadow-md">
+            {/* Render Active Calculator */}
+            <div className="bg-white shadow-md">
                 <ActiveCalculatorComponent />
             </div>
         </div>
     );
 };
 
+// Dragable Floating Calculator Window
 const DragableCalculator = () => {
-    const [position, setPosition] = useState({ x: 50, y: 50 });
+    const [x, setX] = useState(40);
     const [isDragging, setIsDragging] = useState(false);
-    const [startPos, setStartPos] = useState({ x: 0, y: 0 });
+    const [startX, setStartX] = useState(0);
+    const [isVisible, setIsVisible] = useState(true);
 
     const handleMouseDown = (e) => {
         setIsDragging(true);
-        setStartPos({
-            x: e.clientX - position.x,
-            y: e.clientY - position.y,
-        });
+        setStartX(e.clientX - x);
     };
 
     const handleMouseMove = (e) => {
         if (isDragging) {
-            setPosition({
-                x: e.clientX - startPos.x,
-                y: e.clientY - startPos.y,
-            });
+            setX(e.clientX - startX);
         }
     };
 
-    const handleMouseUp = () => {
-        setIsDragging(false);
-    };
+    const handleMouseUp = () => setIsDragging(false);
+
+    if (!isVisible) return null;
 
     return (
         <div
-            className="fixed z-50"
-            style={{
-                top: position.y,
-                left: position.x,
-            }}
+            className="fixed top-0 z-50"
+            style={{ left: x }}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
         >
-            {/* Top bar */}
-            <div
-                className="bg-gray-800 text-white p-2 text-sm cursor-move rounded-t-lg flex justify-between items-center"
-                onMouseDown={handleMouseDown}
-            >
-                <span>Mobile Calculator</span>
-                <button
-                    className="bg-red-600 text-white rounded px-2"
-                    onClick={() => document.getElementById("iframe-window").style.display = "none"}
+            {/* Draggable Top Bar */}
+            <div className="flex flex-col w-fit bg-white border border-gray-300 rounded-lg shadow-2xl">
+                <div
+                    className="bg-purple-700 text-white p-2 text-sm cursor-ew-resize rounded-t-lg flex justify-between items-center"
+                    onMouseDown={handleMouseDown}
                 >
-                    X
-                </button>
-            </div>
+                    <span className="font-medium">Desmos Calculator</span>
+                    <button
+                        className="bg-red-600 hover:bg-red-700 text-white font-bold rounded px-2"
+                        onClick={() => setIsVisible(false)}
+                    >
+                        ✕
+                    </button>
+                </div>
 
-            {/* Iframe */}
-            <div className="w-[700] h-[667px] overflow-hidden border border-gray-300 rounded-b-lg shadow-lg">
-                <CombinedCalculator />
+                {/* Calculator Body - Responsive */}
+                <div className="max-h-screen">
+                    <CombinedCalculator />
+                </div>
             </div>
         </div>
     );

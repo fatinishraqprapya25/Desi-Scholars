@@ -1,5 +1,14 @@
 export default function CalculatorWrapper({ source }) {
-    return <>
-        <iframe className="w-[375px] h-[667px] overflow-hidden border border-gray-300 rounded-lg mx-auto" src={source} title="W3Schools Free Online Web Tutorials" height="700px"></iframe>
-    </>
+    return (
+        <div className="w-full h-screen bg-gray-100" style={{ width: "400px" }}>
+            <div className="w-full h-full mx-auto rounded-xl overflow-hidden border border-gray-300 shadow-lg">
+                <iframe
+                    src={source}
+                    title="Calculator"
+                    className="w-full h-full"
+                    style={{ border: "none", height: "82%" }}
+                />
+            </div>
+        </div>
+    );
 }
