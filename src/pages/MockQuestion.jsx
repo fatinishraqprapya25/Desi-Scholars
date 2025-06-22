@@ -1,6 +1,6 @@
 // src/pages/MockQuestion.jsx
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import QuizHeader from "../components/mock/quiz/QuizHeader";
 import QuizFooter from "../components/mock/quiz/QuizFooter";
 import QuizMetadataBar from "../components/mock/quiz/QuizMetabar";
@@ -43,6 +43,8 @@ export default function MockQuestion() {
         };
     };
 
+    const navigate = useNavigate("");
+
     useEffect(() => {
         const data = fetchQuestionByIndex(currentQuestionIndex);
         setQuizData(data);
@@ -83,9 +85,7 @@ export default function MockQuestion() {
     };
 
     const handleExit = () => {
-        if (window.confirm("Are you sure you want to exit the quiz? Your progress might not be saved.")) {
-            console.log("Exiting quiz...");
-        }
+        navigate("/mock");
     };
 
     const handleQuestionNav = () => {
