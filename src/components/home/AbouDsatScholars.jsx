@@ -46,14 +46,12 @@ export default function AboutDSATScholars() {
                         <h2 className="text-3xl font-extrabold text-gray-800 mb-4"> {/* Darker gray for main heading */}
                             Discover <span className="text-indigo-600">DSAT Scholars</span> {/* Accent color for the name */}
                         </h2>
-                        <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                        {/* <p className="text-gray-700 text-lg leading-relaxed mb-6">
                             In Kurigram, Rangpur Division, Bangladesh, **DSAT Scholars** is dedicated to bringing
                             high-quality educational resources to aspiring learners.
-                        </p>
+                        </p> */}
                         <p className="text-gray-600 leading-relaxed mb-8">
-                            Our carefully curated courses, extensive learning materials, and challenging practice
-                            tests are designed to empower individuals in our community and beyond, fostering
-                            growth and enabling them to excel in their chosen fields.
+                            At DSAT Scholars, we provide free, expert-led test prep and college mentorship to help Bangladeshi students from every background succeed. Whether you're studying in a village classroom or on your phone at home, our mission is to guide you toward global opportunities — with the resources, support, and belief you need to thrive.
                         </p>
                         <motion.button
                             whileHover={{ scale: 1.05, boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.1)" }}

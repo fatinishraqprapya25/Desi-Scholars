@@ -46,7 +46,7 @@ export default function PracticeTestPromo() {
                         viewport={{ once: true }}
                         transition={{ delay: 0.5, duration: 0.6 }}
                     >
-                        Dive into our **free practice tests** and pinpoint your strengths and areas for growth. Whether it's **JavaScript, React**, or any other core subject, we've got you covered. It's quick, insightful, and absolutely free!
+                        In today’s world, opportunities like full scholarships to top U.S. colleges should not be limited to students from elite institutions in Dhaka or those who can afford private coaching.
                     </motion.p>
                     <motion.a
                         href="/practice-tests" // Changed to a more meaningful link

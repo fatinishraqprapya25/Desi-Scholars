@@ -42,8 +42,7 @@ export default function Hero() {
                         </h1>
 
                         <p className="text-gray-700 text-lg md:text-xl mb-8 max-w-xl mx-auto md:mx-0 leading-relaxed">
-                            Join thousands of learners in **Kurigram, Bangladesh**, mastering new skills and advancing their careers
-                            with our **top-tier courses, comprehensive resources, and practice tests.**
+                            Master the Digital SAT, craft standout college applications, and unlock full scholarships — no matter where you're from.
                         </p>
 
                         <motion.div
@@ -53,7 +52,7 @@ export default function Hero() {
                             transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
                         >
                             <Link
-                                to="/webinar"
+                                to="/about"
                                 className="inline-flex items-center justify-center bg-indigo-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
@@ -61,7 +60,7 @@ export default function Hero() {
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m-5 4v-8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2h3a2 2 0 002-2z" />
                                 </svg>
-                                Join Free Webinar
+                                About Us
                             </Link>
                             <Link
                                 to="/courses"

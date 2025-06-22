@@ -91,7 +91,7 @@ const TutorialsSection = () => {
         >
 
           <h2 className="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-gray-800 mb-4 leading-tight tracking-tight">
-            Unlock New Skills with Our <br /><span style={{ color: accentPurple }}>Coding Tutorials</span>
+            Unlock New Skills with Our <br /><span style={{ color: accentPurple }}>Awesome Tutorials</span>
           </h2>
           <p className="text-gray-700 leading-relaxed text-lg lg:text-xl max-w-xl md:max-w-none mx-auto md:mx-0">
             Dive into web development with our **concise, practical, and highly engaging tutorials**. Whether you're a beginner or looking to sharpen your skills, we've got you covered.

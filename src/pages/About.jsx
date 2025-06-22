@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
+import { Link } from 'react-router-dom';
 
 const AboutUs = () => {
     // Animation variants for sections
@@ -40,7 +41,7 @@ const AboutUs = () => {
                             className="text-xl sm:text-2xl font-light max-w-3xl mx-auto mb-10 text-shadow-md" // Text shadow
                             variants={itemVariants}
                         >
-                            We are dedicated to transforming education through innovative and accessible learning experiences.
+                            Empowering Bangladeshi students with free SAT prep and college guidance to unlock global opportunities.
                         </motion.p>
                         <div className="flex flex-col sm:flex-row justify-center gap-6"> {/* Increased gap */}
                             <motion.button
@@ -82,7 +83,9 @@ const AboutUs = () => {
                             Our Mission
                         </motion.h2>
                         <motion.p className="text-lg leading-relaxed text-center max-w-4xl mx-auto text-gray-700" variants={itemVariants}>
-                            Our core mission is to democratize education by providing high-quality, engaging, and free practice tests and learning resources. We believe that everyone deserves the opportunity to unlock their full potential and achieve academic success, regardless of their background or location. We are committed to fostering a love for learning and building confidence in students worldwide.
+                            At DSAT Scholars, our mission is simple: to make world-class SAT prep and U.S. college admissions guidance accessible to every Bangladeshi student — no matter their background, location, or financial status. We believe that your dreams shouldn't be limited by your ZIP code. That's why we offer completely free resources, mentorship, and support to help you succeed — from test prep to college essays and everything in between.
+
+                            We’re not just building better applications — we’re building brighter futures.
                         </motion.p>
                     </div>
                 </motion.section>
@@ -150,7 +153,11 @@ const AboutUs = () => {
                             Our Vision
                         </motion.h2>
                         <motion.p className="text-lg leading-relaxed text-center max-w-4xl mx-auto text-gray-700" variants={itemVariants}>
-                            We envision a future where learning is limitless, accessible, and tailored to individual needs. We are continuously innovating to expand our content, enhance our features, and integrate cutting-edge technologies to provide the most effective and enjoyable learning experience possible. Our goal is to be a leading platform in online education, inspiring millions to achieve their academic and personal goals.
+                            We envision a Bangladesh where every student — no matter where they’re from or what they can afford — has access to world-class SAT prep and U.S. college guidance.
+
+                            DSAT Scholars aims to break barriers of geography and privilege by offering free resources, mentorship, and support to help students succeed globally. We believe talent is everywhere — in villages and cities alike — and our vision is to unlock that potential.
+
+                            Beyond test scores, we’re building a future where opportunity is a right, not a privilege.
                         </motion.p>
                     </div>
                 </motion.section>
@@ -170,16 +177,16 @@ const AboutUs = () => {
                         <motion.p className="text-xl mb-10 max-w-3xl mx-auto font-light" variants={itemVariants}>
                             Explore our practice tests and start your journey towards mastery today.
                         </motion.p>
-                        <motion.button
-                            className="bg-white text-indigo-700 py-4 px-10 rounded-full text-lg font-bold shadow-xl
+                        <Link to="/">
+                            <motion.button
+                                className="bg-white text-indigo-700 py-4 px-10 rounded-full text-lg font-bold shadow-xl
                             hover:bg-gray-100 transition-all duration-300 transform hover:scale-105
                             focus:outline-none focus:ring-4 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-700"
-                            whileHover={{ scale: 1.07, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => alert('Navigate to Home/Test Page')} // Placeholder for navigation
-                        >
-                            Start Learning Now
-                        </motion.button>
+                                whileHover={{ scale: 1.07, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                Start Learning Now
+                            </motion.button></Link>
                     </div>
                 </motion.section>
             </div>
