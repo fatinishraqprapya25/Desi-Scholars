@@ -31,15 +31,15 @@ const calculators = {
     },
     Matrix: {
         component: MatrixCalculator,
-        icon: Grid, // Represents a grid-like structure, suitable for matrices
+        icon: Grid,
     },
     Geometry: {
         component: GeometryCalculator,
-        icon: Square, // Represents a basic geometric shape
+        icon: Square,
     },
     "3D Graphing": {
         component: Desmos3DCalculator,
-        icon: Box, // Represents a 3D box
+        icon: Box,
     },
 };
 
