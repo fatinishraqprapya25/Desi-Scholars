@@ -77,6 +77,8 @@ function App() {
           <FreePracticeTest />
           <Footer />
         </>} />
+        <Route path="/practice-tests/:id" element={<MockQuestion />} />
+
         <Route path="/mock" element={<MockPage />} />
         <Route path="/mock/:id" element={<MockQuestion />} />
         <Route path="/video/c" element={<VideoPlayer />} />

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
 // Mock data for the questions section
 const questionsData = [
@@ -56,9 +57,9 @@ const questionsData = [
 // Component to display a single subject card
 const SubjectCard = ({ subjectData }) => {
     return (
-        <div className="bg-white rounded-lg shadow-md p-6 flex flex-col h-fit">
+        <div className="bg-white rounded-lg shadow-md p-6 flex flex-col h-full">
             {/* Subject Header */}
-            <div className="flex items-center mb-4"  >
+            <div className="flex items-center mb-4">
                 <span className="bg-purple-600 text-white text-xs font-semibold px-2 py-1 rounded-full mr-2">
                     {subjectData.id}
                 </span>
@@ -67,14 +68,22 @@ const SubjectCard = ({ subjectData }) => {
                 </h3>
             </div>
 
-            <div className="flex-grow fit-content">
+            {/* Topics List */}
+            <div className="flex-grow"> {/* Allows the list to grow and fill available space */}
                 {subjectData.topics.map((topic) => (
-                    <div key={topic.id} className="flex items-center mb-3">
-                        <span className="bg-pink-500 text-white text-xs font-semibold px-2 py-1 rounded-full mr-3 min-w-[36px] text-center">
+                    // Wrap the topic div with Link for navigation
+                    <Link
+                        key={topic.id}
+                        to={`/practice-tests/${topic.id}`}
+                        className="flex items-center mb-3 group p-2 rounded-md hover:bg-gray-100 transition-colors duration-200"
+                    >
+                        <span className="bg-pink-500 text-white text-xs font-semibold px-2 py-1 rounded-full mr-3 min-w-[36px] text-center group-hover:bg-pink-600 transition-colors duration-200">
                             {topic.id}
                         </span>
-                        <p className="text-gray-700 text-base">{topic.name}</p>
-                    </div>
+                        <p className="text-gray-700 text-base group-hover:text-blue-700 transition-colors duration-200">
+                            {topic.name}
+                        </p>
+                    </Link>
                 ))}
             </div>
         </div>
@@ -96,6 +105,38 @@ export default function QuestionsSection() {
 
 // App component to render the QuestionsSection and load Tailwind CSS
 export function App() {
+    // Simple routing for demonstration purposes
+    const [currentPath, setCurrentPath] = React.useState('/');
+
+    // Simulate routing using hash for in-browser demonstration without a real server
+    React.useEffect(() => {
+        const handleHashChange = () => {
+            setCurrentPath(window.location.hash.substring(1) || '/');
+        };
+        window.addEventListener('hashchange', handleHashChange);
+        handleHashChange(); // Set initial path
+        return () => window.removeEventListener('hashchange', handleHashChange);
+    }, []);
+
+    let content;
+    if (currentPath.startsWith('/practice-tests/')) {
+        const topicId = currentPath.split('/')[2];
+        content = (
+            <div className="text-center p-8 bg-white rounded-lg shadow-md max-w-md mx-auto my-12">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Practice Test</h2>
+                <p className="text-lg text-gray-600">You are viewing practice tests for Topic ID: <span className="font-semibold text-blue-600">{topicId}</span></p>
+                <button
+                    onClick={() => window.location.hash = '#/'}
+                    className="mt-6 px-6 py-3 rounded-md bg-blue-600 text-white shadow-md hover:bg-blue-700 transition-colors duration-200"
+                >
+                    Go Back to Questions
+                </button>
+            </div>
+        );
+    } else {
+        content = <QuestionsSection />;
+    }
+
     return (
         <>
             {/* Tailwind CSS CDN */}
@@ -116,7 +157,7 @@ export function App() {
         `}
             </style>
             <div className="container mx-auto p-4">
-                <QuestionsSection />
+                {content}
             </div>
         </>
     );
