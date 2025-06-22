@@ -50,7 +50,7 @@ export default function QuizFooter({
 }) {
     return (
         <motion.footer
-            className="w-full py-3 px-4 md:px-6 lg:px-8 flex items-center justify-between sticky bottom-0 z-50 border-t"
+            className="w-full py-3 px-4 md:px-6 lg:px-8 flex items-center justify-between sticky bottom-0 border-t"
             style={{ backgroundColor: COLORS.footerBg, borderColor: COLORS.borderColor }}
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}

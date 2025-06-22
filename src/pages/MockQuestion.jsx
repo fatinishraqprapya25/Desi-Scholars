@@ -7,6 +7,7 @@ import QuizMetadataBar from "../components/mock/quiz/QuizMetabar";
 import QuizActionButtons from "../components/mock/quiz/QuizActionButtons";
 import QuizOption from "../components/mock/quiz/QuizOption";
 import QuestionPromptAndPassage from "../components/mock/quiz/QuestionPromptAndPassage";
+import CombinedCalculator from "./CombinedCalculator";
 
 export default function MockQuestion() {
     const { id } = useParams();
@@ -21,6 +22,7 @@ export default function MockQuestion() {
     const [selectedOptionId, setSelectedOptionId] = useState(null);
     const [initialTime, setInitialTime] = useState(500);
     const [quizData, setQuizData] = useState({});
+    const [showCal, setShowCal] = useState(false);
 
     // Mock function to simulate fetching question by index
     const fetchQuestionByIndex = (index) => {
@@ -109,9 +111,14 @@ export default function MockQuestion() {
     const isBackBtnDisabled = currentQuestionIndex === 1;
     const isNextBtnDisabled = currentQuestionIndex === totalQuestions;
 
+    const showCalculator = () => {
+        setShowCal(!showCal);
+    }
+
     return (
         <div className="flex flex-col min-h-screen bg-gray-50">
-            <QuizHeader initialTime={initialTime} quizTitle={quizTitle} />
+            {showCal && <CombinedCalculator />}
+            <QuizHeader initialTime={initialTime} quizTitle={quizTitle} showCalculator={showCalculator} />
 
             <main className="flex-grow flex flex-col pt-4 pb-2 px-4 md:px-6 lg:px-8">
                 <QuizMetadataBar

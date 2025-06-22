@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 // Import relevant icons for the buttons
-import { FaLightbulb, FaBookOpen } from 'react-icons/fa';
+import { FaLightbulb, FaBookOpen, FaCalculator } from 'react-icons/fa';
 
 // Define colors (can still be imported from a central file if you have one)
 const COLORS = {
@@ -16,7 +16,7 @@ const COLORS = {
     buttonHoverBg: '#F3F4F6', // Light gray on hover
 };
 
-export default function QuizHeader({ quizTitle, initialTime }) {
+export default function QuizHeader({ quizTitle, initialTime, showCalculator }) {
     const [timeRemaining, setTimeRemaining] = useState(initialTime);
 
     // Timer logic
@@ -59,7 +59,7 @@ export default function QuizHeader({ quizTitle, initialTime }) {
 
     return (
         <motion.header
-            className="w-full py-3 px-4 md:px-6 lg:px-8 flex items-center justify-between sticky top-0 z-50 border-b"
+            className="w-full py-3 px-4 md:px-6 lg:px-8 flex items-center justify-between sticky top-0 border-b"
             style={{ backgroundColor: COLORS.headerBg, borderColor: COLORS.borderColor }}
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -98,8 +98,8 @@ export default function QuizHeader({ quizTitle, initialTime }) {
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.7 }}
             >
-                <motion.button
-                    // onClick handler removed as per the simplified parameter requirement
+                <motion.button onClick={showCalculator}
+
                     className="flex items-center px-4 py-2 rounded-full border font-semibold text-sm sm:text-base"
                     style={{
                         backgroundColor: COLORS.buttonBg,
@@ -109,20 +109,7 @@ export default function QuizHeader({ quizTitle, initialTime }) {
                     whileHover={{ scale: 1.05, backgroundColor: COLORS.buttonHoverBg }}
                     whileTap={{ scale: 0.95 }}
                 >
-                    <FaLightbulb className="mr-2" /> Hint
-                </motion.button>
-                <motion.button
-                    // onClick handler removed as per the simplified parameter requirement
-                    className="flex items-center px-4 py-2 rounded-full border font-semibold text-sm sm:text-base"
-                    style={{
-                        backgroundColor: COLORS.buttonBg,
-                        borderColor: COLORS.buttonBorder,
-                        color: COLORS.textPrimary
-                    }}
-                    whileHover={{ scale: 1.05, backgroundColor: COLORS.buttonHoverBg }}
-                    whileTap={{ scale: 0.95 }}
-                >
-                    <FaBookOpen className="mr-2" /> Dictionary
+                    <FaCalculator className="mr-2" /> Calculator
                 </motion.button>
             </motion.div>
         </motion.header>

@@ -43,7 +43,7 @@ const calculators = {
     },
 };
 
-const App = () => {
+const CombinedCalculator = () => {
     const [activeTab, setActiveTab] = useState("Four Function");
     const ActiveCalculatorComponent = calculators[activeTab].component;
 
@@ -76,4 +76,62 @@ const App = () => {
     );
 };
 
-export default App;
+const DragableCalculator = () => {
+    const [position, setPosition] = useState({ x: 50, y: 50 });
+    const [isDragging, setIsDragging] = useState(false);
+    const [startPos, setStartPos] = useState({ x: 0, y: 0 });
+
+    const handleMouseDown = (e) => {
+        setIsDragging(true);
+        setStartPos({
+            x: e.clientX - position.x,
+            y: e.clientY - position.y,
+        });
+    };
+
+    const handleMouseMove = (e) => {
+        if (isDragging) {
+            setPosition({
+                x: e.clientX - startPos.x,
+                y: e.clientY - startPos.y,
+            });
+        }
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+
+    return (
+        <div
+            className="fixed z-50"
+            style={{
+                top: position.y,
+                left: position.x,
+            }}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+        >
+            {/* Top bar */}
+            <div
+                className="bg-gray-800 text-white p-2 text-sm cursor-move rounded-t-lg flex justify-between items-center"
+                onMouseDown={handleMouseDown}
+            >
+                <span>Mobile Calculator</span>
+                <button
+                    className="bg-red-600 text-white rounded px-2"
+                    onClick={() => document.getElementById("iframe-window").style.display = "none"}
+                >
+                    X
+                </button>
+            </div>
+
+            {/* Iframe */}
+            <div className="w-[700] h-[667px] overflow-hidden border border-gray-300 rounded-b-lg shadow-lg">
+                <CombinedCalculator />
+            </div>
+        </div>
+    );
+};
+
+export default DragableCalculator;
