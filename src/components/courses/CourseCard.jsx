@@ -6,8 +6,8 @@ const CourseCard = ({
     courseImage,
     instructorName,
     instructorAvatarUrl,
-    ratingValue,
-    reviewCount,
+    ratings,
+    _id,
     studentCount,
     duration,
     tags,
@@ -17,8 +17,7 @@ const CourseCard = ({
     const defaultAvatar = 'https://surli.cc/onzxll';
 
     const handleEnrollClick = () => {
-        // Navigate to the course details page
-        window.location.href = "/courses/1221";
+        window.location.href = `/courses/${_id}`;
     };
 
     return (
@@ -47,8 +46,8 @@ const CourseCard = ({
                             <FaStar key={i} className="w-4 h-4" />
                         ))}
                     </div>
-                    <span className="font-semibold text-gray-800">{ratingValue ? ratingValue.toFixed(2) : "3.5"}</span>
-                    <span className="text-gray-500 ml-1">({500})</span>
+                    <span className="font-semibold text-gray-800">{ratings ? ratings.length.toFixed(2) : "3.5"}</span>
+                    <span className="text-gray-500 ml-1">({ratings.length})</span>
                 </div>
 
                 {/* Course Title */}
