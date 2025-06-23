@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { BookOpen, Image, Trash2, PlusCircle } from 'lucide-react';
+import { BookOpen, Image, Trash2, PlusCircle, Edit } from 'lucide-react';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
 
 export default function CourseEditor() {
@@ -16,11 +16,25 @@ export default function CourseEditor() {
     const [previewImage, setPreviewImage] = useState('');
     const [imageFile, setImageFile] = useState(null);
 
+    // State for adding new video module
     const [showVideoForm, setShowVideoForm] = useState(false);
     const [newVideo, setNewVideo] = useState({ title: '', link: '' });
 
+    // State for editing video module
+    const [editingModuleId, setEditingModuleId] = useState(null);
+    const [editVideo, setEditVideo] = useState({ title: '', link: '' });
+
+    // State for adding new learning material
+    const [showLearningForm, setShowLearningForm] = useState(false);
+    const [newLearning, setNewLearning] = useState({ title: '' });
+
+    // State for editing learning material
+    const [editingLearningId, setEditingLearningId] = useState(null);
+    const [editLearning, setEditLearning] = useState({ title: '' });
+
     const adminToken = localStorage.getItem("ASDFDKFFJF");
 
+    // --- Data Fetching ---
     useEffect(() => {
         const fetchData = async () => {
             if (!id) {
@@ -33,7 +47,6 @@ export default function CourseEditor() {
                 // Fetch Course Details
                 const courseResponse = await fetch(`http://localhost:5000/api/courses/${id}`);
                 if (!courseResponse.ok) throw new Error(`HTTP error! status: ${courseResponse.status}`);
-
                 const courseResult = await courseResponse.json();
                 if (courseResult.success) {
                     setCourseData(courseResult.data);
@@ -52,7 +65,6 @@ export default function CourseEditor() {
                         "Authorization": `Bearer ${adminToken}`
                     }
                 });
-
                 if (modulesResponse.ok) {
                     const modulesResult = await modulesResponse.json();
                     if (modulesResult.success) {
@@ -65,31 +77,40 @@ export default function CourseEditor() {
                     console.error("Error fetching course modules:", modulesResponse.statusText);
                     setCourseModules([]);
                 }
+
+                // Fetch Learnings (Course Materials)
+                const materialsResponse = await fetch(`http://localhost:5000/api/matrials/${id}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "Application/json",
+                        "Authorization": `Bearer ${adminToken}`
+                    }
+                });
+                if (materialsResponse.ok) {
+                    const materialsResult = await materialsResponse.json();
+                    if (materialsResult.success) {
+                        setCourseMatrials(materialsResult.data);
+                    } else {
+                        console.warn("Failed to fetch course materials:", materialsResult.message);
+                        setCourseMatrials([]);
+                    }
+                } else {
+                    console.error("Error fetching course materials:", materialsResponse.statusText);
+                    setCourseMatrials([]);
+                }
+
             } catch (err) {
                 setError('Network error or server unavailable. Please try again.');
                 console.error("Error fetching details:", err);
             } finally {
                 setLoading(false);
             }
-
-            // fetch learnings here
-            const learningsResponse = await fetch("http://localhost:5000/api/matrials");
-            if (!learningsResponse.ok) {
-                alert("failed to fetch matrials");
-                return;
-            }
-            const learningResult = await learningsResponse.json();
-            if (!learningResult.success) {
-                alert(learningResult.message);
-                return;
-            }
-            setCourseMatrials(learningResult.data);
         };
 
         fetchData();
     }, [id, adminToken]);
 
-
+    // --- Module (Video) Functions ---
     const addModule = async () => {
         if (!newVideo.title || !newVideo.link) {
             alert("Please provide both title and link for the video.");
@@ -151,6 +172,157 @@ export default function CourseEditor() {
         }
     };
 
+    const handleEditModule = (module) => {
+        setEditingModuleId(module._id);
+        setEditVideo({ title: module.moduleName, link: module.videoLink });
+        setShowVideoForm(false); // Hide add form if showing
+    };
+
+    const handleUpdateModule = async () => {
+        if (!editVideo.title || !editVideo.link) {
+            alert("Please provide both title and link for the video module.");
+            return;
+        }
+
+        try {
+            const updatedModule = {
+                moduleName: editVideo.title,
+                videoLink: editVideo.link,
+            };
+            const response = await fetch(`http://localhost:5000/api/modules/${editingModuleId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "Application/json",
+                    "Authorization": `Bearer ${adminToken}`
+                },
+                body: JSON.stringify(updatedModule)
+            });
+
+            const result = await response.json();
+            if (response.ok && result.success) {
+                setCourseModules((prevModules) =>
+                    prevModules.map((module) =>
+                        module._id === editingModuleId ? { ...module, moduleName: editVideo.title, videoLink: editVideo.link } : module
+                    )
+                );
+                setEditingModuleId(null);
+                setEditVideo({ title: '', link: '' });
+                alert("Module updated successfully!");
+            } else {
+                throw new Error(result.message || "Failed to update module.");
+            }
+        } catch (err) {
+            alert("Error updating module: " + err.message);
+            console.error("Error updating module:", err);
+        }
+    };
+
+    // --- Learning Material Functions ---
+    const addLearning = async () => {
+        if (!newLearning.title) {
+            alert("Please provide a title for the learning material.");
+            return;
+        }
+
+        try {
+            const learningToAdd = {
+                courseId: id,
+                title: newLearning.title,
+            };
+            const response = await fetch("http://localhost:5000/api/matrials", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "Application/json",
+                    "Authorization": `Bearer ${adminToken}`
+                },
+                body: JSON.stringify(learningToAdd)
+            });
+
+            const result = await response.json();
+            if (response.ok && result.success) {
+                setCourseMatrials((prevMatrials) => [...prevMatrials, result.data]);
+                setNewLearning({ title: '' });
+                setShowLearningForm(false);
+                alert("Learning material added successfully!");
+            } else {
+                throw new Error(result.message || "Failed to add learning material.");
+            }
+        } catch (err) {
+            alert("Error adding learning material: " + err.message);
+            console.error("Error adding learning material:", err);
+        }
+    };
+
+    const handleDeleteLearning = async (learningId) => {
+        if (!window.confirm("Are you sure you want to delete this learning material?")) {
+            return;
+        }
+        try {
+            const response = await fetch(`http://localhost:5000/api/matrials/${learningId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${adminToken}`
+                }
+            });
+
+            const result = await response.json();
+            if (response.ok && result.success) {
+                setCourseMatrials((prevMatrials) => prevMatrials.filter((material) => material._id !== learningId));
+                alert("Learning material deleted successfully!");
+            } else {
+                throw new Error(result.message || "Failed to delete learning material.");
+            }
+        } catch (err) {
+            alert("Error deleting learning material: " + err.message);
+            console.error("Error deleting learning material:", err);
+        }
+    };
+
+    const handleEditLearning = (learning) => {
+        setEditingLearningId(learning._id);
+        setEditLearning({ title: learning.title });
+        setShowLearningForm(false); // Hide add form if showing
+    };
+
+    const handleUpdateLearning = async () => {
+        if (!editLearning.title) {
+            alert("Please provide a title for the learning material.");
+            return;
+        }
+
+        try {
+            const updatedLearning = {
+                title: editLearning.title,
+            };
+            const response = await fetch(`http://localhost:5000/api/matrials/${editingLearningId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "Application/json",
+                    "Authorization": `Bearer ${adminToken}`
+                },
+                body: JSON.stringify(updatedLearning)
+            });
+
+            const result = await response.json();
+            if (response.ok && result.success) {
+                setCourseMatrials((prevMatrials) =>
+                    prevMatrials.map((material) =>
+                        material._id === editingLearningId ? { ...material, title: editLearning.title } : material
+                    )
+                );
+                setEditingLearningId(null);
+                setEditLearning({ title: '' });
+                alert("Learning material updated successfully!");
+            } else {
+                throw new Error(result.message || "Failed to update learning material.");
+            }
+        } catch (err) {
+            alert("Error updating learning material: " + err.message);
+            console.error("Error updating learning material:", err);
+        }
+    };
+
+    // --- Course Details Update ---
     const handleChange = (e) => {
         const { name, value } = e.target;
         setCourseData((prev) => ({ ...prev, [name]: value }));
@@ -384,6 +556,7 @@ export default function CourseEditor() {
                         )}
                     </div>
 
+                    {/* Course Modules (Videos) Section */}
                     <div className="md:col-span-2 mt-6 p-6 border border-gray-200 rounded-lg bg-gray-50">
                         <h3 className="text-xl font-bold mb-4 flex items-center text-gray-800">
                             <BookOpen className="mr-2 text-indigo-600" /> Course Modules (Videos)
@@ -392,30 +565,39 @@ export default function CourseEditor() {
                         {/* Existing Videos List */}
                         {courseModules && courseModules.length > 0 ? (
                             <div className="space-y-3 mb-6">
-                                {courseModules.map((video) => (
+                                {courseModules.map((module) => (
                                     <div
-                                        key={video._id}
+                                        key={module._id}
                                         className="flex justify-between items-center bg-white p-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition duration-200"
                                     >
                                         <div className="flex-1 mr-4">
-                                            <strong className="block text-lg font-medium text-gray-800">{video.moduleName}</strong>
+                                            <strong className="block text-lg font-medium text-gray-800">{module.moduleName}</strong>
                                             <a
-                                                href={video.videoLink}
+                                                href={module.videoLink}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="text-indigo-600 hover:text-indigo-800 text-sm truncate block"
                                                 style={{ maxWidth: 'calc(100% - 20px)' }}
                                             >
-                                                {video.videoLink}
+                                                {module.videoLink}
                                             </a>
                                         </div>
-                                        <button
-                                            onClick={() => handleDeleteModule(video._id)}
-                                            className="p-2 text-red-500 hover:text-red-700 transition duration-200 rounded-full hover:bg-red-50"
-                                            title="Delete Module"
-                                        >
-                                            <Trash2 className="w-5 h-5" />
-                                        </button>
+                                        <div className="flex space-x-2">
+                                            <button
+                                                onClick={() => handleEditModule(module)}
+                                                className="p-2 text-blue-500 hover:text-blue-700 transition duration-200 rounded-full hover:bg-blue-50"
+                                                title="Edit Module"
+                                            >
+                                                <Edit className="w-5 h-5" />
+                                            </button>
+                                            <button
+                                                onClick={() => handleDeleteModule(module._id)}
+                                                className="p-2 text-red-500 hover:text-red-700 transition duration-200 rounded-full hover:bg-red-50"
+                                                title="Delete Module"
+                                            >
+                                                <Trash2 className="w-5 h-5" />
+                                            </button>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -423,22 +605,25 @@ export default function CourseEditor() {
                             <p className="text-gray-600 mb-6 italic">No modules added yet for this course.</p>
                         )}
 
-                        {/* Toggle Add Form Button */}
-                        <button
-                            type="button"
-                            onClick={() => setShowVideoForm((prev) => !prev)}
-                            className="mb-4 px-5 py-2 bg-indigo-600 text-white rounded-lg flex items-center hover:bg-indigo-700 transition duration-200"
-                        >
-                            <PlusCircle className="w-5 h-5 mr-2" /> {showVideoForm ? 'Cancel Add Video' : 'Add New Video Module'}
-                        </button>
+                        {/* Toggle Add Video Form Button */}
+                        {!editingModuleId && ( // Hide add button if editing
+                            <button
+                                type="button"
+                                onClick={() => setShowVideoForm((prev) => !prev)}
+                                className="mb-4 px-5 py-2 bg-indigo-600 text-white rounded-lg flex items-center hover:bg-indigo-700 transition duration-200"
+                            >
+                                <PlusCircle className="w-5 h-5 mr-2" /> {showVideoForm ? 'Cancel Add Video' : 'Add New Video Module'}
+                            </button>
+                        )}
+
 
                         {/* Add Video Form */}
-                        {showVideoForm && (
+                        {showVideoForm && !editingModuleId && ( // Show add form only if not editing
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 p-4 border border-indigo-200 bg-indigo-50 rounded-lg">
                                 <div className="md:col-span-2">
-                                    <label htmlFor="videoTitle" className="block text-sm font-medium text-gray-700 mb-1">Video Title</label>
+                                    <label htmlFor="newVideoTitle" className="block text-sm font-medium text-gray-700 mb-1">Video Title</label>
                                     <input
-                                        id="videoTitle"
+                                        id="newVideoTitle"
                                         type="text"
                                         placeholder="e.g., Introduction to React"
                                         value={newVideo.title}
@@ -447,11 +632,11 @@ export default function CourseEditor() {
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <label htmlFor="videoLink" className="block text-sm font-medium text-gray-700 mb-1">Video Link (YouTube, Vimeo, etc.)</label>
+                                    <label htmlFor="newVideoLink" className="block text-sm font-medium text-gray-700 mb-1">Video Link (YouTube, Vimeo, etc.)</label>
                                     <input
-                                        id="videoLink"
+                                        id="newVideoLink"
                                         type="url"
-                                        placeholder="e.g., https://www.youtube.com/watch?v=..."
+                                        placeholder="e.g., https://youtube.com/watch?v=example"
                                         value={newVideo.link}
                                         onChange={(e) => setNewVideo((prev) => ({ ...prev, link: e.target.value }))}
                                         className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
@@ -468,13 +653,162 @@ export default function CourseEditor() {
                                 </div>
                             </div>
                         )}
+
+                        {/* Edit Video Form */}
+                        {editingModuleId && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 p-4 border border-blue-200 bg-blue-50 rounded-lg">
+                                <h4 className="md:col-span-2 text-lg font-bold text-blue-800">Editing Module</h4>
+                                <div className="md:col-span-2">
+                                    <label htmlFor="editVideoTitle" className="block text-sm font-medium text-gray-700 mb-1">Video Title</label>
+                                    <input
+                                        id="editVideoTitle"
+                                        type="text"
+                                        value={editVideo.title}
+                                        onChange={(e) => setEditVideo((prev) => ({ ...prev, title: e.target.value }))}
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                                    />
+                                </div>
+                                <div className="md:col-span-2">
+                                    <label htmlFor="editVideoLink" className="block text-sm font-medium text-gray-700 mb-1">Video Link</label>
+                                    <input
+                                        id="editVideoLink"
+                                        type="url"
+                                        value={editVideo.link}
+                                        onChange={(e) => setEditVideo((prev) => ({ ...prev, link: e.target.value }))}
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                                    />
+                                </div>
+                                <div className="md:col-span-2 flex space-x-2">
+                                    <button
+                                        onClick={handleUpdateModule}
+                                        disabled={!editVideo.title || !editVideo.link}
+                                        className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        Update Module
+                                    </button>
+                                    <button
+                                        onClick={() => setEditingModuleId(null)} // Cancel Edit
+                                        className="flex-1 px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition duration-200"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
 
-                    {/* course learnings here */}
-                    <div>
+                    {/* Course Learning Topics Section */}
+                    <div className="md:col-span-2 mt-6 p-6 border border-gray-200 rounded-lg bg-gray-50">
+                        <div className="flex items-center mb-4">
+                            <BookOpen className="w-7 h-7 text-indigo-600 mr-2" />
+                            <h3 className="font-bold text-xl text-gray-800">Course Learning Topics</h3>
+                        </div>
+
+                        {/* Existing Learnings List */}
+                        {courseMatrials && courseMatrials.length > 0 ? (
+                            <div className="space-y-3 mb-6">
+                                {courseMatrials.map((material) => (
+                                    <div
+                                        key={material._id}
+                                        className="flex justify-between items-center bg-white p-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition duration-200"
+                                    >
+                                        <div className="flex-1 mr-4">
+                                            <strong className="block text-lg font-medium text-gray-800">{material.title}</strong>
+                                        </div>
+                                        <div className="flex space-x-2">
+                                            <button
+                                                onClick={() => handleEditLearning(material)}
+                                                className="p-2 text-blue-500 hover:text-blue-700 transition duration-200 rounded-full hover:bg-blue-50"
+                                                title="Edit Learning Material"
+                                            >
+                                                <Edit className="w-5 h-5" />
+                                            </button>
+                                            <button
+                                                onClick={() => handleDeleteLearning(material._id)}
+                                                className="p-2 text-red-500 hover:text-red-700 transition duration-200 rounded-full hover:bg-red-50"
+                                                title="Delete Learning Material"
+                                            >
+                                                <Trash2 className="w-5 h-5" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-gray-600 italic mb-5">No materials added yet for this course.</p>
+                        )}
+
+                        {/* Toggle Add Learning Form Button */}
+                        {!editingLearningId && ( // Hide add button if editing
+                            <button
+                                type="button"
+                                onClick={() => setShowLearningForm((prev) => !prev)}
+                                className="mb-4 px-5 py-2 bg-indigo-600 text-white rounded-lg flex items-center hover:bg-indigo-700 transition duration-200"
+                            >
+                                <PlusCircle className="w-5 h-5 mr-2" /> {showLearningForm ? 'Cancel Add Learning' : 'Add New Learning Material'}
+                            </button>
+                        )}
 
 
+                        {/* Add Learning Form */}
+                        {showLearningForm && !editingLearningId && ( // Show add form only if not editing
+                            <div className="grid grid-cols-1 gap-4 mt-4 p-4 border border-indigo-200 bg-indigo-50 rounded-lg">
+                                <div className="md:col-span-1">
+                                    <label htmlFor="newLearningTitle" className="block text-sm font-medium text-gray-700 mb-1">Learning Material Title</label>
+                                    <input
+                                        id="newLearningTitle"
+                                        type="text"
+                                        placeholder="e.g., Introduction to React Concepts"
+                                        value={newLearning.title}
+                                        onChange={(e) => setNewLearning({ title: e.target.value })}
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
+                                    />
+                                </div>
+                                <div className="md:col-span-1">
+                                    <button
+                                        onClick={addLearning}
+                                        disabled={!newLearning.title}
+                                        className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        Add Learning Material
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Edit Learning Form */}
+                        {editingLearningId && (
+                            <div className="grid grid-cols-1 gap-4 mt-4 p-4 border border-blue-200 bg-blue-50 rounded-lg">
+                                <h4 className="md:col-span-1 text-lg font-bold text-blue-800">Editing Learning Material</h4>
+                                <div className="md:col-span-1">
+                                    <label htmlFor="editLearningTitle" className="block text-sm font-medium text-gray-700 mb-1">Learning Material Title</label>
+                                    <input
+                                        id="editLearningTitle"
+                                        type="text"
+                                        value={editLearning.title}
+                                        onChange={(e) => setEditLearning({ title: e.target.value })}
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                                    />
+                                </div>
+                                <div className="md:col-span-1 flex space-x-2">
+                                    <button
+                                        onClick={handleUpdateLearning}
+                                        disabled={!editLearning.title}
+                                        className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        Update Learning
+                                    </button>
+                                    <button
+                                        onClick={() => setEditingLearningId(null)} // Cancel Edit
+                                        className="flex-1 px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition duration-200"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
+
 
                     {/* Update Button */}
                     <div className="md:col-span-2 mt-6">
