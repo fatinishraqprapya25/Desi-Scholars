@@ -15,6 +15,21 @@ const TestDetailsForm = ({ testDetails, handleChange }) => {
                     required
                 />
             </div>
+
+            <div>
+                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    value={testDetails.subject}
+                    onChange={handleChange}
+                    placeholder="e.g., React Hooks Deep Dive"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-gray-900"
+                    required
+                />
+            </div>
+
             <div>
                 <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                 <textarea

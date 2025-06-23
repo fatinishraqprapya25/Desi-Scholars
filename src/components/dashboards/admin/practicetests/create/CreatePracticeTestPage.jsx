@@ -16,6 +16,7 @@ export default function CreatePracticeTestPage() {
         title: '',
         description: '',
         duration: 30,
+        subject: ''
     });
 
     const adminToken = localStorage.getItem("ASDFDKFFJF");
@@ -32,7 +33,6 @@ export default function CreatePracticeTestPage() {
         e.preventDefault();
 
         try {
-            console.log(testDetails);
             const response = await fetch("http://localhost:5000/api/tests", {
                 method: "POST",
                 headers: {
