@@ -152,15 +152,14 @@ export default function ManageBroadcastsPage() {
                                         id: broadcast._id,
                                         title: broadcast.title,
                                         message: broadcast.description,
-                                        sender: 'Admin', // Assuming admin always sends
+                                        sender: 'Admin',
                                         sendDate: new Date(broadcast.createdAt).toLocaleDateString('en-US', {
                                             year: 'numeric',
                                             month: 'short',
                                             day: 'numeric'
                                         }),
-                                        // Pass the 'for' field to the card
                                         forAudience: broadcast.for,
-                                        status: 'Sent', // Assuming all fetched are "sent" for now
+                                        status: 'Sent',
                                     }}
                                     onEditBroadcast={handleEditBroadcast}
                                     cardVariants={cardVariants}

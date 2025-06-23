@@ -24,8 +24,7 @@ export default function BroadcastCard({ broadcast, cardVariants, getStatusBadge 
 
             if (res.ok && data.success) {
                 alert('Broadcast deleted successfully!');
-                // Optional: Reload page or emit event to parent to refresh list
-                window.location.reload();  // Simple way if no parent update
+                window.location.reload();
             } else {
                 alert(`Failed to delete broadcast: ${data.message || 'Unknown error'}`);
             }

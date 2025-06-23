@@ -6,6 +6,18 @@ import {
 } from 'lucide-react';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
 
+
+
+const sectionVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut', delay: 0.2 } },
+};
+
 export default function EditBroadcastPage() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -32,7 +44,7 @@ export default function EditBroadcastPage() {
                     const broadcast = data.data;
                     setTitle(broadcast.title);
                     setMessage(broadcast.description);
-                    setAudience(broadcast.audience || 'both');
+                    setAudience(broadcast.for || 'both');
                     setExistingImage(broadcast.image || '');
                 } else {
                     console.error(data.message);
@@ -45,15 +57,6 @@ export default function EditBroadcastPage() {
         fetchBroadcast();
     }, [id]);
 
-    const sectionVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
-    };
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut', delay: 0.2 } },
-    };
 
     const validateForm = () => {
         let newErrors = {};
