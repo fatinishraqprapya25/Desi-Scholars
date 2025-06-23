@@ -110,6 +110,9 @@ function App() {
           <ResourcesPage />
         </ProtectedStudent>} />
 
+        <Route path="/dashboard/progress" element={<ProtectedStudent>
+          <MyProgress />
+        </ProtectedStudent>} />
 
         {/* admin dashboard routes */}
         <Route path="/admin/login" element={<Login />} />
