@@ -58,6 +58,7 @@ import CreateAdminPage from "./components/dashboards/admin/admins/CreateAdmin";
 import Login from "./components/dashboards/admin/pages/Login";
 import ProtectedAdmin from "./components/dashboards/admin/pages/ProtectedAdmin";
 import CombinedCalculator from "./pages/CombinedCalculator";
+import ProtectedStudent from "./components/dashboards/student/pages/ProtectedStudent";
 function App() {
   return (
     <>
@@ -85,7 +86,9 @@ function App() {
         <Route path="/checkout" element={<CheckoutPage />} />
 
         {/* student dashboard routes */}
-        <Route path="dashboard" element={<UserDashboard />} />
+        <Route path="dashboard" element={<ProtectedStudent>
+          <UserDashboard />
+        </ProtectedStudent>} />
         <Route path="/dashboard/profile" element={<UserDashboardProfile />} />
         <Route path="/dashboard/mycourses" element={<UserEnrolledCourses />} />
         <Route path="/dashboard/leaderboard" element={<UserLeaderBoard />} />
