@@ -1,6 +1,6 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { FaReact, FaNodeJs, FaHtml5, FaCss3, FaArrowRight } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const tutorials = [
   {
@@ -96,14 +96,13 @@ const TutorialsSection = () => {
           <p className="text-gray-700 leading-relaxed text-lg lg:text-xl max-w-xl md:max-w-none mx-auto md:mx-0">
             Dive into web development with our **concise, practical, and highly engaging tutorials**. Whether you're a beginner or looking to sharpen your skills, we've got you covered.
           </p>
-          <a
-            href="#all-tutorials"
+          <Link to="/resources"
             className={`mt-8 inline-flex items-center text-lg font-semibold py-3 px-8 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95
                text-white bg-[#7A3BD5]`}
           >
-            Explore All Tutorials
+            Explore All Resources
             <FaArrowRight className="ml-2 -mr-1 w-5 h-5" />
-          </a>
+          </Link>
         </motion.div>
 
         {/* Right Side - Tutorial Cards Grid */}
