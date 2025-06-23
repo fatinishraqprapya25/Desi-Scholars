@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaStar, FaClock, FaUser, FaCheckCircle, FaChevronRight, FaLinkedinIn, FaGithub, FaYoutube } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import Header from '../common/Header'; // Assuming Header component exists at this path
 import Footer from '../common/Footer'; // Assuming Footer component exists at this path
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 // Animation variants for sections to appear when scrolled into view
 const sectionVariants = {
@@ -202,6 +202,28 @@ const CourseDetailsPage = () => {
 
   const [visibleReviews, setVisibleReviews] = useState(6);
   const reviewsPerPage = 6;
+  const [courseDetails, setCourseDetails] = useState();
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    const fetchCourse = async () => {
+      const response = await fetch(`http://localhost:5000/api/courses/${id}`);
+      if (!response.ok) {
+        alert("failed to fetch course details!!!");
+        return;
+      }
+      const result = await response.json();
+      if (!result.success) {
+        alert(result.message);
+        return;
+      }
+      setCourseDetails(result.data);
+    }
+    fetchCourse();
+  }, []);
+
+  console.log(courseDetails);
 
   const handleLoadMore = () => {
     setVisibleReviews(prevCount => prevCount + reviewsPerPage);
@@ -229,26 +251,28 @@ const CourseDetailsPage = () => {
 
             <div className="max-w-7xl mx-auto px-6 text-white text-center md:text-left flex flex-col md:flex-row items-center justify-between z-10 relative">
               <div className="md:w-3/5 lg:w-2/3">
-                <h1 className="text-5xl md:text-7xl font-extrabold mb-4 drop-shadow-3xl leading-tight">Master React for Web Development</h1>
+                <h1 className="text-5xl md:text-7xl font-extrabold mb-4 drop-shadow-3xl leading-tight">{courseDetails ? courseDetails?.courseName : ""}</h1>
                 <p className="text-xl md:text-2xl opacity-95 mb-5 font-light">
-                  Unlock the power of modern web development. This comprehensive course takes you from foundational concepts to advanced techniques, enabling you to build dynamic and responsive user interfaces with confidence.
+                  {courseDetails ? courseDetails?.description : ""}
                 </p>
-                <p className="text-lg md:text-xl opacity-85 mb-10">
-                  Dive deep into state management, routing, API integration, and performance optimization. Perfect for aspiring developers and those looking to level up their React skills. Enroll today and transform your coding journey!
-                </p>
+
 
                 <div className="flex flex-wrap items-center justify-center md:justify-start text-white space-y-3 md:space-y-0 md:space-x-8 mb-12">
                   <div className="flex items-center">
-                    <FaUser className="mr-3 text-purple-300 text-xl" /> <span className="font-semibold text-lg">John Doe</span>
+                    <FaUser className="mr-3 text-purple-300 text-xl" /> <span className="font-semibold text-lg">
+                      {courseDetails.instructorName}
+                    </span>
                   </div>
                   <div className="flex items-center">
-                    <FaClock className="mr-3 text-purple-300 text-xl" /> <span className="font-semibold text-lg">12h 30m of video content</span>
+                    <FaClock className="mr-3 text-purple-300 text-xl" /> <span className="font-semibold text-lg">{
+                      courseDetails.duration
+                    }</span>
                   </div>
                   <div className="flex items-center text-yellow-400">
                     {[...Array(5)].map((_, i) => (
                       <FaStar key={i} className="w-5 h-5" />
                     ))}
-                    <span className="ml-2 font-semibold text-lg">4.8 (1,230 ratings)</span>
+                    <span className="ml-2 font-semibold text-lg">{courseDetails.ratings.length} ratings</span>
                   </div>
                 </div>
 
@@ -259,11 +283,10 @@ const CourseDetailsPage = () => {
                   className="bg-white text-purple-900 px-14 py-6 rounded-full shadow-2xl hover:bg-gray-100 transition-all duration-300 text-2xl font-extrabold transform hover:rotate-2 relative overflow-hidden group"
                 >
                   <span className="absolute inset-0 bg-gradient-to-r from-purple-500 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                  <span className="relative z-10">Enroll Now for $49.99</span>
+                  <span className="relative z-10">Enroll Now</span>
                 </motion.button></Link>
               </div>
 
-              {/* Instructor Image */}
               <motion.div
                 className="md:w-2/5 lg:w-1/3 mt-12 md:mt-0 flex justify-center items-center relative"
                 initial={{ opacity: 0, x: 50, rotate: -10 }}
