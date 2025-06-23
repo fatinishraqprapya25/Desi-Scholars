@@ -89,13 +89,27 @@ function App() {
         <Route path="dashboard" element={<ProtectedStudent>
           <UserDashboard />
         </ProtectedStudent>} />
-        <Route path="/dashboard/profile" element={<UserDashboardProfile />} />
-        <Route path="/dashboard/mycourses" element={<UserEnrolledCourses />} />
-        <Route path="/dashboard/leaderboard" element={<UserLeaderBoard />} />
-        <Route path="/dashboard/practicetest" element={<PracticeTests />} />
-        <Route path="/dashboard/progress" element={<MyProgress />} />
-        <Route path="/dashboard/resources" element={<ResourcesPage />} />
-        <Route path="/dashboard/messages" element={<MessagePage />} />
+
+        <Route path="/dashboard/profile" element={<ProtectedStudent>
+          <UserDashboardProfile />
+        </ProtectedStudent>} />
+
+        <Route path="/dashboard/mycourses" element={<ProtectedStudent>
+          <UserEnrolledCourses />
+        </ProtectedStudent>} />
+
+        <Route path="/dashboard/leaderboard" element={<ProtectedStudent>
+          <UserLeaderBoard />
+        </ProtectedStudent>} />
+
+        <Route path="/dashboard/practicetest" element={<ProtectedStudent>
+          <PracticeTests />
+        </ProtectedStudent>} />
+
+        <Route path="/dashboard/resources" element={<ProtectedStudent>
+          <ResourcesPage />
+        </ProtectedStudent>} />
+
 
         {/* admin dashboard routes */}
         <Route path="/admin/login" element={<Login />} />
