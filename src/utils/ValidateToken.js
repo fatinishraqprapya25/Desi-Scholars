@@ -10,7 +10,10 @@ const validateToken = async () => {
                 }
             });
             const validateRes = await validateReq.json();
-            return validateRes;
+            if (validateRes.success) {
+                return validateRes.data;
+            }
+            return false;
         } catch (err) {
             console.log(err.message);
         }
