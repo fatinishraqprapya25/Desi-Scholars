@@ -443,6 +443,23 @@ export default function CourseEditor() {
                         </select>
                     </div>
 
+                    {/* New: Course Level */}
+                    <div>
+                        <label htmlFor="level" className="block text-sm font-semibold text-gray-700 mb-2">Course Level</label>
+                        <select
+                            id="level"
+                            name="level"
+                            value={courseData.level || ''}
+                            onChange={handleChange}
+                            className="w-full p-3 border border-gray-300 rounded-lg appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
+                        >
+                            <option value="">Select Level</option>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                    </div>
+
                     {/* Start Date (Conditional for Live courses) */}
                     {courseData.courseType === 'live' && (
                         <div>
@@ -697,24 +714,23 @@ export default function CourseEditor() {
                                         Update Module
                                     </button>
                                     <button
-                                        onClick={() => setEditingModuleId(null)} // Cancel Edit
+                                        onClick={() => setEditingModuleId(null)}
                                         className="flex-1 px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition duration-200"
                                     >
-                                        Cancel
+                                        Cancel Edit
                                     </button>
                                 </div>
                             </div>
                         )}
                     </div>
 
-                    {/* Course Learning Topics Section */}
+                    {/* Learning Materials Section */}
                     <div className="md:col-span-2 mt-6 p-6 border border-gray-200 rounded-lg bg-gray-50">
-                        <div className="flex items-center mb-4">
-                            <BookOpen className="w-7 h-7 text-indigo-600 mr-2" />
-                            <h3 className="font-bold text-xl text-gray-800">Course Learning Topics</h3>
-                        </div>
+                        <h3 className="text-xl font-bold mb-4 flex items-center text-gray-800">
+                            <BookOpen className="mr-2 text-indigo-600" /> Learning Materials
+                        </h3>
 
-                        {/* Existing Learnings List */}
+                        {/* Existing Learning Materials List */}
                         {courseMatrials && courseMatrials.length > 0 ? (
                             <div className="space-y-3 mb-6">
                                 {courseMatrials.map((material) => (
@@ -729,14 +745,14 @@ export default function CourseEditor() {
                                             <button
                                                 onClick={() => handleEditLearning(material)}
                                                 className="p-2 text-blue-500 hover:text-blue-700 transition duration-200 rounded-full hover:bg-blue-50"
-                                                title="Edit Learning Material"
+                                                title="Edit Material"
                                             >
                                                 <Edit className="w-5 h-5" />
                                             </button>
                                             <button
                                                 onClick={() => handleDeleteLearning(material._id)}
                                                 className="p-2 text-red-500 hover:text-red-700 transition duration-200 rounded-full hover:bg-red-50"
-                                                title="Delete Learning Material"
+                                                title="Delete Material"
                                             >
                                                 <Trash2 className="w-5 h-5" />
                                             </button>
@@ -745,36 +761,35 @@ export default function CourseEditor() {
                                 ))}
                             </div>
                         ) : (
-                            <p className="text-gray-600 italic mb-5">No materials added yet for this course.</p>
+                            <p className="text-gray-600 mb-6 italic">No learning materials added yet for this course.</p>
                         )}
 
-                        {/* Toggle Add Learning Form Button */}
-                        {!editingLearningId && ( // Hide add button if editing
+                        {/* Toggle Add Learning Material Form Button */}
+                        {!editingLearningId && (
                             <button
                                 type="button"
                                 onClick={() => setShowLearningForm((prev) => !prev)}
                                 className="mb-4 px-5 py-2 bg-indigo-600 text-white rounded-lg flex items-center hover:bg-indigo-700 transition duration-200"
                             >
-                                <PlusCircle className="w-5 h-5 mr-2" /> {showLearningForm ? 'Cancel Add Learning' : 'Add New Learning Material'}
+                                <PlusCircle className="w-5 h-5 mr-2" /> {showLearningForm ? 'Cancel Add Material' : 'Add New Learning Material'}
                             </button>
                         )}
 
-
-                        {/* Add Learning Form */}
-                        {showLearningForm && !editingLearningId && ( // Show add form only if not editing
+                        {/* Add Learning Material Form */}
+                        {showLearningForm && !editingLearningId && (
                             <div className="grid grid-cols-1 gap-4 mt-4 p-4 border border-indigo-200 bg-indigo-50 rounded-lg">
-                                <div className="md:col-span-1">
-                                    <label htmlFor="newLearningTitle" className="block text-sm font-medium text-gray-700 mb-1">Learning Material Title</label>
+                                <div>
+                                    <label htmlFor="newLearningTitle" className="block text-sm font-medium text-gray-700 mb-1">Material Title</label>
                                     <input
                                         id="newLearningTitle"
                                         type="text"
-                                        placeholder="e.g., Introduction to React Concepts"
+                                        placeholder="e.g., Course PDF, Quiz Instructions"
                                         value={newLearning.title}
-                                        onChange={(e) => setNewLearning({ title: e.target.value })}
+                                        onChange={(e) => setNewLearning((prev) => ({ ...prev, title: e.target.value }))}
                                         className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
                                     />
                                 </div>
-                                <div className="md:col-span-1">
+                                <div>
                                     <button
                                         onClick={addLearning}
                                         disabled={!newLearning.title}
@@ -786,39 +801,38 @@ export default function CourseEditor() {
                             </div>
                         )}
 
-                        {/* Edit Learning Form */}
+                        {/* Edit Learning Material Form */}
                         {editingLearningId && (
                             <div className="grid grid-cols-1 gap-4 mt-4 p-4 border border-blue-200 bg-blue-50 rounded-lg">
-                                <h4 className="md:col-span-1 text-lg font-bold text-blue-800">Editing Learning Material</h4>
-                                <div className="md:col-span-1">
-                                    <label htmlFor="editLearningTitle" className="block text-sm font-medium text-gray-700 mb-1">Learning Material Title</label>
+                                <h4 className="text-lg font-bold text-blue-800">Editing Learning Material</h4>
+                                <div>
+                                    <label htmlFor="editLearningTitle" className="block text-sm font-medium text-gray-700 mb-1">Material Title</label>
                                     <input
                                         id="editLearningTitle"
                                         type="text"
                                         value={editLearning.title}
-                                        onChange={(e) => setEditLearning({ title: e.target.value })}
+                                        onChange={(e) => setEditLearning((prev) => ({ ...prev, title: e.target.value }))}
                                         className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
                                     />
                                 </div>
-                                <div className="md:col-span-1 flex space-x-2">
+                                <div className="flex space-x-2">
                                     <button
                                         onClick={handleUpdateLearning}
                                         disabled={!editLearning.title}
                                         className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
-                                        Update Learning
+                                        Update Material
                                     </button>
                                     <button
-                                        onClick={() => setEditingLearningId(null)} // Cancel Edit
+                                        onClick={() => setEditingLearningId(null)}
                                         className="flex-1 px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition duration-200"
                                     >
-                                        Cancel
+                                        Cancel Edit
                                     </button>
                                 </div>
                             </div>
                         )}
                     </div>
-
                 </div>
             </div>
         </UserDashboardContainer>
