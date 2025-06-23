@@ -78,3 +78,38 @@ body {
 .contant_box_404 {
   margin-top: -50px;
 }
+
+
+/* src/styles/globals.css (or similar path in your project) */
+
+/* Add this to your existing global Tailwind imports and base styles */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom reusable input styles */
+.input-label {
+  @apply block text-sm font-semibold text-gray-700 mb-2 flex items-center;
+}
+
+.fancy-input-field {
+  @apply w-full p-3 rounded-xl bg-white/50 border border-gray-200 backdrop-blur-sm shadow-sm transition duration-300 ease-in-out hover:border-indigo-300 hover:ring-1 hover:ring-indigo-300 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 placeholder-gray-400 text-gray-800;
+}
+
+/* You might also move the radio button styles here for consistency, or keep them inline if they are unique to this component */
+.form-radio {
+  /* Keep your radio button styling if not already global */
+}
+
+/* If you need more complex global styles or base styles, define them here */
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background-color: #f8faff;
+  /* A very light blue-gray for the body background to enhance glassmorphism */
+}

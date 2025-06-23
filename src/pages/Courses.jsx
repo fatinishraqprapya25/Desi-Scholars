@@ -5,7 +5,7 @@ import CourseGrid from "../components/courses/CourseGrid";
 import FilterSidebar from "../components/courses/FilterSideBar";
 
 const CourseListingPage = () => {
-    const [searchQuery, setSearchQuery] = useState(null);
+    const [searchQuery, setSearchQuery] = useState({});
 
     const applyFilter = (query) => {
         setSearchQuery(query);
