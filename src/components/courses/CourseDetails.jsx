@@ -152,7 +152,7 @@ const CourseDetailsPage = () => {
       rating: 5,
     },
     {
-      name: "শাফায়াত ইসলাম সোহান",
+      name: "শাফায়াত ইসলাম সোহান",
       platform: "commented on Facebook",
       comment: "Brother, please stay by our side like this. Insha'Allah, we will also stay. We are greatly benefiting from your gifts. We request you not to stop giving us these gifts, otherwise, we will be greatly harmed...",
       rating: 5,
@@ -202,32 +202,67 @@ const CourseDetailsPage = () => {
 
   const [visibleReviews, setVisibleReviews] = useState(6);
   const reviewsPerPage = 6;
-  const [courseDetails, setCourseDetails] = useState();
+
+  const adminToken = localStorage.getItem("ASDFDKFFJF");
+
+  const [courseDetails, setCourseDetails] = useState(null);
+  const [instructorDetails, setInstructorDetails] = useState(null);
+  console.log(instructorDetails);
 
   const { id } = useParams();
 
   useEffect(() => {
-    const fetchCourse = async () => {
-      const response = await fetch(`http://localhost:5000/api/courses/${id}`);
-      if (!response.ok) {
-        alert("failed to fetch course details!!!");
-        return;
-      }
-      const result = await response.json();
-      if (!result.success) {
-        alert(result.message);
-        return;
-      }
-      setCourseDetails(result.data);
-    }
-    fetchCourse();
-  }, []);
+    const fetchDetails = async () => {
+      try {
+        // Fetch course details first
+        const courseResponse = await fetch(`http://localhost:5000/api/courses/${id}`);
+        if (!courseResponse.ok) {
+          throw new Error("Failed to fetch course details.");
+        }
+        const courseResult = await courseResponse.json();
+        if (!courseResult.success) {
+          throw new Error(courseResult.message || "Failed to fetch course details.");
+        }
+        setCourseDetails(courseResult.data);
 
-  console.log(courseDetails);
+        if (courseResult.data && courseResult.data.instructorId) {
+          const instructorResponse = await fetch(`http://localhost:5000/api/teacher/${courseResult.data.instructorId}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${adminToken}`
+            }
+          });
+          if (!instructorResponse.ok) {
+            throw new Error("Failed to fetch instructor information.");
+          }
+          const instructorResult = await instructorResponse.json();
+          if (!instructorResult.success) {
+            throw new Error(instructorResult.message || "Failed to fetch instructor information.");
+          }
+          setInstructorDetails(instructorResult.data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        alert(error.message);
+      }
+    };
+
+    fetchDetails();
+  }, [id, adminToken]);
+
 
   const handleLoadMore = () => {
     setVisibleReviews(prevCount => prevCount + reviewsPerPage);
   };
+
+  if (!courseDetails) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <p className="text-xl text-gray-700">Loading course details...</p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -251,22 +286,21 @@ const CourseDetailsPage = () => {
 
             <div className="max-w-7xl mx-auto px-6 text-white text-center md:text-left flex flex-col md:flex-row items-center justify-between z-10 relative">
               <div className="md:w-3/5 lg:w-2/3">
-                <h1 className="text-5xl md:text-7xl font-extrabold mb-4 drop-shadow-3xl leading-tight">{courseDetails ? courseDetails?.courseName : ""}</h1>
+                <h1 className="text-5xl md:text-7xl font-extrabold mb-4 drop-shadow-3xl leading-tight">{courseDetails.courseName}</h1>
                 <p className="text-xl md:text-2xl opacity-95 mb-5 font-light">
-                  {courseDetails ? courseDetails?.description : ""}
+                  {courseDetails.description}
                 </p>
-
 
                 <div className="flex flex-wrap items-center justify-center md:justify-start text-white space-y-3 md:space-y-0 md:space-x-8 mb-12">
                   <div className="flex items-center">
                     <FaUser className="mr-3 text-purple-300 text-xl" /> <span className="font-semibold text-lg">
-                      {courseDetails.instructorName}
+                      {instructorDetails ? instructorDetails.name : "Loading Instructor..."}
                     </span>
                   </div>
                   <div className="flex items-center">
-                    <FaClock className="mr-3 text-purple-300 text-xl" /> <span className="font-semibold text-lg">{
-                      courseDetails.duration
-                    }</span>
+                    <FaClock className="mr-3 text-purple-300 text-xl" /> <span className="font-semibold text-lg">
+                      {courseDetails.duration}
+                    </span>
                   </div>
                   <div className="flex items-center text-yellow-400">
                     {[...Array(5)].map((_, i) => (
@@ -296,8 +330,8 @@ const CourseDetailsPage = () => {
               >
                 <div className="absolute inset-0 bg-white rounded-full opacity-10 transform scale-125"></div>
                 <img
-                  src="https://placehold.co/350x350/FFFFFF/6A0DAD?text=Instructor"
-                  alt="Instructor"
+                  src={instructorDetails?.profilePicture || "https://placehold.co/350x350/FFFFFF/6A0DAD?text=Instructor"}
+                  alt={instructorDetails?.name || "Instructor"}
                   className="rounded-full border-8 border-white shadow-3xl w-72 h-72 object-cover relative z-10"
                   onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/350x350/FFFFFF/6A0DAD?text=No+Image"; }}
                 />
@@ -330,7 +364,8 @@ const CourseDetailsPage = () => {
                 },
               }}
               initial="hidden"
-              animate="visible"
+              whileInView="visible" // Use whileInView on the parent
+              viewport={{ once: true, amount: 0.2 }}
             >
               <motion.p variants={itemVariants} className="flex items-start mb-3 text-lg"><FaCheckCircle className="text-green-600 mr-4 mt-1 flex-shrink-0 text-2xl" />Build modern, responsive, and high-performance React applications from scratch.</motion.p>
               <motion.p variants={itemVariants} className="flex items-start mb-3 text-lg"><FaCheckCircle className="text-green-600 mr-4 mt-1 flex-shrink-0 text-2xl" />Master React Hooks (useState, useEffect, useContext) for efficient state management.</motion.p>
@@ -384,7 +419,8 @@ const CourseDetailsPage = () => {
                     },
                   }}
                   initial="hidden"
-                  animate="visible"
+                  whileInView="visible" // Use whileInView on the parent
+                  viewport={{ once: true, amount: 0.2 }}
                 >
                   <motion.li variants={itemVariants}><span className="font-medium">Basic understanding of HTML, CSS, and JavaScript.</span></motion.li>
                   <motion.li variants={itemVariants}><span className="font-medium">Familiarity with ES6+ features (e.g., arrow functions, destructuring).</span></motion.li>
@@ -415,7 +451,8 @@ const CourseDetailsPage = () => {
                     },
                   }}
                   initial="hidden"
-                  animate="visible"
+                  whileInView="visible" // Use whileInView on the parent
+                  viewport={{ once: true, amount: 0.2 }}
                 >
                   <motion.div
                     className="bg-purple-50 p-6 rounded-xl shadow-lg border border-purple-200 hover:shadow-xl transition-shadow cursor-pointer transform hover:scale-103"
@@ -478,8 +515,8 @@ const CourseDetailsPage = () => {
             >
               <div className="absolute inset-0 bg-purple-200 rounded-full opacity-30 transform scale-110 blur-xl"></div>
               <img
-                src="https://placehold.co/250x250/6A0DAD/FFFFFF?text=Instructor+Image"
-                alt="Instructor John Doe"
+                src={instructorDetails?.profilePicture || "https://placehold.co/250x250/6A0DAD/FFFFFF?text=Instructor+Image"}
+                alt={instructorDetails?.name || "Instructor Image"}
                 className="rounded-full border-6 border-purple-400 shadow-xl w-60 h-60 object-cover mx-auto md:mx-0 relative z-10"
               />
             </motion.div>
@@ -493,14 +530,15 @@ const CourseDetailsPage = () => {
                 },
               }}
               initial="hidden"
-              animate="visible"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
             >
-              <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-extrabold mb-4 text-purple-900">Meet Your Instructor: John Doe</motion.h2>
+              <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-extrabold mb-4 text-purple-900">Meet Your Instructor: {instructorDetails ? instructorDetails.name : "Loading..."}</motion.h2>
               <motion.p variants={itemVariants} className="text-xl text-gray-800 mb-5">
-                John Doe is a seasoned full-stack developer with over 10 years of experience in building scalable web applications. He specializes in React, Node.js, and cloud technologies, and is passionate about sharing his knowledge with aspiring developers.
+                {instructorDetails ? instructorDetails.about : "Loading instructor description..."}
               </motion.p>
               <motion.p variants={itemVariants} className="text-lg text-gray-700 leading-relaxed mb-6">
-                Having taught thousands of students globally, John's teaching style is highly practical and engaging, focusing on real-world examples and best practices. He believes in making complex concepts easy to understand and empowering students to build amazing things. His dedication to student success is truly unparalleled.
+                {instructorDetails ? instructorDetails.experience : "Loading instructor experience..."}
               </motion.p>
               <motion.div
                 className="flex justify-center md:justify-start space-x-4"
@@ -512,50 +550,91 @@ const CourseDetailsPage = () => {
                   },
                 }}
                 initial="hidden"
-                animate="visible"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
               >
-                <motion.a
-                  href="#"
-                  className="flex items-center bg-blue-700 text-white px-5 py-2 rounded-full shadow-md hover:bg-blue-800 transition-all duration-300 transform"
-                  whileHover={{ scale: 1.05, y: -2, boxShadow: "0 8px 15px rgba(0, 0, 0, 0.3)" }}
-                  whileTap={{ scale: 0.95 }}
-                  variants={itemVariants}
-                >
-                  <FaLinkedinIn className="mr-2 text-lg" /> LinkedIn
-                </motion.a>
-                <motion.a
-                  href="#"
-                  className="flex items-center bg-gray-700 text-white px-5 py-2 rounded-full shadow-md hover:bg-gray-800 transition-all duration-300 transform"
-                  whileHover={{ scale: 1.05, y: -2, boxShadow: "0 8px 15px rgba(0, 0, 0, 0.3)" }}
-                  whileTap={{ scale: 0.95 }}
-                  variants={itemVariants}
-                >
-                  <FaGithub className="mr-2 text-lg" /> GitHub
-                </motion.a>
-                <motion.a
-                  href="#"
-                  className="flex items-center bg-red-600 text-white px-5 py-2 rounded-full shadow-md hover:bg-red-700 transition-all duration-300 transform"
-                  whileHover={{ scale: 1.05, y: -2, boxShadow: "0 8px 15px rgba(0, 0, 0, 0.3)" }}
-                  whileTap={{ scale: 0.95 }}
-                  variants={itemVariants}
-                >
-                  <FaYoutube className="mr-2 text-lg" /> YouTube
-                </motion.a>
+                {instructorDetails?.linkedin && (
+                  <motion.a
+                    href={instructorDetails.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center bg-blue-700 text-white px-5 py-2 rounded-full shadow-md hover:bg-blue-800 transition-all duration-300 transform"
+                    whileHover={{ scale: 1.05, y: -2, boxShadow: "0 8px 15px rgba(0, 0, 0, 0.3)" }}
+                    whileTap={{ scale: 0.95 }}
+                    variants={itemVariants}
+                  >
+                    <FaLinkedinIn className="mr-2 text-lg" /> LinkedIn
+                  </motion.a>
+                )}
+                {instructorDetails?.github && (
+                  <motion.a
+                    href={instructorDetails.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center bg-gray-700 text-white px-5 py-2 rounded-full shadow-md hover:bg-gray-800 transition-all duration-300 transform"
+                    whileHover={{ scale: 1.05, y: -2, boxShadow: "0 8px 15px rgba(0, 0, 0, 0.3)" }}
+                    whileTap={{ scale: 0.95 }}
+                    variants={itemVariants}
+                  >
+                    <FaGithub className="mr-2 text-lg" /> GitHub
+                  </motion.a>
+                )}
+                {instructorDetails?.youtube && (
+                  <motion.a
+                    href={instructorDetails.youtube}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center bg-red-600 text-white px-5 py-2 rounded-full shadow-md hover:bg-red-700 transition-all duration-300 transform"
+                    whileHover={{ scale: 1.05, y: -2, boxShadow: "0 8px 15px rgba(0, 0, 0, 0.3)" }}
+                    whileTap={{ scale: 0.95 }}
+                    variants={itemVariants}
+                  >
+                    <FaYoutube className="mr-2 text-lg" /> YouTube
+                  </motion.a>
+                )}
               </motion.div>
             </motion.div>
           </motion.section>
 
-          {/* Frequently Asked Questions Section - Enhanced */}
+          {/* Frequently Asked Questions (FAQ) */}
           <motion.section
-            className="max-w-7xl mx-auto px-6 mt-16 mb-12 bg-white rounded-3xl shadow-2xl p-10 border border-gray-100"
+            className="max-w-4xl mx-auto px-6 mt-16 mb-12"
             variants={sectionVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
           >
-            <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-gray-900 text-center">Frequently Asked Questions</h2>
+            <h2 className="text-4xl font-extrabold mb-10 text-center text-purple-900">Frequently Asked Questions</h2>
             <motion.div
-              className="space-y-6"
+              className="space-y-4"
+              variants={{
+                visible: {
+                  transition: {
+                    staggerChildren: 0.07,
+                  },
+                },
+              }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+            >
+              {faqs.map((faq, index) => (
+                <AccordionItem key={index} title={faq.question} content={faq.answer} />
+              ))}
+            </motion.div>
+          </motion.section>
+
+          {/* Student Reviews Section - Animated & Enhanced */}
+          <motion.section
+            className="max-w-7xl mx-auto px-6 mt-16 mb-12"
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            <h2 className="text-4xl font-extrabold mb-10 text-center text-purple-900">What Our Students Say</h2>
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
               variants={{
                 visible: {
                   transition: {
@@ -564,67 +643,29 @@ const CourseDetailsPage = () => {
                 },
               }}
               initial="hidden"
-              animate="visible"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
             >
-              {faqs.map((faq, index) => (
-                <AccordionItem key={index} title={faq.question} content={faq.answer} />
+              {allStudentReviews.slice(0, visibleReviews).map((review, index) => (
+                <ReviewCard key={index} {...review} />
               ))}
             </motion.div>
+            {visibleReviews < allStudentReviews.length && (
+              <div className="text-center mt-12">
+                <motion.button
+                  onClick={handleLoadMore}
+                  className="bg-purple-700 text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:bg-purple-800 transition-all duration-300 transform hover:scale-105"
+                  whileHover={{ y: -5, boxShadow: "0 15px 30px rgba(128, 0, 128, 0.4)" }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Load More Reviews
+                </motion.button>
+              </div>
+            )}
           </motion.section>
-
-          {/* Student Reviews - Enhanced Section */}
-          <motion.section
-            className="mt-16 py-12 px-6 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-3xl shadow-3xl border border-purple-200 relative overflow-hidden"
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            {/* Background Pattern Overlay */}
-            <div className="absolute inset-0 z-0 opacity-10" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23000000\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zm12 14v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM12 34v-4H10v4H6v2h4v4h2v-4h4v-2h-4zm0-30V0H10v4H6v2h4v4h2V6h4V4h-4zm12 14v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM36 54v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V20h-2v4h-4v2h4v4h2v-4h4v-2h-4zM12 54v-4H10v4H6v2h4v4h2v-4h4v-2h-4zM24 44v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0 10v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm24 0v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-10v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM24 4v-4h-2v4h-4v2h4v4h2V6h4V4h-4zm24 0v-4h-2v4h-4v2h4v4h2V6h4V4h-4zm0 10v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM36 44v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0 10v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM12 44v-4H10v4H6v2h4v4h2v-4h4v-2h-4z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }}></div>
-
-            <div className="max-w-7xl mx-auto relative z-10">
-              <h2 className="text-4xl md:text-5xl font-extrabold text-center text-purple-900 mb-12 drop-shadow-md">What Our Students Say</h2>
-              <motion.div
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                variants={{
-                  visible: {
-                    transition: {
-                      staggerChildren: 0.15,
-                    },
-                  },
-                }}
-                initial="hidden"
-                animate="visible"
-              >
-                {allStudentReviews.slice(0, visibleReviews).map((review, index) => (
-                  <ReviewCard
-                    key={index}
-                    name={review.name}
-                    platform={review.platform}
-                    comment={review.comment}
-                    rating={review.rating}
-                  />
-                ))}
-              </motion.div>
-              {visibleReviews < allStudentReviews.length && (
-                <div className="text-center mt-14">
-                  <motion.button
-                    whileHover={{ scale: 1.07, y: -4, boxShadow: "0 15px 30px rgba(100, 0, 150, 0.6)" }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={handleLoadMore}
-                    className="bg-purple-700 text-white px-12 py-5 rounded-full shadow-lg hover:bg-purple-800 transition-all duration-300 text-xl font-semibold"
-                  >
-                    Load More Reviews
-                  </motion.button>
-                </div>
-              )}
-            </div>
-          </motion.section>
-
         </main>
-        <Footer />
       </div>
+      <Footer />
     </>
   );
 };
