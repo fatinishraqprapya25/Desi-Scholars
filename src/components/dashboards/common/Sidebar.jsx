@@ -22,9 +22,8 @@ export default function Sidebar({ role, isOpenSideBar, toggleSidebar }) {
         { name: 'My Courses', icon: BookOpen, path: '/dashboard/mycourses' },
         { name: 'Leader Board', icon: BookOpen, path: '/dashboard/leaderboard' },
         { name: 'Practice Tests', icon: FileText, path: '/dashboard/practicetest' },
-        { name: 'My Progress', icon: BarChart2, path: '/dashboard/progress' }, // Added a new item
+        { name: 'My Progress', icon: BarChart2, path: '/dashboard/progress' },
         { name: 'Resources', icon: FolderOpen, path: '/dashboard/resources' },
-        { name: 'Messages', icon: MessageSquare, path: '/dashboard/messages' },
         { name: 'Profile', icon: User, path: '/dashboard/profile' },
     ];
     const adminNavItems = [
@@ -43,7 +42,6 @@ export default function Sidebar({ role, isOpenSideBar, toggleSidebar }) {
         { name: 'My Courses', icon: BookOpen, path: '/teacher/courses' },
         { name: 'My Students', icon: Users, path: '/teacher/students' },
         { name: 'Grade Assignments', icon: ListChecks, path: '/teacher/assignments/grade' },
-        { name: 'Messages', icon: MessageSquare, path: '/teacher/messages' },
         { name: 'My Tests', icon: FolderOpen, path: '/teacher/tests' },
         { name: 'Profile', icon: UserCircle2, path: '/teacher/profile' },
     ];
