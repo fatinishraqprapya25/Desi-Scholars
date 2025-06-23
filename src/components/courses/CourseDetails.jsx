@@ -208,6 +208,8 @@ const CourseDetailsPage = () => {
 
   const [courseDetails, setCourseDetails] = useState(null);
   const [instructorDetails, setInstructorDetails] = useState(null);
+  // State to store modules
+  const [modules, setModules] = useState([]);
 
   const { id } = useParams();
 
@@ -225,6 +227,7 @@ const CourseDetailsPage = () => {
         }
         setCourseDetails(courseResult.data);
 
+        // Fetch instructor details
         if (courseResult.data && courseResult.data.instructorId) {
           const instructorResponse = await fetch(`http://localhost:5000/api/teacher/${courseResult.data.instructorId}`, {
             method: "GET",
@@ -242,6 +245,18 @@ const CourseDetailsPage = () => {
           }
           setInstructorDetails(instructorResult.data);
         }
+
+        // Fetch modules
+        const modulesResponse = await fetch(`http://localhost:5000/api/modules/${id}`);
+        if (!modulesResponse.ok) {
+          throw new Error("Failed to fetch modules.");
+        }
+        const modulesResult = await modulesResponse.json();
+        if (!modulesResult.success) {
+          throw new Error(modulesResult.message || "Failed to fetch modules.");
+        }
+        setModules(modulesResult.data);
+
       } catch (error) {
         console.error("Error fetching data:", error);
         alert(error.message);
@@ -249,8 +264,7 @@ const CourseDetailsPage = () => {
     };
 
     fetchDetails();
-  }, [id, adminToken]);
-
+  }, [id, adminToken]); // Depend on id and adminToken
 
   const handleLoadMore = () => {
     setVisibleReviews(prevCount => prevCount + reviewsPerPage);
@@ -356,11 +370,13 @@ const CourseDetailsPage = () => {
               >
                 <h2 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900">Course Outline</h2>
                 <div className="space-y-6">
-                  <AccordionItem title="Module 1: Introduction to React" content="Learn the fundamentals of React, including JSX syntax, functional components, and props. Understand the component-based architecture and how to set up your development environment." />
-                  <AccordionItem title="Module 2: State & Lifecycle" content="Dive deep into React state management using the useState hook. Explore the component lifecycle with useEffect and learn how to manage side effects in your applications." />
-                  <AccordionItem title="Module 3: Routing and Navigation" content="Implement client-side routing with React Router DOM. Learn to create dynamic routes, nested routes, and handle navigation within your single-page applications." />
-                  <AccordionItem title="Module 4: Advanced Concepts" content="Master advanced React patterns such as the Context API for global state management, custom hooks for reusable logic, and performance optimization techniques like memoization." />
-                  <AccordionItem title="Module 5: Working with APIs" content="Integrate your React applications with backend APIs. Learn data fetching, error handling, and displaying dynamic content from external sources." />
+                  {modules.length > 0 ? (
+                    modules.map((module) => (
+                      <AccordionItem key={module._id} title={module.moduleName} content={module.description} />
+                    ))
+                  ) : (
+                    <p className="text-gray-600">No modules available for this course yet.</p>
+                  )}
                 </div>
               </motion.section>
 
@@ -628,8 +644,8 @@ const CourseDetailsPage = () => {
             )}
           </motion.section>
         </main>
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 };
