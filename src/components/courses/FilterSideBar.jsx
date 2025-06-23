@@ -24,6 +24,7 @@ const FilterSidebar = ({ applyFilter }) => {
         setSearchText("");
         setSelectedLevel("");
         setSelectedPrice("");
+        applyFilter({});
     };
 
     return (
