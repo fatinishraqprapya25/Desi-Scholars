@@ -1,4 +1,4 @@
-const SearchBar = () => {
+const SearchBar = ({ value, onChange }) => {
     // Define the accent color for consistency with other components
     const accentPurple = '#8A4AF8';
 
@@ -21,6 +21,8 @@ const SearchBar = () => {
                     placeholder-gray-500 text-gray-800 /* Placeholder and text color */
                     focus:outline-none /* Remove default input focus outline, parent handles ring */
                 "
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
             />
             <button
                 type="submit"

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import CourseCard from "./CourseCard";
 
-const CourseGrid = () => {
+const CourseGrid = ({ searchQuery }) => {
+    console.log(searchQuery);
     // const courses = [
     //     {
     //         id: 1,
@@ -100,6 +101,10 @@ const CourseGrid = () => {
     useEffect(() => {
         fetchCourses();
     }, []);
+
+    const applyFilter = (query) => {
+        console.log(query);
+    }
 
     return (
         <div className="px-4 py-3">

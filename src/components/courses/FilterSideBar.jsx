@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import SearchBar from "./SearchBar";
+import SearchBar from "./SearchBar"; // Ensure this accepts `value` and `onChange` props
 
 const FilterSidebar = ({ applyFilter }) => {
     const [isOpen, setIsOpen] = useState(false);
     const toggleSidebar = () => setIsOpen((prev) => !prev);
 
+    const [searchText, setSearchText] = useState("");
     const [selectedLevel, setSelectedLevel] = useState("");
     const [selectedPrice, setSelectedPrice] = useState("");
 
@@ -13,12 +14,14 @@ const FilterSidebar = ({ applyFilter }) => {
 
     const applyFilters = () => {
         const query = {};
+        if (searchText.trim()) query.search = searchText.trim().toLowerCase();
         if (selectedLevel) query.level = selectedLevel.toLowerCase();
         if (selectedPrice) query.price = selectedPrice.toLowerCase();
         applyFilter(query);
     };
 
     const clearFilters = () => {
+        setSearchText("");
         setSelectedLevel("");
         setSelectedPrice("");
     };
@@ -94,7 +97,7 @@ const FilterSidebar = ({ applyFilter }) => {
                     </div>
 
                     {/* Search */}
-                    <SearchBar />
+                    <SearchBar value={searchText} onChange={setSearchText} />
 
                     {/* Level */}
                     <div>
