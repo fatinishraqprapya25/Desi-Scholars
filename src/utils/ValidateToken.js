@@ -11,7 +11,6 @@ const validateToken = async () => {
             });
             const validateRes = await validateReq.json();
             if (validateRes.success) {
-                console.log(validateRes);
                 return validateRes.data;
             }
             return false;

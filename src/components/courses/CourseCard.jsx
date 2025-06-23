@@ -2,19 +2,19 @@ import React from 'react';
 import { FaBookmark, FaStar, FaUser, FaClock, FaPlay } from 'react-icons/fa';
 
 const CourseCard = ({
-    title,
-    imageUrl,
+    courseName,
+    courseImage,
     instructorName,
     instructorAvatarUrl,
     ratingValue,
     reviewCount,
     studentCount,
-    durationText,
+    duration,
     tags,
-    priceText
+    price
 }) => {
     const accentPurple = '#8A4AF8';
-    const defaultAvatar = 'https://via.placeholder.com/40';
+    const defaultAvatar = 'https://surli.cc/onzxll';
 
     const handleEnrollClick = () => {
         // Navigate to the course details page
@@ -25,7 +25,7 @@ const CourseCard = ({
         <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 transform hover:-translate-y-1 border-2 border-purple-500 hover:border-white">
             {/* Course Image Section */}
             <div className="relative">
-                <img src={imageUrl} alt={title} className="w-full h-48 object-cover" />
+                <img src={courseImage} alt={courseName} className="w-full h-48 object-cover" />
                 <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
                     <span className="text-white text-xl font-bold p-2 text-center [text-shadow:_0_1px_5px_rgb(0_0_0_/_40%)]">
                     </span>
@@ -47,24 +47,24 @@ const CourseCard = ({
                             <FaStar key={i} className="w-4 h-4" />
                         ))}
                     </div>
-                    <span className="font-semibold text-gray-800">{ratingValue.toFixed(2)}</span>
-                    <span className="text-gray-500 ml-1">({reviewCount})</span>
+                    <span className="font-semibold text-gray-800">{ratingValue ? ratingValue.toFixed(2) : "3.5"}</span>
+                    <span className="text-gray-500 ml-1">({500})</span>
                 </div>
 
                 {/* Course Title */}
                 <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight">
-                    {title}
+                    {courseName}
                 </h3>
 
                 {/* Students and Duration */}
                 <div className="flex items-center space-x-4 text-gray-600 text-sm mb-4">
                     <div className="flex items-center">
                         <FaUser className="w-4 h-4 mr-1 text-gray-500" />
-                        <span>{studentCount}</span>
+                        <span>{studentCount ? studentCount : 200}</span>
                     </div>
                     <div className="flex items-center">
                         <FaClock className="w-4 h-4 mr-1 text-gray-500" />
-                        <span>{durationText}</span>
+                        <span>{duration}</span>
                     </div>
                 </div>
 
@@ -85,7 +85,7 @@ const CourseCard = ({
 
                 {/* Price and Enroll now Button */}
                 <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-gray-900">{priceText}</span>
+                    <span className="text-2xl font-bold text-gray-900">{price ? price + " TK" : "Free"}</span>
                     <button
                         style={{
                             color: accentPurple,
@@ -102,11 +102,11 @@ const CourseCard = ({
                             e.currentTarget.style.backgroundColor = 'white';
                             e.currentTarget.style.color = accentPurple;
                         }}
-                        onClick={handleEnrollClick} // Added onClick handler for navigation
+                        onClick={handleEnrollClick}
                         aria-label="Enroll now"
                     >
                         <FaPlay className="w-4 h-4 mr-2" />
-                        Enroll now
+                        Details
                     </button>
                 </div>
             </div>
