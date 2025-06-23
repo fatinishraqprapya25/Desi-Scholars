@@ -8,6 +8,8 @@ export default function CourseEditor() {
 
     const [courseData, setCourseData] = useState(null);
     const [courseModules, setCourseModules] = useState([]);
+    const [courseMatrials, setCourseMatrials] = useState([]);
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -69,10 +71,24 @@ export default function CourseEditor() {
             } finally {
                 setLoading(false);
             }
+
+            // fetch learnings here
+            const learningsResponse = await fetch("http://localhost:5000/api/matrials");
+            if (!learningsResponse.ok) {
+                alert("failed to fetch matrials");
+                return;
+            }
+            const learningResult = await learningsResponse.json();
+            if (!learningResult.success) {
+                alert(learningResult.message);
+                return;
+            }
+            setCourseMatrials(learningResult.data);
         };
 
         fetchData();
     }, [id, adminToken]);
+
 
     const addModule = async () => {
         if (!newVideo.title || !newVideo.link) {
@@ -452,6 +468,12 @@ export default function CourseEditor() {
                                 </div>
                             </div>
                         )}
+                    </div>
+
+                    {/* course learnings here */}
+                    <div>
+
+
                     </div>
 
                     {/* Update Button */}
