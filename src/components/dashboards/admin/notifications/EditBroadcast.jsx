@@ -23,7 +23,6 @@ export default function EditBroadcastPage() {
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [message, setMessage] = useState('');
-    const [imageFile, setImageFile] = useState(null);
     const [existingImage, setExistingImage] = useState('');
     const [audience, setAudience] = useState('both');
     const [errors, setErrors] = useState({});
