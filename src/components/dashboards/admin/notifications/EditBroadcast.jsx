@@ -110,7 +110,7 @@ export default function EditBroadcastPage() {
     };
 
     return (
-        <UserDashboardContainer admin={true}>
+        <UserDashboardContainer role="admin">
             <motion.div
                 className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-4xl mx-auto"
                 variants={sectionVariants}
