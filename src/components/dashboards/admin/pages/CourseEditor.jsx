@@ -227,14 +227,14 @@ export default function CourseEditor() {
                         />
                     </div>
 
-                    {/* Instructor Name */}
+                    {/* Instructor Id */}
                     <div>
-                        <label htmlFor="instructorName" className="block text-sm font-semibold text-gray-700 mb-2">Instructor Name</label>
+                        <label htmlFor="instructorId" className="block text-sm font-semibold text-gray-700 mb-2">Instructor's ID</label>
                         <input
-                            id="instructorName"
+                            id="instructorId"
                             type="text"
-                            name="instructorName"
-                            value={courseData.instructorName || ''}
+                            name="instructorId"
+                            value={courseData.instructorId || ''}
                             onChange={handleChange}
                             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
                         />
