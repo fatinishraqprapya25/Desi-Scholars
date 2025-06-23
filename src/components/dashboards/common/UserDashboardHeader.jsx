@@ -75,7 +75,7 @@ function UserDashboardHeader({ toggleSidebar, isSidebarOpen, role }) {
                 {dropdownOpen && (
                     <div className="absolute right-0 top-14 w-48 bg-white border border-gray-200 shadow-lg rounded-md py-2 z-50">
                         {role === "admin" ? <AdminDropDown /> : (
-                            role === "student" ? <StudentDropDown /> : <h1>teacher</h1>
+                            role === "teacher" ? <h1>Hi</h1> : <StudentDropDown />
                         )}
                     </div>
                 )}

@@ -9,7 +9,7 @@ export default function StudentDropDown() {
             Profile
         </Link>
         <Link
-            to={dashboardHomePath}
+            to="/dashboard"
             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         >
             Dashboard
