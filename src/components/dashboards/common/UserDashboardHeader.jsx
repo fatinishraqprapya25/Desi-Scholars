@@ -1,6 +1,8 @@
 import { User, Menu, Layers } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRef, useEffect, useState } from 'react';
+import AdminDropDown from './dropdowns/AdminDropDown';
+import StudentDropDown from './dropdowns/StudentDropDown';
 
 function UserDashboardHeader({ toggleSidebar, isSidebarOpen, role }) {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -72,41 +74,9 @@ function UserDashboardHeader({ toggleSidebar, isSidebarOpen, role }) {
 
                 {dropdownOpen && (
                     <div className="absolute right-0 top-14 w-48 bg-white border border-gray-200 shadow-lg rounded-md py-2 z-50">
-                        <Link
-                            to="/dashboard/profile"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            onClick={() => setDropdownOpen(false)}
-                        >
-                            Profile
-                        </Link>
-                        <Link
-                            to={dashboardHomePath}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            onClick={() => setDropdownOpen(false)}
-                        >
-                            Dashboard
-                        </Link>
-                        <Link
-                            to="/dashboard/practicetest"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            onClick={() => setDropdownOpen(false)}
-                        >
-                            Practice Tests
-                        </Link>
-                        <Link
-                            to="/dashboard/progress"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            onClick={() => setDropdownOpen(false)}
-                        >
-                            Progress
-                        </Link>
-                        <Link
-                            to="/dashboard/resources"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            onClick={() => setDropdownOpen(false)}
-                        >
-                            Resources
-                        </Link>
+                        {role === "admin" ? <AdminDropDown /> : (
+                            role === "student" ? <StudentDropDown /> : <h1>teacher</h1>
+                        )}
                     </div>
                 )}
             </div>

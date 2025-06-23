@@ -1,35 +1,35 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 
-export default function AdminDropDown() {
+export default function StudentDropDown() {
     return <>
         <Link
-            to="/admin/dashboard"
+            to="/dashboard/profile"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+        >
+            Profile
+        </Link>
+        <Link
+            to={dashboardHomePath}
             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         >
             Dashboard
         </Link>
         <Link
-            to="/admin/teachers"
+            to="/dashboard/practicetest"
             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         >
-            Manage Teachers
+            Practice Tests
         </Link>
         <Link
-            to="/admin/courses"
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-        >
-            Our Courses
+            to="/dashboard/progress"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"     >
+            Progress
         </Link>
         <Link
-            to="/admin/resources"
+            to="/dashboard/resources"
             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         >
             Resources
         </Link>
-        <button
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-        >
-            Logout
-        </button>
     </>
 }
