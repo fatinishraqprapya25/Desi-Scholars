@@ -8,7 +8,6 @@ const ValidateAdmin = async () => {
         }
     });
     const validateRes = await validateReq.json();
-    console.log(validateRes);
     if (validateRes.success) {
         return validateRes.data;
     }
