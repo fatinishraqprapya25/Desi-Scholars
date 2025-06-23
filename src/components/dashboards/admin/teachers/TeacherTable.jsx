@@ -1,7 +1,7 @@
-import { FaTrashAlt } from 'react-icons/fa'; 
+import { FaTrashAlt } from 'react-icons/fa';
 
 const TeacherTable = ({ teachers, onDelete, onEdit }) => {
-    const columns = ["Name", "Email", "Phone", "Gender", "Actions"];
+    const columns = ["ID", "Name", "Email", "Phone", "Gender", "Actions"];
 
     if (!teachers || teachers.length === 0) {
         return (
@@ -32,6 +32,8 @@ const TeacherTable = ({ teachers, onDelete, onEdit }) => {
                             key={teacher.id}
                             className="group hover:bg-blue-50 transition duration-200 ease-in-out transform hover:scale-[1.005]"
                         >
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{teacher._id}</td>
+
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{teacher.name}</td> {/* Darker text for name for emphasis */}
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{teacher.email}</td> {/* Slightly darker text */}
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{teacher.phone || 'N/A'}</td>
