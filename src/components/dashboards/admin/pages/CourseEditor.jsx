@@ -556,6 +556,16 @@ export default function CourseEditor() {
                         )}
                     </div>
 
+                    <div className="md:col-span-2 mt-6">
+                        <button
+                            onClick={handleUpdate}
+                            className="w-full bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? 'Updating Course...' : 'Update Course Details'}
+                        </button>
+                    </div>
+
                     {/* Course Modules (Videos) Section */}
                     <div className="md:col-span-2 mt-6 p-6 border border-gray-200 rounded-lg bg-gray-50">
                         <h3 className="text-xl font-bold mb-4 flex items-center text-gray-800">
@@ -809,17 +819,6 @@ export default function CourseEditor() {
                         )}
                     </div>
 
-
-                    {/* Update Button */}
-                    <div className="md:col-span-2 mt-6">
-                        <button
-                            onClick={handleUpdate}
-                            className="w-full bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
-                            disabled={isSubmitting}
-                        >
-                            {isSubmitting ? 'Updating Course...' : 'Update Course Details'}
-                        </button>
-                    </div>
                 </div>
             </div>
         </UserDashboardContainer>
