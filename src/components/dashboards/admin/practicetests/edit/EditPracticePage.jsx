@@ -25,9 +25,8 @@ export default function EditPracticeTestPage() {
         difficulty: 'medium',
         tags: [],
         type: 'test',
+        subject: ''
     });
-
-    console.log(mcqQuestions);
 
     const { testId } = useParams();
     const adminToken = localStorage.getItem("ASDFDKFFJF");
@@ -53,7 +52,6 @@ export default function EditPracticeTestPage() {
                 const data = await response.json();
                 setTestDetails(data.data);
             } catch (error) {
-                console.error("Error loading test:", error);
                 setTestDetails(null);
             } finally {
                 setIsLoading(false);
@@ -70,9 +68,8 @@ export default function EditPracticeTestPage() {
                 if (!res.ok) throw new Error("Failed to fetch MCQ questions");
                 const data = await res.json();
                 setMcqQuestions(data.data || []);
-                console.log(data);
             } catch (err) {
-                console.error("Error fetching MCQs:", err);
+                // console.error("Error fetching MCQs:", err);
             }
         };
 
@@ -106,7 +103,6 @@ export default function EditPracticeTestPage() {
                 setShowAddForm(false);
                 alert("Question added successfully!");
             } catch (err) {
-                console.error(err);
                 alert("Something went wrong.");
             }
         }
