@@ -207,7 +207,6 @@ const CourseDetailsPage = () => {
 
   const [courseDetails, setCourseDetails] = useState(null);
   const [instructorDetails, setInstructorDetails] = useState(null);
-  console.log(instructorDetails);
 
   const { id } = useParams();
 
