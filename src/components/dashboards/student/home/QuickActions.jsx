@@ -1,12 +1,13 @@
 import { motion } from "framer-motion";
 import { PlusCircle, PlayCircle, Search, FolderOpen, MessageSquare } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function QuickActions() {
     const actions = [
-        { id: 1, name: 'Start New Test', icon: <PlayCircle className="h-6 w-6" />, color: 'bg-blue-600', hoverColor: 'bg-blue-700' },
-        { id: 2, name: 'Explore Courses', icon: <Search className="h-6 w-6" />, color: 'bg-indigo-600', hoverColor: 'bg-indigo-700' },
-        { id: 3, name: 'View Resources', icon: <FolderOpen className="h-6 w-6" />, color: 'bg-green-600', hoverColor: 'bg-green-700' },
-        { id: 4, name: 'Ask a Question', icon: <MessageSquare className="h-6 w-6" />, color: 'bg-purple-600', hoverColor: 'bg-purple-700' },
+        { id: 1, link: "/practice-test", name: 'Start New Test', icon: <PlayCircle className="h-6 w-6" />, color: 'bg-blue-600', hoverColor: 'bg-blue-700' },
+        { id: 2, link: "/courses", name: 'Explore Courses', icon: <Search className="h-6 w-6" />, color: 'bg-indigo-600', hoverColor: 'bg-indigo-700' },
+        { id: 3, link: "/resources", name: 'View Resources', icon: <FolderOpen className="h-6 w-6" />, color: 'bg-green-600', hoverColor: 'bg-green-700' },
+        { id: 4, link: "/dashboard/profile", name: 'Go to Profile', icon: <MessageSquare className="h-6 w-6" />, color: 'bg-purple-600', hoverColor: 'bg-purple-700' },
     ];
 
     const itemVariants = {
@@ -34,15 +35,16 @@ export default function QuickActions() {
                 variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
             >
                 {actions.map(action => (
-                    <motion.button
-                        key={action.id}
-                        className={`p-6 rounded-2xl shadow-lg border border-gray-100 flex flex-col items-center text-center
+                    <Link to={action.link}>
+                        <motion.button
+                            key={action.id}
+                            className={`p-6 rounded-2xl shadow-lg border border-gray-100 flex flex-col items-center text-center
                                     ${action.color} text-white transform hover:scale-105 transition-all duration-300`}
-                        variants={itemVariants}
-                    >
-                        <div className="mb-4">{action.icon}</div>
-                        <p className="text-lg font-semibold">{action.name}</p>
-                    </motion.button>
+                            variants={itemVariants}
+                        >
+                            <div className="mb-4">{action.icon}</div>
+                            <p className="text-lg font-semibold">{action.name}</p>
+                        </motion.button></Link>
                 ))}
             </motion.div>
         </section>
