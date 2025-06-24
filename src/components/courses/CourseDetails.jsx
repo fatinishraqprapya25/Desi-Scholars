@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaStar, FaClock, FaUser, FaCheckCircle, FaChevronRight, FaLinkedinIn, FaGithub, FaYoutube } from 'react-icons/fa';
+import { FaStar, FaClock, FaUser, FaChevronRight, FaLinkedinIn, FaGithub, FaYoutube } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import Header from '../common/Header'; // Assuming Header component exists at this path
 import Footer from '../common/Footer'; // Assuming Footer component exists at this path
@@ -28,7 +28,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-// AccordionItem component for the course outline section and FAQ
+// AccordionItem component for the course outline section
 const AccordionItem = ({ title, content }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -76,7 +76,7 @@ const ReviewCard = ({ name, platform, comment, rating }) => {
   return (
     <motion.div
       className="p-8 bg-white rounded-3xl shadow-2xl border border-purple-100 cursor-pointer flex flex-col h-full transform hover:scale-105 transition-all duration-300"
-      whileHover={{ boxShadow: "0 25px 40px -12px rgba(0, 0, 0, 0.3), 0 15px 20px -10px rgba(0, 0, 0, 0.15)" }}
+      whileHover={{ boxShadow: "0 25px 40px rgba(0, 0, 0, 0.3), 0 15px 20px rgba(0, 0, 0, 0.15)" }}
       transition={{ duration: 0.3 }}
       variants={itemVariants} // Apply item variants for staggered entrance
     >
@@ -178,29 +178,6 @@ const CourseDetailsPage = () => {
     },
   ];
 
-  const faqs = [
-    {
-      question: "What are the prerequisites for this course?",
-      answer: "A basic understanding of HTML, CSS, and JavaScript (including ES6+ features) is highly recommended. No prior React experience is necessary."
-    },
-    {
-      question: "Will I receive a certificate upon completion?",
-      answer: "Yes, upon successful completion of all course modules and assignments, you will receive a verifiable certificate of completion."
-    },
-    {
-      question: "Is there a community or support available?",
-      answer: "Absolutely! You'll gain access to our exclusive student community forum where you can ask questions, share projects, and connect with peers and instructors."
-    },
-    {
-      question: "What if I get stuck on a lesson?",
-      answer: "Our instructors and teaching assistants are available in the community forum to help you with any challenges you encounter during the course."
-    },
-    {
-      question: "Can I access the course material offline?",
-      answer: "The course platform is primarily online, but some downloadable resources (like code snippets and slides) will be provided for offline use."
-    },
-  ];
-
   const [visibleReviews, setVisibleReviews] = useState(6);
   const reviewsPerPage = 6;
 
@@ -208,15 +185,17 @@ const CourseDetailsPage = () => {
 
   const [courseDetails, setCourseDetails] = useState(null);
   const [instructorDetails, setInstructorDetails] = useState(null);
-  // State to store modules
   const [modules, setModules] = useState([]);
+  const [allCourses, setAllCourses] = useState([]);
 
   const { id } = useParams();
 
+
+  // Effect to fetch initial course data
   useEffect(() => {
-    const fetchDetails = async () => {
+    const fetchInitialData = async () => {
       try {
-        // Fetch course details first
+        // Fetch current course details
         const courseResponse = await fetch(`http://localhost:5000/api/courses/${id}`);
         if (!courseResponse.ok) {
           throw new Error("Failed to fetch course details.");
@@ -258,13 +237,39 @@ const CourseDetailsPage = () => {
         setModules(modulesResult.data);
 
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching course-specific data:", error);
         alert(error.message);
       }
     };
 
-    fetchDetails();
-  }, [id, adminToken]); // Depend on id and adminToken
+    fetchInitialData();
+  }, [id, adminToken]);
+
+  useEffect(() => {
+    const fetchAllCourses = async () => {
+      try {
+        const allCoursesResponse = await fetch(`http://localhost:5000/api/courses/c/two`);
+        if (!allCoursesResponse.ok) {
+          throw new Error("Failed to fetch all courses.");
+        }
+        const allCoursesResult = await allCoursesResponse.json();
+        if (!allCoursesResult.success) {
+          throw new Error(allCoursesResult.message || "Failed to fetch all courses.");
+        }
+        setAllCourses(allCoursesResult.data);
+      } catch (error) {
+        console.error("Error fetching all courses:", error);
+      }
+    };
+    fetchAllCourses();
+  }, []);
+
+
+  useEffect(() => {
+
+
+  }, []);
+
 
   const handleLoadMore = () => {
     setVisibleReviews(prevCount => prevCount + reviewsPerPage);
@@ -283,7 +288,7 @@ const CourseDetailsPage = () => {
       <Header />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50 font-sans antialiased text-gray-900">
         <main className="pb-10">
-          {/* Combined Course Banner and Overview Section - Revamped */}
+          {/* Combined Course Banner and Overview Section */}
           <motion.div
             className="w-full bg-gradient-to-br from-purple-800 to-indigo-900 shadow-3xl mb-12 py-20 md:py-28 overflow-hidden relative"
             initial={{ opacity: 0, y: -80 }}
@@ -353,14 +358,13 @@ const CourseDetailsPage = () => {
             </div>
           </motion.div>
 
-          {/* What You'll Learn Section - Enhanced */}
+          {/* What You'll Learn Section */}
           <WhatUWillLearn id={id} />
 
-          {/* Course Content Grid - Enhanced */}
+          {/* Course Content Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-7xl mx-auto px-6 mt-16">
-            {/* Left Column: Course Outline, Requirements */}
+            {/* Left Column: Course Outline */}
             <div className="md:col-span-2">
-              {/* Course Outline (Accordion) */}
               <motion.section
                 className="mb-12 bg-white rounded-3xl shadow-2xl p-10 border border-gray-100"
                 variants={sectionVariants}
@@ -379,39 +383,9 @@ const CourseDetailsPage = () => {
                   )}
                 </div>
               </motion.section>
-
-              {/* Requirements */}
-              <motion.section
-                className="mb-12 bg-white rounded-3xl shadow-2xl p-10 border border-gray-100"
-                variants={sectionVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
-              >
-                <h2 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900">Requirements</h2>
-                <motion.ul
-                  className="list-disc list-inside text-gray-700 space-y-4 pl-6 text-lg"
-                  variants={{
-                    visible: {
-                      transition: {
-                        staggerChildren: 0.08,
-                      },
-                    },
-                  }}
-                  initial="hidden"
-                  whileInView="visible" // Use whileInView on the parent
-                  viewport={{ once: true, amount: 0.2 }}
-                >
-                  <motion.li variants={itemVariants}><span className="font-medium">Basic understanding of HTML, CSS, and JavaScript.</span></motion.li>
-                  <motion.li variants={itemVariants}><span className="font-medium">Familiarity with ES6+ features (e.g., arrow functions, destructuring).</span></motion.li>
-                  <motion.li variants={itemVariants}><span className="font-medium">A code editor (VS Code recommended) and a modern web browser.</span></motion.li>
-                  <motion.li variants={itemVariants}><span className="font-medium">Node.js and npm/yarn installed on your machine.</span></motion.li>
-                  <motion.li variants={itemVariants}><span className="font-medium">No prior React experience is required, but a willingness to learn is essential!</span></motion.li>
-                </motion.ul>
-              </motion.section>
             </div>
 
-            {/* Right Column: Related Courses Carousel */}
+            {/* Right Column: Related Courses */}
             <div className="md:col-span-1">
               <motion.section
                 className="bg-white rounded-3xl shadow-2xl p-8 mb-8 border border-gray-100"
@@ -431,55 +405,37 @@ const CourseDetailsPage = () => {
                     },
                   }}
                   initial="hidden"
-                  whileInView="visible" // Use whileInView on the parent
+                  whileInView="visible"
                   viewport={{ once: true, amount: 0.2 }}
                 >
-                  <motion.div
-                    className="bg-purple-50 p-6 rounded-xl shadow-lg border border-purple-200 hover:shadow-xl transition-shadow cursor-pointer transform hover:scale-103"
-                    whileHover={{ y: -5 }}
-                    transition={{ duration: 0.2 }}
-                    variants={itemVariants}
-                  >
-                    <h3 className="font-extrabold text-xl text-purple-800 mb-3">Advanced JavaScript Concepts</h3>
-                    <p className="text-base text-gray-700">Deep dive into closures, prototypes, and async JS.</p>
-                    <div className="flex items-center text-yellow-500 text-base mt-4">
-                      {[...Array(5)].map((_, i) => <FaStar key={i} className="w-5 h-5" />)}
-                      <span className="ml-2 text-gray-800 font-medium">4.9 (800)</span>
-                    </div>
-                  </motion.div>
-                  <motion.div
-                    className="bg-purple-50 p-6 rounded-xl shadow-lg border border-purple-200 hover:shadow-xl transition-shadow cursor-pointer transform hover:scale-103"
-                    whileHover={{ y: -5 }}
-                    transition={{ duration: 0.2 }}
-                    variants={itemVariants}
-                  >
-                    <h3 className="font-extrabold text-xl text-purple-800 mb-3">Fullstack Node.js & Express</h3>
-                    <p className="text-base text-gray-700">Build robust backend APIs with Node.js.</p>
-                    <div className="flex items-center text-yellow-500 text-base mt-4">
-                      {[...Array(4)].map((_, i) => <FaStar key={i} className="w-5 h-5" />)}
-                      <FaStar key={4} className="w-5 h-5 text-gray-300" />
-                      <span className="ml-1 text-gray-800">4.7 (1,500)</span>
-                    </div>
-                  </motion.div>
-                  <motion.div
-                    className="bg-purple-50 p-6 rounded-xl shadow-lg border border-purple-200 hover:shadow-xl transition-shadow cursor-pointer transform hover:scale-103"
-                    whileHover={{ y: -5 }}
-                    transition={{ duration: 0.2 }}
-                    variants={itemVariants}
-                  >
-                    <h3 className="font-extrabold text-xl text-purple-800 mb-3">Modern CSS & Tailwind CSS</h3>
-                    <p className="text-base text-gray-700">Master responsive design with Tailwind.</p>
-                    <div className="flex items-center text-yellow-500 text-base mt-4">
-                      {[...Array(5)].map((_, i) => <FaStar key={i} className="w-5 h-5" />)}
-                      <span className="ml-1 text-gray-800 font-medium">5.0 (650)</span>
-                    </div>
-                  </motion.div>
+                  {allCourses.length > 0 ? (
+                    allCourses.map((course) => (
+                      <Link to={`/courses/${course._id}`} key={course._id}>
+                        {/* Added key to motion.div to help React in re-rendering specific items */}
+                        <motion.div
+                          key={course._id}
+                          className="bg-purple-50 p-6 rounded-xl shadow-lg border border-purple-200 hover:shadow-xl transition-shadow cursor-pointer transform hover:scale-103 mb-4"
+                          whileHover={{ y: -5 }}
+                          transition={{ duration: 0.2 }}
+                          variants={itemVariants}
+                        >
+                          <h3 className="font-extrabold text-xl text-purple-800 mb-3">{course.courseName}</h3>
+                          <p className="text-base text-gray-700">
+                            {course.description ? course.description.substring(0, 70) + '...' : 'No description available.'}
+                          </p>
+
+                        </motion.div>
+                      </Link>
+                    ))
+                  ) : (
+                    <p className="text-gray-600">No related courses available.</p>
+                  )}
                 </motion.div>
               </motion.section>
             </div>
           </div>
 
-          {/* Meet Your Instructor Section - Enhanced */}
+          {/* Meet Your Instructor Section */}
           <motion.section
             className="max-w-7xl mx-auto px-6 mt-16 mb-12 bg-white rounded-3xl shadow-2xl p-10 border border-gray-100 flex flex-col md:flex-row items-center md:items-start space-y-8 md:space-y-0 md:space-x-12"
             variants={sectionVariants}
@@ -498,6 +454,7 @@ const CourseDetailsPage = () => {
                 src={instructorDetails?.profilePicture || "https://placehold.co/250x250/6A0DAD/FFFFFF?text=Instructor+Image"}
                 alt={instructorDetails?.name || "Instructor Image"}
                 className="rounded-full border-6 border-purple-400 shadow-xl w-60 h-60 object-cover mx-auto md:mx-0 relative z-10"
+                onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/250x250/6A0DAD/FFFFFF?text=No+Image"; }}
               />
             </motion.div>
             <motion.div
@@ -576,35 +533,7 @@ const CourseDetailsPage = () => {
             </motion.div>
           </motion.section>
 
-          {/* Frequently Asked Questions (FAQ) */}
-          <motion.section
-            className="max-w-4xl mx-auto px-6 mt-16 mb-12"
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            <h2 className="text-4xl font-extrabold mb-10 text-center text-purple-900">Frequently Asked Questions</h2>
-            <motion.div
-              className="space-y-4"
-              variants={{
-                visible: {
-                  transition: {
-                    staggerChildren: 0.07,
-                  },
-                },
-              }}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
-            >
-              {faqs.map((faq, index) => (
-                <AccordionItem key={index} title={faq.question} content={faq.answer} />
-              ))}
-            </motion.div>
-          </motion.section>
-
-          {/* Student Reviews Section - Animated & Enhanced */}
+          {/* Student Reviews Section */}
           <motion.section
             className="max-w-7xl mx-auto px-6 mt-16 mb-12"
             variants={sectionVariants}
