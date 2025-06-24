@@ -9,48 +9,13 @@ import MonthlyEarningsChart from '../home/MonthlyEarningsCart';
 import RecentActivitiesSection from '../home/RecentActivitiesSection';
 import { useEffect, useState } from 'react';
 
-const summaryData = [
-    {
-        id: 'total-users',
-        title: 'Total Users',
-        value: '1,250', // Example value
-        icon: Users, // Lucide React icon component
-        bgColor: 'bg-gradient-to-br from-blue-400 to-blue-600',
-        textColor: 'text-blue-800'
-    },
-    {
-        id: 'total-courses',
-        title: 'Total Courses',
-        value: '75', // Example value
-        icon: BookOpen,
-        bgColor: 'bg-gradient-to-br from-green-400 to-green-600',
-        textColor: 'text-green-800'
-    },
-    {
-        id: 'total-orders',
-        title: 'Total Orders',
-        value: '340', // Example value
-        icon: Package,
-        bgColor: 'bg-gradient-to-br from-yellow-400 to-yellow-600',
-        textColor: 'text-yellow-800'
-    },
-    {
-        id: 'total-earnings',
-        title: 'Total Earnings',
-        value: '$12,500', // Example value
-        icon: DollarSign,
-        bgColor: 'bg-gradient-to-br from-purple-400 to-purple-600',
-        textColor: 'text-purple-800'
-    },
-];
-
 const monthlyEarningsData = [
     { name: 'Jan', earnings: 4000 },
     { name: 'Feb', earnings: 3000 },
     { name: 'Mar', earnings: 5000 },
     { name: 'Apr', earnings: 4500 },
     { name: 'May', earnings: 6000 },
-    { name: 'Jun', earnings: 7500 }, // Current month, slightly higher for the "lucrative" feel
+    { name: 'Jun', earnings: 7500 },
 ];
 
 const sectionVariants = {
@@ -70,23 +35,107 @@ const sectionVariants = {
 
 function AdminHome() {
     const [adminDetails, setAdminDetails] = useState({});
+    const [coursesCount, setCoursesCount] = useState(0);
+    const [usersCount, setUsersCount] = useState(0);
+    const [ordersCount, setOrdersCount] = useState(0);
+    const [totalAmount, setTotalAmount] = useState(0);
     const adminToken = localStorage.getItem("ASDFDKFFJF");
-    useEffect(() => {
-        const fetchAdminInfo = async () => {
-            const response = await fetch("http://localhost:5000/api/admin/validate-admin", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "Application/json",
-                    "Authorization": `Bearer ${adminToken}`
-                }
-            });
-            const result = await response.json();
-            if (result.success) {
-                setAdminDetails(result.data);
+
+    const summaryData = [
+        {
+            id: 'total-users',
+            title: 'Total Users',
+            value: usersCount,
+            icon: Users,
+            bgColor: 'bg-gradient-to-br from-blue-400 to-blue-600',
+            textColor: 'text-blue-800'
+        },
+        {
+            id: 'total-courses',
+            title: "Total Courses",
+            value: coursesCount,
+            icon: BookOpen,
+            bgColor: 'bg-gradient-to-br from-green-400 to-green-600',
+            textColor: 'text-green-800'
+        },
+        {
+            id: 'total-orders',
+            title: 'Total Orders',
+            value: ordersCount, // Example value
+            icon: Package,
+            bgColor: 'bg-gradient-to-br from-yellow-400 to-yellow-600',
+            textColor: 'text-yellow-800'
+        },
+        {
+            id: 'total-earnings',
+            title: 'Total Earnings',
+            value: totalAmount, // Example value
+            icon: DollarSign,
+            bgColor: 'bg-gradient-to-br from-purple-400 to-purple-600',
+            textColor: 'text-purple-800'
+        },
+    ];
+
+    const fetchAdminInfo = async () => {
+        const response = await fetch("http://localhost:5000/api/admin/validate-admin", {
+            method: "GET",
+            headers: {
+                "Content-Type": "Application/json",
+                "Authorization": `Bearer ${adminToken}`
             }
+        });
+        const result = await response.json();
+        if (result.success) {
+            setAdminDetails(result.data);
+        } else {
+            alert(result.message)
         }
+    }
+
+    const fetchCoursesCount = async () => {
+        const response = await fetch("http://localhost:5000/api/courses");
+        const result = await response.json();
+        if (result.success) {
+            setCoursesCount(result.data.length);
+        }
+    };
+
+    const fetchUsersCount = async () => {
+        const response = await fetch("http://localhost:5000/api/auth", {
+            method: "GET",
+            headers: {
+                "Content-Type": "Application/json",
+                "Authorization": `Bearer ${adminToken}`
+            }
+        });
+        const result = await response.json();
+        if (result.success) {
+            setUsersCount(result.data.length);
+        }
+    }
+
+    const fetchOrdersCount = async () => {
+        const response = await fetch("http://localhost:5000/api/payments/status/approved");
+        const result = await response.json();
+        if (result.success) {
+            setOrdersCount(result.data.length);
+            let totalRevenue = 0;
+            result.data.map(sell => {
+                totalRevenue += sell.amount;
+            });
+            setTotalAmount(totalRevenue);
+        }
+    }
+
+    useEffect(() => {
+        fetchCoursesCount();
         fetchAdminInfo();
+        fetchUsersCount();
+        fetchOrdersCount();
     }, []);
+
+
+
     return (
         <UserDashboardContainer role={"admin"}>
             <motion.div
