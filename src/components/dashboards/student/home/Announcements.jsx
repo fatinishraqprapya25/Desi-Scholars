@@ -2,12 +2,6 @@ import { motion } from "framer-motion";
 import { Megaphone } from "lucide-react";
 import { useEffect, useState } from "react";
 
-// const announcements = [
-//     { id: 1, title: 'Platform Maintenance Scheduled', date: 'June 10, 2025', message: 'Our platform will undergo scheduled maintenance from 2 AM to 4 AM UTC. Services may be temporarily interrupted.' },
-//     { id: 2, title: 'New Course: Advanced React Hooks', date: 'May 28, 2025', message: 'Exciting news! A new course on Advanced React Hooks has been launched. Enroll now to deepen your React expertise.' },
-//     { id: 3, title: 'Webinar: Future of AI in Education', date: 'May 25, 2025', message: 'Join our upcoming webinar on June 15th to discuss the transformative impact of AI in the education sector.' },
-// ];
-
 const itemVariants = {
     hidden: { x: 20, opacity: 0 },
     visible: {

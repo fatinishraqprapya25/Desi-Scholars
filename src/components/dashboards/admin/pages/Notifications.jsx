@@ -16,9 +16,9 @@ export default function ManageBroadcastsPage() {
     useEffect(() => {
         const fetchBroadcasts = async () => {
             setLoading(true);
-            setError(null); // Clear previous errors
+            setError(null);
             try {
-                const res = await fetch('http://localhost:5000/api/broadcasts', {
+                const res = await fetch('http://localhost:5000/api/broadcasts/filter/all', {
                     headers: {
                         Authorization: `Bearer ${adminToken}`,
                     },
@@ -45,7 +45,7 @@ export default function ManageBroadcastsPage() {
             setLoading(false);
             setError('Authentication token not found. Please log in.');
         }
-    }, [adminToken]); 
+    }, [adminToken]);
 
     const sectionVariants = {
         hidden: { opacity: 0, y: 20 },
