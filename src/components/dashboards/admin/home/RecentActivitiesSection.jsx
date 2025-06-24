@@ -1,12 +1,44 @@
 import { Activity } from 'lucide-react';
 import RecentActivityItem from './RecentActivityItem';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function RecentActivitiesSection() {
+    const [lastUserRegistered, setLastUserRegistered] = useState({ name: "", time: "" });
+    const [lastCourseCreated, setLastCourseCreated] = useState({ name: "", time: "" });
+    const [lastOrderCreated, setLastOrderCreated] = useState({
+        name: "",
+        time: ""
+    });
+
     const activities = [
-        { id: 1, text: 'New user registered: ', highlight: 'Alice Johnson', time: '2 hours ago' },
-        { id: 2, text: 'Course updated: ', highlight: 'React.js Advanced', time: 'Yesterday' },
-        { id: 3, text: 'New order placed: ', highlight: '#ORD-2025001', time: '3 days ago' },
+        { id: 1, text: 'New user registered: ', highlight: lastUserRegistered.name, time: lastUserRegistered.time },
+        { id: 2, text: 'Course created: ', highlight: lastCourseCreated.name, time: lastCourseCreated.time },
+        { id: 3, text: 'New order placed: ', highlight: lastOrderCreated.name, time: lastOrderCreated.time },
     ];
+
+    const adminToken = localStorage.getItem("ASDFDKFFJF");
+
+    useEffect(() => {
+        const fetchRecentActivities = async () => {
+            const response = await fetch("http://localhost:5000/api/admin/activities", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${adminToken}`
+                }
+            });
+            const result = await response.json();
+
+            setLastUserRegistered({ name: result.data.lastAccountCreated.name, time: result.data.lastAccountCreated.createdAt });
+
+            setLastCourseCreated({ name: result.data.lastCourseCreated.courseName, time: result.data.lastCourseCreated.createdAt });
+
+            setLastOrderCreated({ name: result.data.lastPaymentMade._id, time: result.data.lastPaymentMade.createdAt })
+
+        }
+        fetchRecentActivities();
+
+    }, []);
 
     return (
         <section className="mt-12">
@@ -23,9 +55,11 @@ function RecentActivitiesSection() {
                         />
                     ))}
                 </ul>
-                <button className="mt-6 w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-3 rounded-lg transition-colors">
-                    View All Activities
-                </button>
+                <Link to="/admin/payments">
+                    <button className="mt-6 w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-3 rounded-lg transition-colors">
+                        Browse All Orders
+                    </button>
+                </Link>
             </div>
         </section>
     );
