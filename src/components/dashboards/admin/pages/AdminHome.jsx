@@ -7,6 +7,7 @@ import PageHeader from '../../common/PageHeader';
 import SummaryCardsGrid from '../home/SummeryCardsGrid';
 import MonthlyEarningsChart from '../home/MonthlyEarningsCart';
 import RecentActivitiesSection from '../home/RecentActivitiesSection';
+import { useEffect, useState } from 'react';
 
 const summaryData = [
     {
@@ -52,31 +53,49 @@ const monthlyEarningsData = [
     { name: 'Jun', earnings: 7500 }, // Current month, slightly higher for the "lucrative" feel
 ];
 
+const sectionVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            type: 'spring',
+            stiffness: 100,
+            damping: 15,
+            when: 'beforeChildren',
+            staggerChildren: 0.1
+        }
+    }
+};
+
 function AdminHome() {
-    const sectionVariants = {
-        hidden: { opacity: 0, y: 30 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                type: 'spring',
-                stiffness: 100,
-                damping: 15,
-                when: 'beforeChildren',
-                staggerChildren: 0.1
+    const [adminDetails, setAdminDetails] = useState({});
+    const adminToken = localStorage.getItem("ASDFDKFFJF");
+    useEffect(() => {
+        const fetchAdminInfo = async () => {
+            const response = await fetch("http://localhost:5000/api/admin/validate-admin", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "Application/json",
+                    "Authorization": `Bearer ${adminToken}`
+                }
+            });
+            const result = await response.json();
+            if (result.success) {
+                setAdminDetails(result.data);
             }
         }
-    };
-
+        fetchAdminInfo();
+    }, []);
     return (
         <UserDashboardContainer role={"admin"}>
             <motion.div
-                className="p-6 md:p-8 lg:p-10 font-sans"
+                className="p-4 md:p-6 lg:p-8 font-sans"
                 variants={sectionVariants}
                 initial="hidden"
                 animate="visible"
             >
-                {/* Admin Dashboard Header */}
+                <h1 className='text-2xl pb-3 font-bold '>Welcome, {adminDetails.name}!</h1>
                 <PageHeader
                     icon={<LayoutDashboard className="mr-3 h-8 w-8 text-indigo-600" />}
                     title="Admin Dashboard Overview"
