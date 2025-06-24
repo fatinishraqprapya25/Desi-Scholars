@@ -1,63 +1,58 @@
-import { BookOpen, Compass, Clock, UserSquare2 } from 'lucide-react'; // Added Clock and UserSquare2 for more specific icons
-import { motion } from 'framer-motion'; // For attractive animations
+import { BookOpen, Compass, Clock, UserSquare2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import ValidateToken from "../../../../utils/ValidateToken";
 
-const enrolledCourses = [
-    {
-        id: 1,
-        title: 'Introduction to Web Development',
-        progress: 75,
-        nextLesson: 'CSS Flexbox',
-        instructor: 'Dr. Alice Smith',
-        lastAccessed: '2 days ago',
-        imageUrl: 'https://images.unsplash.com/photo-1542831371-29b0f74f9d91?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' // Placeholder image
-    },
-    {
-        id: 2,
-        title: 'Calculus I',
-        progress: 40,
-        nextLesson: 'Derivatives',
-        instructor: 'Prof. John Doe',
-        lastAccessed: '5 days ago',
-        imageUrl: 'https://images.unsplash.com/photo-1554460586-e0094025170d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' // Placeholder image
-    },
-    {
-        id: 3,
-        title: 'Data Structures and Algorithms',
-        progress: 90,
-        nextLesson: 'Graph Traversal',
-        instructor: 'Ms. Emily White',
-        lastAccessed: '1 day ago',
-        imageUrl: 'https://images.unsplash.com/photo-1617470701193-276949b2-32b0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' // Placeholder image
-    },
-];
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.15,
+            delayChildren: 0.2
+        }
+    }
+};
+
+const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+        y: 0,
+        opacity: 1,
+        transition: {
+            type: 'spring',
+            stiffness: 100,
+            damping: 15
+        }
+    }
+};
 
 export default function EnrolledCourses() {
-    const accentColor = '#6366F1'; // Tailwind indigo-500 for consistency
-    const secondaryAccent = '#818CF8'; // Tailwind indigo-400
+    const accentColor = '#6366F1';
+    const secondaryAccent = '#818CF8';
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.15,
-                delayChildren: 0.2
-            }
-        }
-    };
 
-    const itemVariants = {
-        hidden: { y: 20, opacity: 0 },
-        visible: {
-            y: 0,
-            opacity: 1,
-            transition: {
-                type: 'spring',
-                stiffness: 100,
-                damping: 15
+    const [enrolledCourses, setEnrolledCourses] = useState([]);
+
+    useEffect(() => {
+        const fetchEnrolledCourses = async () => {
+            const checkUser = await ValidateToken();
+            console.log(checkUser);
+            const response = await fetch(`http://localhost:5000/api/courses/user/${checkUser.id}`);
+            if (!response.ok) {
+                alert("fakjfksdlf");
+                return;
             }
+            const result = await response.json();
+            if (!result.success) {
+                alert(result.message);
+                return;
+            }
+            setEnrolledCourses(result.data);
         }
-    };
+
+        fetchEnrolledCourses();
+    }, []);
 
     return (
         <section className="mb-10 font-sans">

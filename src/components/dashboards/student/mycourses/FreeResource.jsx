@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, FolderOpen, Search } from 'lucide-react'; // Added Search for potential future use or alternative icon
+import { Link } from 'react-router-dom';
 
 function FreeResources() {
     const itemVariants = {
@@ -29,13 +30,14 @@ function FreeResources() {
             <p className="text-gray-700 mb-6 text-lg leading-relaxed">
                 Unlock a vast library of free study materials, comprehensive tutorials, and insightful guides to boost your learning journey.
             </p>
-            <button
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-3 px-5 rounded-xl shadow-lg
+            <Link to="/resources">
+                <button
+                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-3 px-5 rounded-xl shadow-lg
                            hover:from-blue-700 hover:to-indigo-800 transition-all duration-300 ease-in-out
                            text-lg font-medium flex items-center justify-center transform hover:scale-105 active:scale-95"
-            >
-                <BookOpen className="mr-2 h-5 w-5" /> Explore Resources
-            </button>
+                >
+                    <BookOpen className="mr-2 h-5 w-5" /> Explore Resources
+                </button></Link>
         </motion.div>
     );
 }
