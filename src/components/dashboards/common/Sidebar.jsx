@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom'; // Import useLocation hook
+import { Link, useLocation, useNavigate } from 'react-router-dom'; // Import useLocation hook
 import {
     LayoutDashboard, // More fitting icon for Dashboard
     BookOpen,
@@ -12,6 +12,7 @@ import {
     Users, UserCog, BellRing, Settings,
     ListChecks,
     UserCircle2,
+    LogOutIcon,
 } from 'lucide-react';
 
 export default function Sidebar({ role, isOpenSideBar, toggleSidebar }) {
@@ -22,7 +23,6 @@ export default function Sidebar({ role, isOpenSideBar, toggleSidebar }) {
         { name: 'My Courses', icon: BookOpen, path: '/dashboard/mycourses' },
         { name: 'Leader Board', icon: BookOpen, path: '/dashboard/leaderboard' },
         { name: 'Practice Tests', icon: FileText, path: '/dashboard/practicetest' },
-        { name: 'My Progress', icon: BarChart2, path: '/dashboard/progress' },
         { name: 'Resources', icon: FolderOpen, path: '/dashboard/resources' },
         { name: 'Profile', icon: User, path: '/dashboard/profile' },
     ];
@@ -55,11 +55,17 @@ export default function Sidebar({ role, isOpenSideBar, toggleSidebar }) {
         navItems = studentNavItems;
     }
 
-    const bottomNavItems = [
-        { name: 'Logout', icon: LogOut, path: '/logout' },
-    ];
+    const navigate = useNavigate();
 
-    const HEADER_HEIGHT_REM = '4.5rem';
+    const handleLogout = () => {
+        if (role === "admin") {
+            localStorage.removeItem("ASDFDKFFJF");
+            navigate("/admin/login");
+        } else {
+            localStorage.removeItem("HIJDFJFJF12");
+            navigate("/login");
+        }
+    }
 
     return (
         <>
@@ -122,18 +128,11 @@ export default function Sidebar({ role, isOpenSideBar, toggleSidebar }) {
                 {/* Bottom Navigation (Logout) */}
                 <nav className="px-4 mt-1 border-t border-gray-100 pt-4">
                     <ul>
-                        {bottomNavItems.map((item) => (
-                            <li key={item.name}>
-                                <Link
-                                    to={item.path}
-                                    onClick={toggleSidebar}
-                                    className="w-full flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-300"
-                                >
-                                    <item.icon className="mr-3 h-5 w-5 text-gray-500" />
-                                    <span className="text-base">{item.name}</span>
-                                </Link>
-                            </li>
-                        ))}
+
+                        <li>
+                            <button onClick={handleLogout} className="w-full flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-300"> <LogOutIcon className="w-4" /> <span className='ps-2'>Logout</span></button>
+                        </li>
+
                     </ul>
                 </nav>
 
