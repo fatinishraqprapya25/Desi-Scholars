@@ -24,8 +24,8 @@ export default function UserDashboardHome({ activeSection }) {
                     <WelcomeBanner userName="Alex" />
                     <KeyMetrics />
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <UpcomingEvents />
+                    <div className="">
+                        {/* <UpcomingEvents /> */}
                         <LatestAnnouncements />
                     </div>
 
