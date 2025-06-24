@@ -1,46 +1,36 @@
 import { motion } from "framer-motion";
-import { Lightbulb, Clock, TrendingUp ,PlayCircle } from "lucide-react";
+import { Lightbulb, Clock, TrendingUp, PlayCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import textShortener from "../../../../utils/textShorener";
 
-const courses = [
-    {
-        id: 'rec1',
-        title: 'Python for Data Science',
-        description: 'Learn Python fundamentals for data analysis and machine learning.',
-        imageUrl: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        difficulty: 'Intermediate',
-        duration: '6 weeks',
-    },
-    {
-        id: 'rec2',
-        title: 'Introduction to UI/UX Design',
-        description: 'Explore the principles of user interface and user experience design.',
-        imageUrl: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        difficulty: 'Beginner',
-        duration: '4 weeks',
-    },
-    {
-        id: 'rec3',
-        title: 'Cloud Computing Fundamentals',
-        description: 'Understand the basics of cloud platforms like AWS, Azure, and GCP.',
-        imageUrl: 'https://images.unsplash.com/photo-1599305445671-ac291c9a8e6d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        difficulty: 'Beginner',
-        duration: '8 weeks',
-    },
-];
+const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+        y: 0,
+        opacity: 1,
+        transition: {
+            type: 'spring',
+            stiffness: 100,
+            damping: 15
+        }
+    }
+};
 
 export default function RecommendedCourses() {
-    const itemVariants = {
-        hidden: { y: 20, opacity: 0 },
-        visible: {
-            y: 0,
-            opacity: 1,
-            transition: {
-                type: 'spring',
-                stiffness: 100,
-                damping: 15
+    const [courses, setCourses] = useState([]);
+    useEffect(() => {
+        const fetchRecommendedCourses = async () => {
+            const response = await fetch("http://localhost:5000/api/courses/c/two");
+            const result = await response.json();
+            if (result.success) {
+                result.data.forEach(course => {
+                    course.description = textShortener(course.description, 150);
+                });
+                setCourses(result.data);
             }
         }
-    };
+        fetchRecommendedCourses();
+    }, []);
 
     return (
         <section className="mb-10">
@@ -62,14 +52,14 @@ export default function RecommendedCourses() {
                     >
                         <div className="relative h-40 w-full overflow-hidden">
                             <img
-                                src={course.imageUrl || 'https://via.placeholder.com/400x200?text=Course+Image'}
-                                alt={course.title}
+                                src={course.courseImage || 'https://via.placeholder.com/400x200?text=Course+Image'}
+                                alt={course.courseName}
                                 className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                         </div>
                         <div className="p-6">
-                            <h4 className="text-xl font-bold text-gray-900 mb-2 leading-tight">{course.title}</h4>
+                            <h4 className="text-xl font-bold text-gray-900 mb-2 leading-tight">{course.courseName}</h4>
                             <p className="text-sm text-gray-600 mb-3">{course.description}</p>
                             <div className="flex justify-between items-center text-sm text-gray-700 mb-4">
                                 <span className="flex items-center">
