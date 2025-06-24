@@ -157,7 +157,7 @@ function AdminHome() {
                 <SummaryCardsGrid summaryData={summaryData} />
 
                 {/* Monthly Earnings Chart */}
-                <MonthlyEarningsChart data={monthlyEarningsData} />
+                <MonthlyEarningsChart />
 
                 {/* Recent Activities Section */}
                 <RecentActivitiesSection />

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { TrendingUp } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import {
     LineChart,
     Line,
@@ -20,12 +21,35 @@ const chartVariants = {
             type: 'spring',
             stiffness: 80,
             damping: 10,
-            delay: 0.3 // A slight delay after summary cards
+            delay: 0.3
         }
     }
 };
 
-function MonthlyEarningsChart({ data }) {
+function MonthlyEarningsChart() {
+    const [data, setData] = useState([]);
+    const adminToken = localStorage.getItem("ASDFDKFFJF");
+
+    useEffect(() => {
+        const fetchMonthlyEarnings = async () => {
+            try {
+                const response = await fetch("http://localhost:5000/api/payments/earnings/monthly", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "Application/json",
+                        "Authorization": `Bearer ${adminToken}`
+                    }
+                });
+                const result = await response.json();
+                setData(result.data);
+                console.log(result);
+            } catch (error) {
+                console.error("Error fetching monthly earnings:", error);
+            }
+        };
+        fetchMonthlyEarnings();
+    }, []);
+
     return (
         <motion.section
             className="mt-12 bg-white rounded-xl shadow-md p-6 border border-gray-100"
@@ -40,15 +64,16 @@ function MonthlyEarningsChart({ data }) {
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart
                         data={data}
-                        margin={{
-                            top: 15, right: 30, left: 20, bottom: 5,
-                        }}
+                        margin={{ top: 15, right: 30, left: 20, bottom: 5 }}
                     >
                         <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
                         <XAxis dataKey="name" stroke="#6b7280" />
-                        <YAxis stroke="#6b7280" tickFormatter={(value) => `$${value}`} />
+                        <YAxis
+                            stroke="#6b7280"
+                            tickFormatter={(value) => `${value.toLocaleString()} Tk`}
+                        />
                         <Tooltip
-                            formatter={(value) => `$${value.toLocaleString()}`}
+                            formatter={(value) => `${value.toLocaleString()} Tk`}
                             labelFormatter={(label) => `Month: ${label}`}
                             contentStyle={{
                                 backgroundColor: '#fff',
