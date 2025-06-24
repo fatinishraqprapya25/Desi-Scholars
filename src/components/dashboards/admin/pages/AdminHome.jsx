@@ -115,7 +115,13 @@ function AdminHome() {
     }
 
     const fetchOrdersCount = async () => {
-        const response = await fetch("http://localhost:5000/api/payments/status/approved");
+        const response = await fetch("http://localhost:5000/api/payments/status/approved", {
+            method: "GET",
+            headers: {
+                "Content-Type": "Application/json",
+                "Authorization": `Bearer ${adminToken}`
+            }
+        });
         const result = await response.json();
         if (result.success) {
             setOrdersCount(result.data.length);
