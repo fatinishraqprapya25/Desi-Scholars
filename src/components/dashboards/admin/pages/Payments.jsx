@@ -5,7 +5,7 @@ const PaymentApprovalPage = () => {
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [activeFilter, setActiveFilter] = useState('pending');
+    const [activeFilter, setActiveFilter] = useState('Pending');
 
     const adminToken = localStorage.getItem("ASDFDKFFJF");
 

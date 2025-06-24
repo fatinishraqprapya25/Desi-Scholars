@@ -42,7 +42,7 @@ export default function CreateBroadcastPage() {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${adminToken}`,
                 },
-                body: JSON.stringify({ title, description, for: audience }),
+                body: JSON.stringify({ title, description, audience }),
             });
 
             const data = await res.json();
