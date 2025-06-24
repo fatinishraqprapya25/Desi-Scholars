@@ -1,6 +1,17 @@
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import validateToken from "../../../../utils/ValidateToken";
 
-export default function WelcomeBanner({ userName = 'Student' }) {
+export default function WelcomeBanner({ }) {
+    const [userName, setUserName] = useState("");
+    useEffect(() => {
+        const findUserName = async () => {
+            const userInfo = await validateToken();
+            setUserName(userInfo.name);
+        }
+        findUserName();
+    }, []);
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
