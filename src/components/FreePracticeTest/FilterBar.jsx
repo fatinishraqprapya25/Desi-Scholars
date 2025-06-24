@@ -13,13 +13,12 @@ export default function FilterBar() {
     // Reusable component to render filter groups
     const FilterGroup = ({ title, options, selected, onSelect }) => {
         return (
-            // Adjusted mb-4 to mb-3 for slightly less space below each filter group
-            <div className="mb-3">
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">{title}</h3>
-                <div className="flex flex-wrap gap-2">
+            <div className="mb-">
+                <h3 className="text-lg font-semibold text-gray-700 mb-1">{title}</h3>
+                <div className="flex flex-wrap gap-1">
                     {options.map((option) => {
                         const isSelected = selected === option.value;
-                        let buttonClasses = `px-4 py-2 rounded-lg transition-all duration-200 ease-in-out text-sm font-medium border`;
+                        let buttonClasses = `px-3 py-1 rounded-lg transition-all duration-200 ease-in-out text-sm font-medium border`;
 
                         if (isSelected) {
                             buttonClasses += ` bg-blue-600 text-white border-blue-600 shadow-md`;
@@ -113,12 +112,11 @@ export default function FilterBar() {
 
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-xl max-w-5xl mx-auto my-8 font-inter border border-gray-100">
+        <div className="bg-white px-6 py-4 rounded-lg shadow-xl max-w-6xl mx-auto my-8 font-inter border border-gray-100">
             {/* Filters Title */}
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 pb-4 border-b border-gray-200">Refine Your Search</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-0 pb-2">Refine Your Search</h2>
 
-            {/* Adjusted gap-y-4 to gap-y-3 for even less vertical space between grid rows */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-x-2 gap-y-3">
                 {/* Active Questions Filter */}
                 <FilterGroup
                     title="Active Questions"
@@ -169,16 +167,16 @@ export default function FilterBar() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end gap-4 mt-8 pt-6 border-t border-gray-200">
+            <div className="flex justify-end gap-4 pt-2">
                 <button
                     onClick={handleResetAll}
-                    className="px-6 py-3 rounded-lg text-red-600 border border-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 font-semibold"
+                    className="px-2 py- rounded-lg text-red-600 border border-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 font-semibold"
                 >
                     Reset All
                 </button>
                 <button
                     onClick={handleApply}
-                    className="px-6 py-3 rounded-lg bg-blue-600 text-white shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 font-semibold"
+                    className="px-3 py-1 rounded-lg bg-blue-600 text-white shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 font-semibold"
                 >
                     Apply Filters
                 </button>
