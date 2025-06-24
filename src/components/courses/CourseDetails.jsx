@@ -330,7 +330,7 @@ const CourseDetailsPage = () => {
                 </div>
 
                 {/* Enroll Button */}
-                <Link to="/checkout"> <motion.button
+                <Link to={`/checkout/${id}`}> <motion.button
                   whileHover={{ scale: 1.1, y: -7, boxShadow: "0 20px 40px rgba(128, 0, 128, 0.8)" }}
                   whileTap={{ scale: 0.9 }}
                   className="bg-white text-purple-900 px-14 py-6 rounded-full shadow-2xl hover:bg-gray-100 transition-all duration-300 text-2xl font-extrabold transform hover:rotate-2 relative overflow-hidden group"
