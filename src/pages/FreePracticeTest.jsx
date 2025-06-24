@@ -3,6 +3,8 @@ import TestHeader from '../components/FreePracticeTest/TestHeader';
 import FilterBar from "../components/FreePracticeTest/FilterBar";
 import QuestionsSection from '../components/FreePracticeTest/QuestionsSection';
 import { motion, useInView } from 'framer-motion'; // Import motion and useInView
+import FreeResources from "../components/home/FreeResources";
+import FAQSection from '../components/home/Faq';
 
 function PracticeTests() {
   // Create refs for each section to observe their visibility
@@ -63,6 +65,8 @@ function PracticeTests() {
       >
         <QuestionsSection />
       </motion.div>
+      <FreeResources />
+      <FAQSection />
     </div>
   );
 }

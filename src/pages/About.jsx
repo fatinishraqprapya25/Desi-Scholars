@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import { Link } from 'react-router-dom';
+import WhyUs from '../components/mock/WhyUs';
+import FAQSection from '../components/home/Faq';
 
 const AboutUs = () => {
     // Animation variants for sections
@@ -190,6 +192,8 @@ const AboutUs = () => {
                     </div>
                 </motion.section>
             </div>
+            <WhyUs />
+            <FAQSection />
             <Footer />
         </>
     );

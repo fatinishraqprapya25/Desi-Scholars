@@ -65,16 +65,14 @@ const CheckoutPage = () => {
                 if (result.success) {
                     alert("Transaction sent to server, they will approve or decline.");
                 }
+                setAlertMessage(result.message);
             } catch (err) {
                 alert(err.message);
+                setAlertMessage(err.message);
             }
         };
 
         sendTransactionRequest();
-
-        // Show a success message.
-        setAlertMessage('Your payment details have been submitted successfully!');
-        // setTransactionId('');
     };
 
     return (

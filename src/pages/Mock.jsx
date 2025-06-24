@@ -8,6 +8,7 @@ import Hero from '../components/mock/Hero';
 import GeneralContents from '../components/mock/GeneralContents';
 import MockGrid from '../components/mock/MockGrid';
 import WhyUs from '../components/mock/WhyUs';
+import FAQSection from '../components/home/Faq';
 
 const COLORS = {
     primary: '#3B82F6', // blue-500
@@ -87,7 +88,7 @@ export default function Mock() {
                     </div>
                 </AnimatePresence>
             </main>
-
+            <FAQSection />
             <Footer />
         </div>
     );

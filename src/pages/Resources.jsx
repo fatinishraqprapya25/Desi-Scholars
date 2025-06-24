@@ -6,6 +6,8 @@ import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import ResourceCategoryTabs from '../components/resources/ResourceCategoryTabs';
 import ResourceGrid from '../components/resources/ResourceGrid';
+import PracticeTestPromo from '../components/home/PracticeDemo';
+import FAQSection from "../components/home/Faq";
 
 // Mock Data for Resources (remain unchanged, or updated to text-blue-600 as per previous instructions)
 const resources = [
@@ -143,6 +145,8 @@ const FreeResourcesPage = () => {
           <ResourceGrid filteredResources={filteredResources} />
         </div>
       </div>
+      <PracticeTestPromo />
+      <FAQSection />
       <Footer />
     </>
   );
