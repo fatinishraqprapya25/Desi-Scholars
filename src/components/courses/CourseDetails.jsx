@@ -349,7 +349,7 @@ const CourseDetailsPage = () => {
               >
                 <div className="absolute inset-0 bg-white rounded-full opacity-10 transform scale-125"></div>
                 <img
-                  src={instructorDetails?.profilePicture || "https://placehold.co/350x350/FFFFFF/6A0DAD?text=Instructor"}
+                  src={instructorDetails?.profile || "https://placehold.co/350x350/FFFFFF/6A0DAD?text=Instructor"}
                   alt={instructorDetails?.name || "Instructor"}
                   className="rounded-full border-8 border-white shadow-3xl w-72 h-72 object-cover relative z-10"
                   onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/350x350/FFFFFF/6A0DAD?text=No+Image"; }}
