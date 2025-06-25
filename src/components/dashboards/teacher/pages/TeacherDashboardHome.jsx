@@ -9,15 +9,32 @@ import QuickActionsSection from '../home/QuickActionsSection';
 import RecentActivitySection from '../home/RecentActivitySection';
 import UpcomingDeadlinesSection from '../home/UpcomingDeadlines';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
+import ValidateTeacher from "../../../../utils/ValidateTeacher";
+
+
+const sectionVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: 'easeOut' } },
+};
+
 
 export default function TeacherHome() {
     const [teacherDashboardData, setTeacherDashboardData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [userName, setUserName] = useState("");
 
-    // Simulate fetching teacher dashboard data
     useEffect(() => {
         const fetchDashboardData = async () => {
+            const checkUser = await ValidateTeacher();
+            setUserName(checkUser.name);
+            console.log(checkUser);
+
             setLoading(true);
             setError(null);
             try {
@@ -59,16 +76,6 @@ export default function TeacherHome() {
         fetchDashboardData();
     }, []);
 
-    const sectionVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
-    };
-
-    const itemVariants = {
-        hidden: { opacity: 0, scale: 0.95 },
-        visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: 'easeOut' } },
-    };
-
     if (loading) {
         return (
             <UserDashboardContainer role="teacher">
@@ -108,7 +115,7 @@ export default function TeacherHome() {
                 animate="visible"
             >
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-gray-900 mb-3 sm:mb-5 flex items-center">
-                    <LayoutDashboard className="mr-2 sm:mr-3 h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-indigo-600" /> Welcome, {teacherDashboardData.teacherName}!
+                    <LayoutDashboard className="mr-2 sm:mr-3 h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-indigo-600" /> Welcome, {userName}!
                 </h2>
                 <p className="text-sm sm:text-base lg:text-lg text-gray-700 mb-5 sm:mb-7 max-w-2xl leading-relaxed">
                     Your central hub for managing courses, students, and activities.
