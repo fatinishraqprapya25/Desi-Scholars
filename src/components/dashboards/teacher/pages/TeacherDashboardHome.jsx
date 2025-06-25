@@ -24,11 +24,10 @@ const itemVariants = {
 
 
 export default function TeacherHome() {
-    const [teacherDashboardData, setTeacherDashboardData] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [userName, setUserName] = useState("");
     const [coursesCount, setCoursesCount] = useState(0);
+    const [announcements, setAnnouncements] = useState([]);
 
     const fetchCoursesByTeacher = async (id) => {
         try {
@@ -36,7 +35,6 @@ export default function TeacherHome() {
             const result = await response.json();
             if (result.success) {
                 setCoursesCount(result.data.length);
-                console.log(result);
             } else {
                 alert("failed to fetch teacher courses!");
             }
@@ -45,82 +43,25 @@ export default function TeacherHome() {
         }
     }
 
+    const fetchTeachersNotifications = async (id) => {
+        const response = await fetch("http://localhost:5000/api//broadcasts/filter/teachers");
+        const result = await response.json();
+        setAnnouncements(result.data);
+    }
+
     useEffect(() => {
         const fetchDashboardData = async () => {
             const checkUser = await ValidateTeacher();
             setUserName(checkUser.name);
+
             fetchCoursesByTeacher(checkUser._id);
+            fetchTeachersNotifications();
 
-            setLoading(true);
             setError(null);
-            try {
-
-                setTimeout(() => {
-                    const dummyData = {
-                        teacherName: 'Ms. Emily Chen',
-                        totalCourses: 5,
-                        totalStudents: 150,
-                        pendingAssignments: 12,
-                        unreadMessages: 3,
-                        recentActivity: [
-                            { type: 'assignment_submitted', course: 'Algebra I', student: 'John Doe', time: '2 mins ago' },
-                            { type: 'message_received', sender: 'Admin', time: '1 hour ago' },
-                            { type: 'new_enrollment', course: 'Geometry Basics', student: 'Jane Smith', time: '3 hours ago' },
-                            { type: 'course_update', course: 'Physics II', time: 'Yesterday' },
-                        ],
-                        upcomingDeadlines: [
-                            { title: 'Grade Algebra Quiz', course: 'Algebra I', date: 'June 15' },
-                            { title: 'Submit Course Report', course: 'LMS Admin', date: 'June 20' },
-                        ],
-                        quickActions: [
-                            { name: 'Create New Course', icon: <BookOpen className="h-5 w-5" />, link: '/teacher/courses/create' },
-                            { name: 'Grade Assignments', icon: <ListChecks className="h-5 w-5" />, link: '/teacher/assignments/grade' },
-                            { name: 'View My Students', icon: <Users className="h-5 w-5" />, link: '/teacher/students' },
-                            { name: 'Send Broadcast', icon: <BellRing className="h-5 w-5" />, link: '/teacher/broadcasts/create' },
-                        ]
-                    };
-                    setTeacherDashboardData(dummyData);
-                    setLoading(false);
-                }, 1200);
-            } catch (err) {
-                console.error("Failed to fetch teacher dashboard data:", err);
-                setError("Failed to load dashboard. Please try again later.");
-                setLoading(false);
-            }
         };
 
         fetchDashboardData();
     }, []);
-
-    if (loading) {
-        return (
-            <UserDashboardContainer role="teacher">
-                <div className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-4xl mx-auto text-center text-gray-600">
-                    <Lightbulb className="h-5 w-5 inline-block animate-pulse mr-2" /> Loading teacher dashboard...
-                </div>
-            </UserDashboardContainer>
-        );
-    }
-
-    if (error) {
-        return (
-            <UserDashboardContainer role={"teacher"}>
-                <div className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-4xl mx-auto text-center text-red-600">
-                    <XCircle className="h-5 w-5 inline-block mr-2" /> {error}
-                </div>
-            </UserDashboardContainer>
-        );
-    }
-
-    if (!teacherDashboardData) {
-        return (
-            <UserDashboardContainer role={"teacher"}>
-                <div className="p-4 sm:p-6 lg:p-8 font-sans w-full max-w-4xl mx-auto text-center text-gray-600">
-                    No dashboard data available.
-                </div>
-            </UserDashboardContainer>
-        );
-    }
 
     return (
         <UserDashboardContainer role="teacher">
@@ -150,7 +91,7 @@ export default function TeacherHome() {
                     />
                     <TeacherStatsCard
                         title="Total Students"
-                        value={teacherDashboardData.totalStudents}
+                        value={2}
                         icon={Users}
                         bgColor="bg-green-100"
                         textColor="text-green-700"
@@ -158,8 +99,8 @@ export default function TeacherHome() {
                         delay={0.1}
                     />
                     <TeacherStatsCard
-                        title="Pending Grading"
-                        value={teacherDashboardData.pendingAssignments}
+                        title="Total Sells"
+                        value={2}
                         icon={ListChecks}
                         bgColor="bg-orange-100"
                         textColor="text-orange-700"
@@ -168,7 +109,7 @@ export default function TeacherHome() {
                     />
                     <TeacherStatsCard
                         title="Unread Messages"
-                        value={teacherDashboardData.unreadMessages}
+                        value={2}
                         icon={BellRing}
                         bgColor="bg-purple-100"
                         textColor="text-purple-700"
@@ -177,12 +118,37 @@ export default function TeacherHome() {
                     />
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <QuickActionsSection actions={teacherDashboardData.quickActions} itemVariants={itemVariants} />
-                    <RecentActivitySection activities={teacherDashboardData.recentActivity} itemVariants={itemVariants} />
-                    <UpcomingDeadlinesSection deadlines={teacherDashboardData.upcomingDeadlines} itemVariants={itemVariants} />
-                </div>
             </motion.div>
+
+            <div className="py-4 px-6">'
+                <h1 className='text-3xl font-bold ps-1 pb-4'>Announcements!</h1>
+                {announcements.length > 0 ? (
+                    <motion.ul
+                        className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                        initial="hidden"
+                        animate="visible"
+                        variants={{
+                            visible: { transition: { staggerChildren: 0.1 } },
+                            hidden: {},
+                        }}
+                    >
+                        {announcements.map((announcement) => (
+                            <motion.li
+                                key={announcement.id}
+                                className="p-5 bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+                                variants={itemVariants}
+                            >
+                                <p className="text-lg font-bold text-gray-800 mb-1">{announcement.title}</p>
+                                <p className="text-sm text-gray-600 mb-3 line-clamp-3">{announcement.description}</p>
+                                <p className="text-xs text-gray-400 text-right">{new Date(announcement.createdAt).toLocaleDateString()}</p>
+                            </motion.li>
+                        ))}
+                    </motion.ul>
+                ) : (
+                    <p className="text-gray-600 text-center py-6">No new announcements at this time.</p>
+                )}
+            </div>
+
         </UserDashboardContainer>
     );
 }
