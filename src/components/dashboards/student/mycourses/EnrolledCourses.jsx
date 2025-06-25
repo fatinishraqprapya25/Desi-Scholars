@@ -2,6 +2,7 @@ import { BookOpen, Compass, Clock, UserSquare2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import ValidateToken from "../../../../utils/ValidateToken";
+import { Link } from 'react-router-dom';
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -113,13 +114,15 @@ export default function EnrolledCourses() {
                             </div>
 
                             {/* Call to Action Button */}
-                            <button
-                                className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-3 px-4 rounded-xl shadow-lg
+                            <Link to={`/video/${course._id}`}>
+                                <button
+                                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-3 px-4 rounded-xl shadow-lg
                                            hover:from-blue-700 hover:to-indigo-800 transition-all duration-300 ease-in-out
                                            flex items-center justify-center text-lg font-medium transform hover:scale-105 active:scale-95"
-                            >
-                                <Compass className="mr-2 h-5 w-5" /> Continue Course
-                            </button>
+                                >
+                                    <Compass className="mr-2 h-5 w-5" /> Continue Course
+                                </button>
+                            </Link>
                         </div>
                     </motion.div>
                 ))}

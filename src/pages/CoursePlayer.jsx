@@ -2,31 +2,43 @@ import { useState, useEffect } from 'react';
 import Sidebar from '../components/coursePlayer/Sidebar';
 import VideoPlayer from '../components/coursePlayer/VideoPlayer';
 import Tabs from "../components/coursePlayer/Tabs";
+import { useParams } from 'react-router-dom';
 
 const App = () => {
-    const videos = [
-        { id: '1', title: 'HTML Introduction', url: 'https://www.youtube.com/embed/pQN-pnXPaVg' },
-        { id: '2', title: 'HTML Elements', url: 'https://www.youtube.com/embed/qz0aGYrrlhU' },
-        { id: '3', title: 'CSS Introduction', url: 'https://www.youtube.com/embed/yfoY53QXEnI' },
-        { id: '4', title: 'Flexbox Guide', url: 'https://www.youtube.com/embed/JJSoEo8JSnc' },
-        { id: '5', title: 'CSS Grid', url: 'https://www.youtube.com/embed/jV8B24rSN5o' },
-        { id: '6', title: 'JavaScript Basics', url: 'https://www.youtube.com/embed/W6NZfCO5SIk' },
-        { id: '7', title: 'DOM Manipulation', url: 'https://www.youtube.com/embed/0ik6X4DJKCc' },
-        { id: '8', title: 'ES6 Features', url: 'https://www.youtube.com/embed/NCwa_xi0Uuc' },
-        { id: '9', title: 'Async JS & Fetch', url: 'https://www.youtube.com/embed/PoRJizFvM7s' },
-        { id: '10', title: 'React Basics', url: 'https://www.youtube.com/embed/bMknfKXIFA8' },
-        { id: '11', title: 'React Hooks', url: 'https://www.youtube.com/embed/f687hBjwFcM' },
-        { id: '12', title: 'Deploy React App', url: 'https://www.youtube.com/embed/DPnqb74Smug' },
-    ];
-
+    const [videos, setVideos] = useState([]);
     const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+
+    const { id } = useParams();
+
+    const fetchCourseModules = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/modules/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "Application/json"
+                }
+            });
+            const result = await response.json();
+            if (result.success) {
+                setVideos(result.data);
+            } else {
+                alert("failed to fetch course modules");
+            }
+        } catch (err) {
+            console.log(err.message)
+        }
+    }
 
     useEffect(() => {
         const link = document.createElement('link');
         link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
         link.rel = 'stylesheet';
         document.head.appendChild(link);
-    }, []);
+
+        if (id) {
+            fetchCourseModules();
+        } 
+    }, [id]);
 
     return (
         <div className="flex bg-gray-50 min-h-screen" style={{ fontFamily: '"Inter", sans-serif' }}>

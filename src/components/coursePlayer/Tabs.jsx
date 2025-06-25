@@ -23,7 +23,7 @@ const Tabs = ({ videos, currentVideoIndex }) => {
                     </button>
                 ))}
             </div>
-            <TabContent activeTab={activeTab} videoTitle={videos[currentVideoIndex].title} />
+            <TabContent activeTab={activeTab} videoTitle={"videos[currentVideoIndex].title"} />
         </div>
     );
 };

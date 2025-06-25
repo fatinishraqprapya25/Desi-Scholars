@@ -16,7 +16,7 @@ const Sidebar = ({ videos, currentVideoIndex, setCurrentVideoIndex }) => {
                             <svg className="inline-block w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.027l2.846 1.708a.5.5 0 010 .85l-2.846 1.708A.5.5 0 019 11.5v-5a.5.5 0 01.555-.473z" clipRule="evenodd" />
                             </svg>
-                            {video.title}
+                            {video.moduleName}
                         </button>
                     </li>
                 ))}

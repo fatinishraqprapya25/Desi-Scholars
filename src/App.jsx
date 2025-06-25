@@ -83,7 +83,7 @@ function App() {
 
         <Route path="/mock" element={<MockPage />} />
         <Route path="/mock/:id" element={<MockQuestion />} />
-        <Route path="/video/c" element={<VideoPlayer />} />
+        <Route path="/video/:id" element={<VideoPlayer />} />
         <Route path="/checkout/:id" element={<CheckoutPage />} />
 
         {/* student dashboard routes */}

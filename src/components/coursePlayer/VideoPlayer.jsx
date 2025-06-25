@@ -7,12 +7,16 @@ const VideoPlayer = ({ videos, currentVideoIndex, setCurrentVideoIndex }) => {
         setCurrentVideoIndex(prev => (prev < videos.length - 1 ? prev + 1 : 0));
     };
 
+    if (videos[currentVideoIndex]) {
+        console.log(videos[currentVideoIndex].moduleName)
+    }
+
     return (
         <>
             <div className="relative rounded-lg overflow-hidden" style={{ paddingBottom: '56.25%', height: 0 }}>
                 <iframe
-                    src={videos[currentVideoIndex].url}
-                    title={videos[currentVideoIndex].title}
+                    src={videos[currentVideoIndex] ? videos[currentVideoIndex].videoLink : ""}
+                    title={videos[currentVideoIndex] ? videos[currentVideoIndex].moduleName : ""}
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
