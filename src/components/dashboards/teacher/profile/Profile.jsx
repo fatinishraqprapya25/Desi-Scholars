@@ -1,24 +1,24 @@
-// import User from "./UserDashboardHome";
-import { MessageSquare, User, Edit, Save, XCircle } from 'lucide-react';
-import { useState } from 'react';
+import { User, Edit, Save, XCircle, UploadCloud } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import validateTeacher from "../../../../utils/ValidateTeacher";
 
 export default function Profile() {
-    // Mock user data
-    const initialUser = {
-        name: 'Jane Doe',
-        studentId: 'S123456',
-        email: 'jane.doe@example.com',
-        major: 'Computer Science',
-        enrollmentDate: '2023-09-01',
-        bio: 'Passionate about coding and learning new technologies. Enjoys solving complex problems.',
-    };
-
-    const [user, setUser] = useState(initialUser);
-    const [editableUser, setEditableUser] = useState(initialUser);
+    const [user, setUser] = useState({});
+    const [editableUser, setEditableUser] = useState(user);
     const [isEditing, setIsEditing] = useState(false);
-    const [showModal, setShowModal] = useState(false);
+    const [imageFile, setImageFile] = useState(null);
 
-    // Handle input changes for editable fields
+    useEffect(() => {
+        const retrieveUserInfo = async () => {
+            const teacher = await validateTeacher();
+            const response = await fetch(`http://localhost:5000/api/teacher/${teacher._id}`);
+            const result = await response.json();
+            setUser(result.data);
+            setEditableUser(result.data);
+        };
+        retrieveUserInfo();
+    }, []);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setEditableUser((prevUser) => ({
@@ -27,27 +27,24 @@ export default function Profile() {
         }));
     };
 
-    // Toggle edit mode
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        setImageFile(file);
+    };
+
     const handleEditClick = () => {
         setIsEditing(true);
     };
 
-    // Save changes
     const handleSaveClick = () => {
-        setUser(editableUser); // In a real application, you would send this data to a backend
+        setUser(editableUser);
         setIsEditing(false);
-        console.log('Profile saved:', editableUser); // For demonstration
     };
 
-    // Cancel changes
     const handleCancelClick = () => {
-        setEditableUser(user); // Revert to original user data
+        setEditableUser(user);
+        setImageFile(null);
         setIsEditing(false);
-    };
-
-    // Close message instructor modal
-    const handleCloseModal = () => {
-        setShowModal(false);
     };
 
     return (
@@ -63,14 +60,14 @@ export default function Profile() {
                             <input
                                 type="text"
                                 name="name"
-                                value={editableUser.name}
+                                value={editableUser.name || ''}
                                 onChange={handleChange}
                                 className="text-lg font-semibold text-gray-800 border-b border-gray-300 focus:outline-none focus:border-blue-500 rounded-md p-1"
                             />
                         ) : (
                             <p className="text-lg font-semibold text-gray-800">{user.name}</p>
                         )}
-                        <p className="text-sm text-gray-600">Student ID: {user.studentId}</p>
+                        <p className="text-sm text-gray-600">ID: {user._id}</p>
                     </div>
                 </div>
 
@@ -81,7 +78,7 @@ export default function Profile() {
                         <input
                             type="email"
                             name="email"
-                            value={editableUser.email}
+                            value={editableUser.email || ''}
                             onChange={handleChange}
                             className="text-base text-gray-800 border-b border-gray-300 focus:outline-none focus:border-blue-500 rounded-md p-1 w-full"
                         />
@@ -97,7 +94,7 @@ export default function Profile() {
                         <input
                             type="text"
                             name="major"
-                            value={editableUser.major}
+                            value={editableUser.major || ''}
                             onChange={handleChange}
                             className="text-base text-gray-800 border-b border-gray-300 focus:outline-none focus:border-blue-500 rounded-md p-1 w-full"
                         />
@@ -106,11 +103,23 @@ export default function Profile() {
                     )}
                 </div>
 
-                {/* Enrollment Date (not editable in this example, but could be) */}
-                <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
-                    <p className="text-sm font-medium text-gray-700">Enrollment Date:</p>
-                    <p className="text-base text-gray-800">{user.enrollmentDate}</p>
-                </div>
+                {/* Image Upload Field (Only when editing) */}
+                {isEditing && (
+                    <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
+                        <p className="text-sm font-medium text-gray-700 mb-1">Profile Image:</p>
+                        <label className="flex items-center space-x-2 cursor-pointer">
+                            <UploadCloud className="text-blue-600 w-5 h-5" />
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                className="hidden"
+                            />
+                            <span className="text-sm text-gray-600">Choose file</span>
+                            {imageFile && <span className="text-xs text-gray-500 ml-2 truncate">{imageFile.name}</span>}
+                        </label>
+                    </div>
+                )}
             </div>
 
             {/* Bio Field */}
@@ -119,7 +128,7 @@ export default function Profile() {
                 {isEditing ? (
                     <textarea
                         name="bio"
-                        value={editableUser.bio}
+                        value={editableUser.bio || ''}
                         onChange={handleChange}
                         rows="4"
                         className="text-base text-gray-800 border border-gray-300 focus:outline-none focus:border-blue-500 rounded-md p-2 w-full"
