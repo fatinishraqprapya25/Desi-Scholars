@@ -13,7 +13,8 @@ export default function TeacherLogin() {
             return await ValidateTeacher();
         }
         if (checkUser) {
-            navigate("/teacher/dashboard");
+            // navigate("/teacher/dashboard");
+            console.log(checkUser);
         }
     }, []);
 

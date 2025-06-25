@@ -14,7 +14,7 @@ const ValidateTeacher = async () => {
         }
         return false;
     } catch (err) {
-        alert(err.message);
+        return false;
     }
 }
 

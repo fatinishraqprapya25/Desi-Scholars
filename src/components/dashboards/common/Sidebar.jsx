@@ -41,8 +41,6 @@ export default function Sidebar({ role, isOpenSideBar, toggleSidebar }) {
         { name: 'Dashboard', icon: LayoutDashboard, path: '/teacher/dashboard' },
         { name: 'My Courses', icon: BookOpen, path: '/teacher/courses' },
         { name: 'My Students', icon: Users, path: '/teacher/students' },
-        { name: 'Grade Assignments', icon: ListChecks, path: '/teacher/assignments/grade' },
-        { name: 'My Tests', icon: FolderOpen, path: '/teacher/tests' },
         { name: 'Profile', icon: UserCircle2, path: '/teacher/profile' },
     ];
 
@@ -61,7 +59,11 @@ export default function Sidebar({ role, isOpenSideBar, toggleSidebar }) {
         if (role === "admin") {
             localStorage.removeItem("ASDFDKFFJF");
             navigate("/admin/login");
-        } else {
+        } else if (role = "teacher") {
+            localStorage.removeItem("TSSDFDFDFFDFDF");
+            navigate("/teacher/login");
+        }
+        else {
             localStorage.removeItem("HIJDFJFJF12");
             navigate("/login");
         }

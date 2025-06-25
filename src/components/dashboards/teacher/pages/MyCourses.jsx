@@ -1,66 +1,39 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, PlusCircle, Lightbulb } from 'lucide-react';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
 import CourseCard from '../courses/CourseCard';
 import CourseSearchInput from '../courses/CourseSearchInput';
 import { Link } from 'react-router-dom';
-
-const coursesData = [
-    {
-        id: 'C-001',
-        title: 'Introduction to React',
-        instructor: 'Dr. Emily White',
-        studentsEnrolled: 120,
-        status: 'Active',
-        lastUpdated: '2025-05-30',
-        category: 'Web Development',
-        description: 'Master the fundamentals of React, JSX, state, props, and component lifecycle. Build interactive user interfaces with modern React practices.'
-    },
-    {
-        id: 'C-002',
-        title: 'Advanced JavaScript',
-        instructor: 'Prof. David Lee',
-        studentsEnrolled: 95,
-        status: 'Active',
-        lastUpdated: '2025-06-01',
-        category: 'Web Development',
-        description: 'Dive deep into ES6+, asynchronous JavaScript, advanced array methods, closures, and design patterns. Enhance your JavaScript proficiency.'
-    },
-    {
-        id: 'C-003',
-        title: 'Data Structures & Algorithms',
-        instructor: 'Ms. Sarah Chen',
-        studentsEnrolled: 150,
-        status: 'Archived',
-        lastUpdated: '2025-04-15',
-        category: 'Computer Science',
-        description: 'Learn essential data structures (arrays, linked lists, trees, graphs) and algorithms (sorting, searching) for efficient problem-solving.'
-    },
-    {
-        id: 'C-004',
-        title: 'Machine Learning Basics',
-        instructor: 'Mr. Alex Kim',
-        studentsEnrolled: 80,
-        status: 'Active',
-        lastUpdated: '2025-05-28',
-        category: 'Artificial Intelligence',
-        description: 'Explore the foundations of machine learning, including supervised and unsupervised learning, model evaluation, and common algorithms.'
-    },
-    {
-        id: 'C-005',
-        title: 'UI/UX Design Principles',
-        instructor: 'Dr. Olivia Brown',
-        studentsEnrolled: 70,
-        status: 'Draft',
-        lastUpdated: '2025-03-20',
-        category: 'Design',
-        description: 'Understand the core principles of User Interface (UI) and User Experience (UX) design. Learn to create intuitive and aesthetically pleasing digital products.'
-    },
-];
+import ValidateTeacher from '../../../../utils/ValidateTeacher';
 
 export default function MyCourses() {
+    const [coursesData, setCoursesData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+
+    console.log(coursesData);
+
+    const fetchCourses = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/courses/teacher/${id}`);
+            const result = await response.json();
+            if (result.success) {
+                setCoursesData(result.data);
+            } else {
+                alert("failed to fetch teacher courses!");
+            }
+        } catch (err) {
+            alert(err.message);
+        }
+    }
+
+    useEffect(() => {
+        const checkUser = async () => {
+            const check = await ValidateTeacher();
+            fetchCourses(check._id)
+        }
+        checkUser();
+    }, []);
 
     const sectionVariants = {
         hidden: { opacity: 0, y: 20 },
