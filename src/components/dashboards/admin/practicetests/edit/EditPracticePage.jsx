@@ -23,9 +23,12 @@ export default function EditPracticeTestPage() {
         correctAnswers: [],
         explanation: '',
         difficulty: 'medium',
-        tags: [],
         type: 'test',
-        subject: ''
+        subject: '',
+        topic: '',
+        chapter: '',
+        tags: ['bluebook only'],  // tags is an array with one string
+        scoreBond: '1',
     });
 
     const { testId } = useParams();
@@ -74,7 +77,7 @@ export default function EditPracticeTestPage() {
         };
 
         fetchMcqs();
-    }, []);
+    }, [testId]);
 
     const handleNewQuestion = () => {
         const newQuesSave = async () => {
@@ -94,7 +97,7 @@ export default function EditPracticeTestPage() {
 
                 if (!res.ok) {
                     const errorData = await res.json();
-                    alert("Error: " + errorData.message || "Failed to add question");
+                    alert("Error: " + (errorData.message || "Failed to add question"));
                     return;
                 }
 
@@ -102,6 +105,21 @@ export default function EditPracticeTestPage() {
                 setMcqQuestions(prev => [...prev, saved.data]);
                 setShowAddForm(false);
                 alert("Question added successfully!");
+
+                // Reset the form after adding
+                setNewQuestion({
+                    question: '',
+                    options: ['', '', '', ''],
+                    correctAnswers: [],
+                    explanation: '',
+                    difficulty: 'medium',
+                    type: 'test',
+                    subject: '',
+                    topic: '',
+                    chapter: '',
+                    tags: ['bluebook only'],
+                    scoreBond: '1',
+                });
             } catch (err) {
                 alert("Something went wrong.");
             }
@@ -128,6 +146,40 @@ export default function EditPracticeTestPage() {
             alert('Test updated successfully!');
         } catch (error) {
             alert('An error occurred while updating the test.');
+        }
+    };
+
+    const handleRemoveQuestion = async (qIndex) => {
+        const questionToRemove = mcqQuestions[qIndex];
+
+        if (!questionToRemove?._id) {
+            // If question has no _id (not saved yet), just remove locally
+            setMcqQuestions(prev => prev.filter((_, i) => i !== qIndex));
+            return;
+        }
+
+        const confirmDelete = window.confirm("Are you sure you want to delete this question?");
+        if (!confirmDelete) return;
+
+        try {
+            const res = await fetch(`http://localhost:5000/api/mcq/${questionToRemove._id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${adminToken}`,
+                },
+            });
+
+            if (!res.ok) {
+                const errorData = await res.json();
+                alert("Failed to delete question: " + (errorData.message || res.statusText));
+                return;
+            }
+
+            // Remove from local state after successful delete
+            setMcqQuestions(prev => prev.filter((_, i) => i !== qIndex));
+            alert("Question deleted successfully.");
+        } catch (error) {
+            alert("Error deleting question.");
         }
     };
 
@@ -185,12 +237,11 @@ export default function EditPracticeTestPage() {
                     <QuestionsSection
                         questions={mcqQuestions}
                         readOnly={true}
+                        handleRemoveQuestion={handleRemoveQuestion}
                         handleAddQuestion={handleAddQuestion}
                     />
 
-                    {showAddForm && <>
-
-
+                    {showAddForm && (
                         <div className="border rounded-lg p-4 bg-gray-50 mt-4">
                             <h2 className="text-lg font-semibold mb-4">Add New MCQ</h2>
 
@@ -202,6 +253,39 @@ export default function EditPracticeTestPage() {
                                     className="w-full border px-3 py-2 rounded"
                                     value={newQuestion.question}
                                     onChange={(e) => setNewQuestion({ ...newQuestion, question: e.target.value })}
+                                />
+                            </div>
+
+                            {/* Topic */}
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium mb-1">Topic</label>
+                                <input
+                                    type="text"
+                                    className="w-full border px-3 py-2 rounded"
+                                    value={newQuestion.topic}
+                                    onChange={(e) => setNewQuestion({ ...newQuestion, topic: e.target.value })}
+                                />
+                            </div>
+
+                            {/* Subject */}
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium mb-1">Subject</label>
+                                <input
+                                    type="text"
+                                    className="w-full border px-3 py-2 rounded"
+                                    value={newQuestion.subject}
+                                    onChange={(e) => setNewQuestion({ ...newQuestion, subject: e.target.value })}
+                                />
+                            </div>
+
+                            {/* Chapter */}
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium mb-1">Chapter</label>
+                                <input
+                                    type="text"
+                                    className="w-full border px-3 py-2 rounded"
+                                    value={newQuestion.chapter}
+                                    onChange={(e) => setNewQuestion({ ...newQuestion, chapter: e.target.value })}
                                 />
                             </div>
 
@@ -223,7 +307,7 @@ export default function EditPracticeTestPage() {
                                         <input
                                             type="checkbox"
                                             checked={newQuestion.correctAnswers.includes(index)}
-                                            onChange={(e) => {
+                                            onChange={() => {
                                                 const updatedCorrect = newQuestion.correctAnswers.includes(index)
                                                     ? newQuestion.correctAnswers.filter(i => i !== index)
                                                     : [...newQuestion.correctAnswers, index];
@@ -259,29 +343,30 @@ export default function EditPracticeTestPage() {
                                 </select>
                             </div>
 
-                            {/* Tags */}
+                            {/* Score Bond */}
                             <div className="mb-4">
-                                <label className="block text-sm font-medium">Tags (comma-separated)</label>
-                                <input
-                                    type="text"
-                                    className="w-full border px-3 py-2 rounded"
-                                    value={newQuestion.tags.join(', ')}
-                                    onChange={(e) =>
-                                        setNewQuestion({ ...newQuestion, tags: e.target.value.split(',').map(tag => tag.trim()) })
-                                    }
-                                />
-                            </div>
-
-                            {/* Type */}
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium">Question Type</label>
+                                <label className="block text-sm font-medium">Score Value</label>
                                 <select
                                     className="w-full border px-3 py-2 rounded"
-                                    value={newQuestion.type}
-                                    onChange={(e) => setNewQuestion({ ...newQuestion, type: e.target.value })}
+                                    value={newQuestion.scoreBond}
+                                    onChange={(e) => setNewQuestion({ ...newQuestion, scoreBond: e.target.value })}
                                 >
-                                    <option value="mock">Mock</option>
-                                    <option value="test">Test</option>
+                                    {[1, 2, 3, 4, 5, 6, 7].map((score) => (
+                                        <option key={score} value={score.toString()}>{score}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {/* Tags (Select Single) */}
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium mb-1">Tags</label>
+                                <select
+                                    className="w-full border px-3 py-2 rounded"
+                                    value={newQuestion.tags[0]} // single select value
+                                    onChange={(e) => setNewQuestion({ ...newQuestion, tags: [e.target.value] })}
+                                >
+                                    <option value="bluebook only">bluebook only</option>
+                                    <option value="exclude bluebook">exclude bluebook</option>
                                 </select>
                             </div>
 
@@ -301,11 +386,7 @@ export default function EditPracticeTestPage() {
                                 </button>
                             </div>
                         </div>
-
-
-
-                    </>}
-
+                    )}
                 </motion.div>
             </motion.div>
         </UserDashboardContainer>
