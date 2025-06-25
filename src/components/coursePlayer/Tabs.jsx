@@ -8,13 +8,14 @@ const Tabs = ({ videos, currentVideoIndex }) => {
 
     return (
         <div className="mt-6">
-            <div className="flex space-x-4 border-b">
+            {/* Responsive Tab Buttons */}
+            <div className="flex flex-wrap md:flex-nowrap overflow-x-auto border-b scrollbar-thin scrollbar-thumb-indigo-400 scrollbar-track-gray-100">
                 {tabs.map(tab => (
                     <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
-                        className={`px-3 py-2 font-medium rounded-t-md transition-colors duration-200
-              ${activeTab === tab
+                        className={`px-4 py-2 font-medium whitespace-nowrap rounded-t-md transition-colors duration-200
+                            ${activeTab === tab
                                 ? 'border-b-2 border-indigo-500 text-indigo-600 bg-gray-50'
                                 : 'text-gray-600 hover:text-indigo-500 hover:bg-gray-100'
                             }`}
@@ -23,7 +24,9 @@ const Tabs = ({ videos, currentVideoIndex }) => {
                     </button>
                 ))}
             </div>
-            <TabContent activeTab={activeTab} videoTitle={"videos[currentVideoIndex].title"} />
+
+            {/* Pass correct video title (not string) */}
+            <TabContent activeTab={activeTab} videoTitle={videos[currentVideoIndex]?.title || ''} />
         </div>
     );
 };
