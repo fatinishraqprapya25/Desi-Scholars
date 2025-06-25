@@ -3,6 +3,7 @@ import Sidebar from '../components/coursePlayer/Sidebar';
 import VideoPlayer from '../components/coursePlayer/VideoPlayer';
 import Tabs from "../components/coursePlayer/Tabs";
 import { useParams } from 'react-router-dom';
+import Header from "../components/common/Header"
 
 const App = () => {
     const [videos, setVideos] = useState([]);
@@ -37,26 +38,29 @@ const App = () => {
 
         if (id) {
             fetchCourseModules();
-        } 
+        }
     }, [id]);
 
     return (
-        <div className="flex bg-gray-50 min-h-screen" style={{ fontFamily: '"Inter", sans-serif' }}>
-            <Sidebar videos={videos} currentVideoIndex={currentVideoIndex} setCurrentVideoIndex={setCurrentVideoIndex} />
-            <main className="flex-1 ml-72 p-4 md:p-8">
-                <div className="bg-white rounded-xl shadow p-4 max-w-4xl mx-auto">
-                    <VideoPlayer
-                        videos={videos}
-                        currentVideoIndex={currentVideoIndex}
-                        setCurrentVideoIndex={setCurrentVideoIndex}
-                    />
-                    <Tabs
-                        videos={videos}
-                        currentVideoIndex={currentVideoIndex}
-                    />
-                </div>
-            </main>
-        </div>
+
+        <>
+            <div className="flex bg-gray-50 min-h-screen" style={{ fontFamily: '"Inter", sans-serif' }}>
+                <Sidebar videos={videos} currentVideoIndex={currentVideoIndex} setCurrentVideoIndex={setCurrentVideoIndex} />
+                <main className="flex-1 ml-72 p-4 md:p-8">
+                    <div className="bg-white rounded-xl shadow p-4 max-w-4xl mx-auto">
+                        <VideoPlayer
+                            videos={videos}
+                            currentVideoIndex={currentVideoIndex}
+                            setCurrentVideoIndex={setCurrentVideoIndex}
+                        />
+                        <Tabs
+                            videos={videos}
+                            currentVideoIndex={currentVideoIndex}
+                        />
+                    </div>
+                </main>
+            </div>
+        </>
     );
 };
 
