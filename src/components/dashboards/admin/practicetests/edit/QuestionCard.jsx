@@ -11,6 +11,7 @@ const QuestionCard = ({
 }) => {
     const [questionText, setQuestionText] = useState(question.question || "");
     const [options, setOptions] = useState(question.options || ["", ""]);
+    const [topicName, setTopicName] = useState(question.topic || "");
     const [correctAnswerIndex, setCorrectAnswerIndex] = useState(
         question.correctAnswers?.[0] ?? 0
     );
@@ -27,7 +28,7 @@ const QuestionCard = ({
         const newOptions = options.filter((_, i) => i !== index);
         setOptions(newOptions);
         if (correctAnswerIndex === index) {
-            setCorrectAnswerIndex(0); // reset to first if correct one was removed
+            setCorrectAnswerIndex(0);
         }
     };
 
@@ -42,7 +43,8 @@ const QuestionCard = ({
                 body: JSON.stringify({
                     question: questionText,
                     options,
-                    correctAnswers: [correctAnswerIndex]
+                    correctAnswers: [correctAnswerIndex],
+                    topic: topicName
                 })
             });
 
@@ -89,6 +91,18 @@ const QuestionCard = ({
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-gray-900"
                     required
                 ></textarea>
+            </div>
+
+            <div className="mb-4">
+                <label htmlFor={`question-${qIndex}`} className="block text-sm font-medium text-gray-700 mb-1">Topic Name</label>
+                <input
+                    id={`question-${qIndex}`}
+                    value={topicName}
+                    onChange={(e) => setTopicName(e.target.value)}
+                    placeholder="Enter topic name"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-gray-900"
+                    required
+                />
             </div>
 
             <div className="space-y-3 pl-4 border-l-2 border-indigo-200">
