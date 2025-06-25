@@ -1,10 +1,21 @@
-import React, { useRef } from 'react'; // Import useRef
+import React, { useEffect, useRef, useState } from 'react'; // Import useRef
 import TestHeader from '../components/FreePracticeTest/TestHeader';
 import FilterBar from "../components/FreePracticeTest/FilterBar";
 import QuestionsSection from '../components/FreePracticeTest/QuestionsSection';
 import { motion, useInView } from 'framer-motion'; // Import motion and useInView
 import FreeResources from "../components/home/FreeResources";
 import FAQSection from '../components/home/Faq';
+
+// Define common animation variants for clarity and reusability
+const slideInUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const slideInDown = {
+  hidden: { opacity: 0, y: -50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
 
 function PracticeTests() {
   // Create refs for each section to observe their visibility
@@ -17,17 +28,6 @@ function PracticeTests() {
   const isHeaderInView = useInView(headerRef, { once: true, amount: 0.5 }); // Trigger when 50% of header is in view
   const isFilterBarInView = useInView(filterBarRef, { once: true, amount: 0.3 }); // Trigger when 30% of filter bar is in view
   const isQuestionsSectionInView = useInView(questionsSectionRef, { once: true, amount: 0.1 }); // Trigger when 10% of questions is in view
-
-  // Define common animation variants for clarity and reusability
-  const slideInUp = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-  };
-
-  const slideInDown = {
-    hidden: { opacity: 0, y: -50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 font-inter text-gray-800">
