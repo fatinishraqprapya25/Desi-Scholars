@@ -4,7 +4,7 @@ import validateTeacher from "../../../../utils/ValidateTeacher";
 
 export default function Profile() {
     const [user, setUser] = useState({});
-    const [editableUser, setEditableUser] = useState(user);
+    const [editableUser, setEditableUser] = useState({});
     const [isEditing, setIsEditing] = useState(false);
     const [imageFile, setImageFile] = useState(null);
 
@@ -36,9 +36,34 @@ export default function Profile() {
         setIsEditing(true);
     };
 
-    const handleSaveClick = () => {
-        setUser(editableUser);
-        setIsEditing(false);
+    const handleSaveClick = async () => {
+        const formData = new FormData();
+        formData.append('name', editableUser.name || '');
+        formData.append('email', editableUser.email || '');
+        formData.append('major', editableUser.major || '');
+        formData.append('about', editableUser.bio || '');
+        if (imageFile) {
+            formData.append('profile', imageFile);
+        }
+
+        try {
+            const response = await fetch(`http://localhost:5000/api/teacher/${editableUser._id}`, {
+                method: 'PUT',
+                body: formData,
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                setUser(result.data);
+                setIsEditing(false);
+                setImageFile(null);
+            } else {
+                console.error(result.message || 'Update failed');
+            }
+        } catch (error) {
+            console.error("Error updating teacher profile:", error);
+        }
     };
 
     const handleCancelClick = () => {
@@ -103,10 +128,10 @@ export default function Profile() {
                     )}
                 </div>
 
-                {/* Image Upload Field (Only when editing) */}
+                {/* Profile Image Upload */}
                 {isEditing && (
                     <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
-                        <p className="text-sm font-medium text-gray-700 mb-1">Profile Image:</p>
+                        <p className="text-sm font-medium text-gray-700 mb-1">Profile:</p>
                         <label className="flex items-center space-x-2 cursor-pointer">
                             <UploadCloud className="text-blue-600 w-5 h-5" />
                             <input
@@ -122,9 +147,9 @@ export default function Profile() {
                 )}
             </div>
 
-            {/* Bio Field */}
+            {/* About Field */}
             <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-8">
-                <p className="text-sm font-medium text-gray-700 mb-2">About Me:</p>
+                <p className="text-sm font-medium text-gray-700 mb-2">{isEditing ? 'About' : 'About Me'}:</p>
                 {isEditing ? (
                     <textarea
                         name="bio"
@@ -134,7 +159,7 @@ export default function Profile() {
                         className="text-base text-gray-800 border border-gray-300 focus:outline-none focus:border-blue-500 rounded-md p-2 w-full"
                     ></textarea>
                 ) : (
-                    <p className="text-base text-gray-800 leading-relaxed">{user.bio}</p>
+                    <p className="text-base text-gray-800 leading-relaxed">{user.about}</p>
                 )}
             </div>
 
