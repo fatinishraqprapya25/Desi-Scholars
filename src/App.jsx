@@ -59,6 +59,7 @@ import Login from "./components/dashboards/admin/pages/Login";
 import ProtectedAdmin from "./components/dashboards/admin/pages/ProtectedAdmin";
 import CombinedCalculator from "./pages/CombinedCalculator";
 import ProtectedStudent from "./components/dashboards/student/pages/ProtectedStudent";
+import TeacherLogin from "./components/dashboards/teacher/pages/TeacherLogin";
 function App() {
   return (
     <>
@@ -279,6 +280,7 @@ function App() {
         <Route path="/teacher/assignments/grade" element={<GradeAssignmentsPage />} />
         <Route path="/teacher/messages" element={<MyMessages />} />
         <Route path="/teacher/profile" element={<MyProfile />} />
+        <Route path="/teacher/login" element={<TeacherLogin />} />
 
 
         <Route path="*" element={<NotFound />} />
