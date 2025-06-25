@@ -1,11 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ValidateTeacher from '../../../../utils/ValidateTeacher';
 
 export default function TeacherLogin() {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const checkUser = async () => {
+            return await ValidateTeacher();
+        }
+        if (checkUser) {
+            navigate("/teacher/dashboard");
+        }
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
