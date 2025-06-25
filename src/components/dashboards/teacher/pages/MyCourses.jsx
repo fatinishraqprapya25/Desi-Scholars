@@ -82,14 +82,7 @@ export default function MyCourses() {
                     animate="visible"
                 >
                     {/* Top Controls: Search and Add Course */}
-                    <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between mb-5 gap-3 sm:gap-4">
-                        <CourseSearchInput searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-                        <Link to="/teacher/courses/create"><button
-                            className="w-full sm:w-auto flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-medium text-sm"
-                        >
-                            <PlusCircle className="h-4 w-4 mr-2" /> Add New Course
-                        </button></Link>
-                    </div>
+
 
                     {/* Course Cards Grid */}
                     {filteredCourses.length > 0 ? (
@@ -108,7 +101,7 @@ export default function MyCourses() {
                             <AnimatePresence>
                                 {filteredCourses.map((course) => (
                                     <CourseCard
-                                        key={course.id}
+                                        key={course._id}
                                         course={course}
                                     />
                                 ))}

@@ -38,10 +38,10 @@ function CourseCard({ course }) {
             {/* Status Badge and Course ID */}
             <div className="flex justify-between items-start mb-2">
                 <div className="flex items-center text-xs text-gray-500">
-                    <Hash className="w-3.5 h-3.5 mr-1 text-gray-400" /> ID: <span className="font-medium ml-0.5">{course.id}</span>
+                    <Hash className="w-3.5 h-3.5 mr-1 text-gray-400" /> ID: <span className="font-medium ml-0.5">{course._id}</span>
                 </div>
                 <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${getStatusBadge(course.status)}`}>
-                    {course.status}
+                    {course.status || "active"}
                 </span>
             </div>
 
@@ -57,21 +57,22 @@ function CourseCard({ course }) {
 
             {/* Course Details */}
             <div className="text-xs text-gray-500 grid grid-cols-2 gap-y-1 mb-3 border-t border-gray-100 pt-3">
-                <div className="flex items-center"><User className="h-3.5 w-3.5 mr-1.5 text-indigo-500" /> {course.instructor}</div>
-                <div className="flex items-center"><Users className="h-3.5 w-3.5 mr-1.5 text-blue-500" /> {course.studentsEnrolled} Students</div>
-                <div className="flex items-center"><Calendar className="h-3.5 w-3.5 mr-1.5 text-orange-500" /> Updated: {course.lastUpdated}</div>
-                <div className="flex items-center"><Tag className="h-3.5 w-3.5 mr-1.5 text-green-500" /> {course.category}</div>
+                <div className="flex items-center"><User className="h-3.5 w-3.5 mr-1.5 text-indigo-500" />
+                    {course.instructorName}</div>
+                {/* there is no instructName field in the database, so it will be removed */}
+                <div className="flex items-center"><Calendar className="h-3.5 w-3.5 mr-1.5 text-orange-500" />  {course.updatedAt}</div>
+
             </div>
 
             {/* Action Button: Edit Course */}
             <div className="flex justify-end pt-2">
                 {/* Note: Adjust the 'to' prop for the actual edit route */}
-                <Link to={`/teacher/courses/edit/`}>
+                <Link to={``}>
                     <button
                         className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md font-medium text-sm"
                         title="Edit Course"
                     >
-                        <Edit className="h-4 w-4 mr-2" /> Edit Course
+                        <Edit className="h-4 w-4 mr-2" /> Visit Course
                     </button>
                 </Link>
             </div>
