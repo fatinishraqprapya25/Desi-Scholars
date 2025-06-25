@@ -28,12 +28,28 @@ export default function TeacherHome() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [userName, setUserName] = useState("");
+    const [coursesCount, setCoursesCount] = useState(0);
+
+    const fetchCoursesByTeacher = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/courses/teacher/${id}`);
+            const result = await response.json();
+            if (result.success) {
+                setCoursesCount(result.data.length);
+                console.log(result);
+            } else {
+                alert("failed to fetch teacher courses!");
+            }
+        } catch (err) {
+            alert(err.message);
+        }
+    }
 
     useEffect(() => {
         const fetchDashboardData = async () => {
             const checkUser = await ValidateTeacher();
             setUserName(checkUser.name);
-            console.log(checkUser);
+            fetchCoursesByTeacher(checkUser._id);
 
             setLoading(true);
             setError(null);
@@ -125,7 +141,7 @@ export default function TeacherHome() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                     <TeacherStatsCard
                         title="My Courses"
-                        value={teacherDashboardData.totalCourses}
+                        value={coursesCount}
                         icon={BookOpen}
                         bgColor="bg-blue-100"
                         textColor="text-blue-700"
