@@ -1,4 +1,8 @@
+import { ClipboardPen, Zap } from "lucide-react";
+import { useState } from "react";
+
 const RightSide = () => {
+    const [flash, setFlash] = useState(false);
     return (
         <div className="bg-white w-full h-fit rounded-lg px-8 py-2 mx-auto">
             {/* Question Header */}
@@ -10,36 +14,14 @@ const RightSide = () => {
 
                 <div className="flex items-center gap-3">
                     <button className="bg-teal-500 text-white p-2 rounded-full">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M14 10h4m0 0h-4m0 0V6m0 4v4m-8-4h4m0 0H6m0 0v4m0-4V6"
-                            />
-                        </svg>
+                        <ClipboardPen />
                     </button>
-                    <button className="bg-purple-500 text-white p-2 rounded-full">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M15 12l-3 3m0 0l-3-3m3 3V9m0 3l3 3m-3-3l-3 3"
-                            />
-                        </svg>
+                    <button
+                        onClick={() => setFlash(!flash)} // Toggle flash state
+                        className={`${flash ? "bg-black text-white" : "bg-white text-black"
+                            } border border-gray-200 p-2 rounded-full transition duration-300`}
+                    >
+                        <Zap />
                     </button>
                 </div>
             </div>
