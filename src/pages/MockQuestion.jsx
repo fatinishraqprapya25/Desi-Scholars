@@ -4,10 +4,12 @@ import QuizHeader from "../components/mock/quiz/QuizHeader";
 import QuizLeftSide from "../components/mock/quiz/QuizLeftSide";
 import QuizRightSide from "../components/mock/quiz/QuizRightSide";
 import QuizFooter from "../components/mock/quiz/QuizFooter";
+import App from "../components/mock/Break";
 
 export default function MockQuestion() {
     const { id } = useParams();
-    const [mockQuestions, setMockQuestions] = useState(); // Initially undefined
+    const [mockQuestions, setMockQuestions] = useState();
+    const [breakStatus, setBreakStatus] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const fetchMockQuestions = async () => {
@@ -35,17 +37,15 @@ export default function MockQuestion() {
         if (mockQuestions.length === currentIndex + 1) {
             alert("no more questions");
         } else {
-
             const englishModule = mockQuestions[currentIndex].moduleName;
             const mathModule = mockQuestions[currentIndex + 1].moduleName;
             if (englishModule === "English 2" && mathModule === "Math 1") {
-                alert('hi');
+                setBreakStatus(true);
             } else {
                 setCurrentIndex(currentIndex + 1);
             }
-
         }
-    }
+    };
 
     const handlePrev = () => {
         if (currentIndex === 0) {
@@ -53,21 +53,34 @@ export default function MockQuestion() {
         } else {
             setCurrentIndex(currentIndex - 1);
         }
-    }
+    };
+
+    const handleResumeFromBreak = () => {
+        setBreakStatus(false);
+        setCurrentIndex(currentIndex + 1);
+    };
 
     return (
-        <div>
-            <QuizHeader moduleName="English 1" initialMinutes={2} initialSeconds={0} />
-            <div className="grid grid-cols-2 ps-0 md:ps-15 mt-42 space-x-3">
-                <QuizLeftSide />
-                {/* Pass the current question to QuizRightSide */}
-                {mockQuestions && (
-                    <QuizRightSide question={mockQuestions[currentIndex]} currentIndex={currentIndex} />
-                )}
+        breakStatus ? (
+            <App handleResumeFromBreak={handleResumeFromBreak} />
+        ) : (
+            <div>
+                <QuizHeader moduleName="English 1" initialMinutes={2} initialSeconds={0} />
+                <div className="grid grid-cols-2 ps-0 md:ps-15 mt-42 space-x-3">
+                    {/* Adjust the grid column span for QuizLeftSide and QuizRightSide */}
+                    <div className="col-span-1">
+                        <QuizLeftSide />
+                    </div>
+                    <div className="">
+                        {mockQuestions && (
+                            <QuizRightSide question={mockQuestions[currentIndex]} currentIndex={currentIndex} />
+                        )}
+                    </div>
+                </div>
+                <br />
+                <br />
+                <QuizFooter handleNext={handleNext} handlePrev={handlePrev} />
             </div>
-            <br />
-            <br />
-            <QuizFooter handleNext={handleNext} handlePrev={handlePrev} />
-        </div>
+        )
     );
 }

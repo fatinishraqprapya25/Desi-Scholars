@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Coffee, Brain, Droplet, PersonStanding, Hourglass } from 'lucide-react';
-import FlipCountdown from './FlipCountDown';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Coffee, Brain, Droplet, PersonStanding, Hourglass } from "lucide-react";
 
 const App = ({ handleResumeFromBreak }) => {
     const totalBreakTime = 10 * 60; // 10 minutes in seconds
@@ -20,21 +19,26 @@ const App = ({ handleResumeFromBreak }) => {
         }
     }, [isBreakActive, remainingTime]);
 
+    // Helper function to format time as MM:SS
+    const formatTime = (time) => {
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+        return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    };
+
     return (
         <div className="min-h-screen bg-gray-100 p-4 font-inter">
             <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
                 {/* Header Section */}
                 <div>
-
-
                     <motion.div
                         className="relative bg-gradient-to-r from-purple-600 to-indigo-700 text-white p-6 md:p-8 rounded-t-xl flex justify-between items-center"
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
                     >
-                        <div className='min-w-1/2'>
-                            <div className="flex items-center ">
+                        <div className="min-w-1/2">
+                            <div className="flex items-center">
                                 <Coffee className="text-white mr-3" size={32} />
                                 <h1 className="text-3xl md:text-4xl font-bold">10-Minute Break</h1>
                             </div>
@@ -43,12 +47,11 @@ const App = ({ handleResumeFromBreak }) => {
                             </p>
                         </div>
 
-                        <FlipCountdown targetDate="2025-12-31T23:59:59" />
-
+                        {/* Display Remaining Time */}
+                        <div className="text-4xl font-bold">
+                            {formatTime(remainingTime)}
+                        </div>
                     </motion.div>
-
-
-
                 </div>
 
                 {/* Suggestions Section - Hardcoded */}
@@ -82,7 +85,7 @@ const App = ({ handleResumeFromBreak }) => {
                                 className="text-gray-700 text-base"
                                 initial={{ opacity: 0, x: -10 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.3, delay: 0.20 }}
+                                transition={{ duration: 0.3, delay: 0.2 }}
                             >
                                 Practice deep breathing
                             </motion.li>
@@ -126,7 +129,7 @@ const App = ({ handleResumeFromBreak }) => {
                                 className="text-gray-700 text-base"
                                 initial={{ opacity: 0, x: -10 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.3, delay: 0.40 }}
+                                transition={{ duration: 0.3, delay: 0.4 }}
                             >
                                 Stretch your neck and shoulders
                             </motion.li>
@@ -170,7 +173,7 @@ const App = ({ handleResumeFromBreak }) => {
                                 className="text-gray-700 text-base"
                                 initial={{ opacity: 0, x: -10 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.3, delay: 0.60 }}
+                                transition={{ duration: 0.3, delay: 0.6 }}
                             >
                                 Shake out your hands and arms
                             </motion.li>

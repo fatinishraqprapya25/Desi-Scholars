@@ -9,7 +9,7 @@ const QuizRightSide = ({ question, currentIndex }) => {
     };
 
     return (
-        <div className="p-6 bg-white rounded-lg mt-[-30px] max-w-2xl mx-auto my-8 shadow-md">
+        <div className="p-6 bg-white rounded-lg mt-[-30px] max-w-6xl mx-auto my-8 shadow-md">
             {/* Header with question number and action buttons */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-4">
