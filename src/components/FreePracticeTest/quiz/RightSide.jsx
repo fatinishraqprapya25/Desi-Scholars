@@ -1,5 +1,6 @@
 import { ClipboardPen, Zap } from "lucide-react";
 import { useState } from "react";
+import ReviewSection from "./ReviewSection";
 
 const RightSide = ({
     markable,
@@ -99,6 +100,8 @@ const RightSide = ({
                     </div>
                 </div>
             )}
+
+            <ReviewSection />
 
             {/* Content */}
             <div className="pt-3">
