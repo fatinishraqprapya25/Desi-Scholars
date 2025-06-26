@@ -1,4 +1,4 @@
-export default function LeftSide({ question, length }) {
+export default function LeftSide({ question, length, meta, changeMeta }) {
     return <div className="min-h-screen p-6">
         {/* Header Section */}
         <div className=" rounded-lg p-4">
@@ -8,7 +8,7 @@ export default function LeftSide({ question, length }) {
                     Back to Question Bank
                 </button>
                 <div className="flex gap-2 ms-5">
-                    <button className="text-purple-700 font-medium hover:underline">Hide Metadata</button>
+                    <button onClick={() => changeMeta(!meta)} className="text-purple-700 font-medium hover:underline">{meta ? "Hide" : "Show"} Metadata</button>
                     <button className="bg-purple-700 text-white px-1 text-sm rounded-lg hover:bg-purple-800">
                         Stats
                     </button>
@@ -17,7 +17,7 @@ export default function LeftSide({ question, length }) {
         </div>
 
         {/* Filters Section */}
-        <div className="bg-white mt-3 rounded-lg p-4 mb-6">
+        {meta && <div className="bg-white mt-3 rounded-lg p-4 mb-6">
             {/* Scrollable Container */}
             <div className="flex items-center justify-between gap-6 overflow-x-auto scrollbar-custom">
                 {/* Left Section */}
@@ -50,7 +50,7 @@ export default function LeftSide({ question, length }) {
                     <span>{question && question.chapter}</span>
                 </div>
             </div>
-        </div>
+        </div>}
 
         {/* Question Section */}
         <div className="rounded-lg p-6">

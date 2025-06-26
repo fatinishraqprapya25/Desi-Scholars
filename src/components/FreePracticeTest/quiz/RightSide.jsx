@@ -2,7 +2,6 @@ import { ClipboardPen, Zap } from "lucide-react";
 import { useState } from "react";
 
 const RightSide = ({ markable, onChangeMarkable, question }) => {
-    console.log(question);
     const [flash, setFlash] = useState(false);
     return (
         <div
