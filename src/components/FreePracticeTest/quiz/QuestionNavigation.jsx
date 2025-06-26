@@ -42,13 +42,6 @@ const App = () => {
         { id: 1, status: "correct" },
         { id: 2, status: "incorrect" },
         { id: 3, status: "review" },
-        { id: 4, status: "correct" },
-        { id: 5, status: "incorrect" },
-        { id: 6, status: "correct" },
-        { id: 7, status: "attempted" },
-        { id: 8, status: "correct" },
-        { id: 9, status: "incorrect" },
-        { id: 10, status: "review" },
     ];
 
     return (

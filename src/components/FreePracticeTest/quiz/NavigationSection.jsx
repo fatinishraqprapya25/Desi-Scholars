@@ -1,13 +1,15 @@
+import { useState } from "react";
 import QuestionNavigation from "./QuestionNavigation";
 
 const NavigationSection = () => {
+    const [showNavigation, setShowNavigation] = useState(true);
     return (
         <>
             <div className="bg-gray-50 p-4 rounded-lg">
                 {/* Left Buttons */}
                 <div className="flex space-x-2">
-                    <button className="border border-purple-500 text-purple-500 px-2 text-[14px] rounded-lg hover:bg-purple-100 transition">
-                        Hide Navigation
+                    <button onClick={() => setShowNavigation(!showNavigation)} className="border border-purple-500 text-purple-500 px-2 text-[14px] rounded-lg hover:bg-purple-100 transition">
+                        {showNavigation ? "Hide" : "Show"} Navigation
                     </button>
 
                     <button className="border border-gray-400 text-gray-700 px-2 py-1 text-[14px] rounded-lg hover:bg-gray-100 transition flex items-center space-x-2">
@@ -57,7 +59,7 @@ const NavigationSection = () => {
                 </div>
             </div>
 
-            <QuestionNavigation />
+            {showNavigation && <QuestionNavigation />}
         </>
     );
 };
