@@ -1,7 +1,7 @@
 import { ClipboardPen, Zap } from "lucide-react";
 import { useState } from "react";
 
-const RightSide = ({ markable, onChangeMarkable, question }) => {
+const RightSide = ({ markable, onChangeMarkable, question, meta }) => {
     const [flash, setFlash] = useState(false);
     return (
         <div
@@ -33,7 +33,7 @@ const RightSide = ({ markable, onChangeMarkable, question }) => {
                 </div>
             </div>
 
-            <div className="overflow-x-auto">
+            {meta && <div className="overflow-x-auto">
                 <div className="flex items-center bg-gray-100 p-4 rounded-lg shadow-md min-w-max">
                     {/* Question Bank ID */}
                     <div className="flex flex-col space-x-2">
@@ -78,9 +78,9 @@ const RightSide = ({ markable, onChangeMarkable, question }) => {
                     </div>
                 </div>
             </div>
-
+            }
             {/* Content */}
-            <div className="border-t pt-3">
+            <div className="pt-3">
                 <p className="text-gray-800 font-medium mb-4">
                     {question && question.question}
                 </p>
