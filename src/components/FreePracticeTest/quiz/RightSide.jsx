@@ -1,8 +1,9 @@
 import { ClipboardPen, Zap } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReviewSection from "./ReviewSection";
 
 const RightSide = ({
+    currentIndex,
     markable,
     onChangeMarkable,
     question,
@@ -10,8 +11,30 @@ const RightSide = ({
     ansCorrect,
     sOption,
     changeOption,
+    handleCross,
+    crossAble,
 }) => {
     const [flash, setFlash] = useState(false);
+    const [crossedOptions, setCrossedOptions] = useState([]);
+
+    // Clear crossed options when crossAble becomes false
+    useEffect(() => {
+        if (!crossAble) {
+            setCrossedOptions([]);
+        }
+    }, [crossAble]);
+
+    const handleOptionClick = (index) => {
+        if (crossAble) {
+            setCrossedOptions((prev) =>
+                prev.includes(index)
+                    ? prev.filter((i) => i !== index) // Remove the option from crossed list
+                    : [...prev, index] // Add the option to crossed list
+            );
+        } else {
+            changeOption(index); // Normal option selection when crossAble is false
+        }
+    };
 
     return (
         <div className="bg-white w-full h-fit rounded-lg px-8 py-2 mx-auto">
@@ -26,17 +49,21 @@ const RightSide = ({
 
                 <div className="flex">
                     <button
-                        onClick={() => onChangeMarkable(!markable)} // Toggle markable mode
+                        onClick={() => !crossAble && onChangeMarkable(!markable)}
                         className={`${markable ? "bg-yellow-500" : "bg-teal-500"
-                            } text-white p-2 rounded-full transition duration-300`}
+                            } text-white p-2 rounded-full transition duration-300 ${crossAble && "opacity-50 cursor-not-allowed"
+                            }`}
+                        disabled={crossAble}
                     >
                         <ClipboardPen />
                     </button>
 
                     <button
-                        onClick={() => setFlash(!flash)}
+                        onClick={() => !crossAble && setFlash(!flash)}
                         className={`${flash ? "bg-black text-white" : "bg-white text-black"
-                            } text-black border border-black p-2 rounded-full transition duration-300 ms-2`}
+                            } text-black border border-black p-2 rounded-full transition duration-300 ms-2 ${crossAble && "opacity-50 cursor-not-allowed"
+                            }`}
+                        disabled={crossAble}
                     >
                         <Zap />
                     </button>
@@ -101,7 +128,7 @@ const RightSide = ({
                 </div>
             )}
 
-            <ReviewSection />
+            <ReviewSection handleCross={handleCross} questionNumber={currentIndex + 1} />
 
             {/* Content */}
             <div className="pt-3">
@@ -136,11 +163,16 @@ const RightSide = ({
                                 return "bg-white";
                             })();
 
+                            // Apply line-through to the entire option container
+                            const crossedOut = crossedOptions.includes(index)
+                                ? "line-through text-gray-500"
+                                : "";
+
                             return (
                                 <div
                                     key={index}
-                                    onClick={() => changeOption(index)}
-                                    className={`flex items-center border rounded-lg p-3 cursor-pointer transition hover:bg-gray-100 ${bgColor}`}
+                                    onClick={() => handleOptionClick(index)}
+                                    className={`flex items-center border rounded-lg p-3 cursor-pointer transition hover:bg-gray-100 ${bgColor} ${crossedOut}`}
                                 >
                                     <span className="font-bold text-indigo-600 mr-2">{name}</span>
                                     <span className="text-gray-800">{option}</span>

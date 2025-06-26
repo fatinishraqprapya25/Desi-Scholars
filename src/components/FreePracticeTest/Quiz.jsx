@@ -14,6 +14,7 @@ export default function Quiz() {
     const [showMeta, setShowMeta] = useState(true);
     const [selectedOption, setSelectedOption] = useState(null);
     const [ansCorrect, setIsCorrct] = useState(null);
+    const [crossAble, setCrossAble] = useState(false);
 
     useEffect(() => {
         setIsCorrct(null);
@@ -82,12 +83,16 @@ export default function Quiz() {
         }
     }
 
+    const handleCross = () => {
+        setCrossAble(!crossAble);
+    }
+
     return (
         <>
             <Header />
             <div className="grid grid-cols-2" onMouseUp={handleTextSelection}>
                 <LeftSide meta={showMeta} changeMeta={setShowMeta} length={questions.length} question={questions[currentIndex]} />
-                <RightSide ansCorrect={ansCorrect} sOption={selectedOption} changeOption={setSelectedOption} meta={showMeta} question={questions[currentIndex]} markable={markable} onChangeMarkable={setMarkable} />
+                <RightSide crossAble={crossAble} handleCross={handleCross} currentIndex={currentIndex} ansCorrect={ansCorrect} sOption={selectedOption} changeOption={setSelectedOption} meta={showMeta} question={questions[currentIndex]} markable={markable} onChangeMarkable={setMarkable} />
                 <Footer currentIndex={currentIndex} totalQuestions={questions.length} selectedOption={selectedOption} handleCheck={handleCheck} handleNext={handleNext} handlePrev={handlePrev} />
             </div>
         </>
