@@ -1,4 +1,4 @@
-import { ClipboardPen } from "lucide-react";
+import { ClipboardPen, Zap } from "lucide-react";
 import { useState } from "react";
 
 const RightSide = ({ markable, onChangeMarkable, question }) => {
@@ -29,8 +29,54 @@ const RightSide = ({ markable, onChangeMarkable, question }) => {
                         className={`${flash ? "bg-black text-white" : "bg-white text-black"
                             } text-black border border-black p-2 rounded-full transition duration-300 ms-2`}
                     >
-                        <ClipboardPen />
+                        <Zap />
                     </button>
+                </div>
+            </div>
+
+            <div className="overflow-x-auto">
+                <div className="flex items-center bg-gray-100 p-4 rounded-lg shadow-md min-w-max">
+                    {/* Question Bank ID */}
+                    <div className="flex items-center space-x-2">
+                        <span className="font-semibold text-gray-600">Question Bank ID</span>
+                        <span className="font-bold text-gray-800">359902ae</span>
+                    </div>
+
+                    {/* Divider */}
+                    <div className="mx-4 w-px h-6 bg-gray-300"></div>
+
+                    {/* Section */}
+                    <div className="flex items-center space-x-2">
+                        <span className="font-semibold text-gray-600">Section</span>
+                        <span className="font-bold text-gray-800">{question && question.subject}</span>
+                    </div>
+
+                    {/* Divider */}
+                    <div className="mx-4 w-px h-6 bg-gray-300"></div>
+
+                    {/* Score Band */}
+                    <div className="flex items-center space-x-2">
+                        <span className="font-semibold text-gray-600">Score Band</span>
+                        <span className="font-bold text-gray-800">{question && question.scoreBond}</span>
+                    </div>
+
+                    {/* Divider */}
+                    <div className="mx-4 w-px h-6 bg-gray-300"></div>
+
+                    {/* Domain */}
+                    <div className="flex items-center space-x-2">
+                        <span className="font-semibold text-gray-600">Domain</span>
+                        <span className="font-bold text-gray-800">{question && question.chapter}</span>
+                    </div>
+
+                    {/* Divider */}
+                    <div className="mx-4 w-px h-6 bg-gray-300"></div>
+
+                    {/* Skill */}
+                    <div className="flex items-center space-x-2">
+                        <span className="font-semibold text-gray-600">Skill</span>
+                        <span className="font-bold text-gray-800">{question && question.topic}</span>
+                    </div>
                 </div>
             </div>
 
