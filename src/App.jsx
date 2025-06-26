@@ -63,6 +63,7 @@ import TeacherLogin from "./components/dashboards/teacher/pages/TeacherLogin";
 import Quiz from "./components/FreePracticeTest/Quiz";
 import Mock from "./components/dashboards/admin/pages/Mock";
 import CreateMock from "./components/dashboards/admin/mock/CreateMock";
+import EditMock from "./components/dashboards/admin/mock/EditMock";
 function App() {
   return (
     <>
@@ -191,6 +192,15 @@ function App() {
           element={
             <ProtectedAdmin>
               <CreateMock />
+            </ProtectedAdmin>
+          }
+        />
+
+        <Route
+          path="/admin/mock/edit/:id"
+          element={
+            <ProtectedAdmin>
+              <EditMock />
             </ProtectedAdmin>
           }
         />

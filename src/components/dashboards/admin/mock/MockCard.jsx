@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function MockCard({ mock, index }) {
     const adminToken = localStorage.getItem("ASDFDKFFJF");
 
@@ -61,9 +63,10 @@ export default function MockCard({ mock, index }) {
             </p>
 
             <div className="flex gap-3 mt-auto">
-                <button className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition ease-in-out duration-150 text-sm font-medium">
-                    Edit Test
-                </button>
+                <Link to={`/admin/mock/edit/${mock._id}`}>
+                    <button className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition ease-in-out duration-150 text-sm font-medium">
+                        Edit Test
+                    </button></Link>
                 <button
                     onClick={deleteMock}
                     className="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition ease-in-out duration-150 text-sm font-medium"
