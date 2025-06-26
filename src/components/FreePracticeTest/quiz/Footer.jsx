@@ -14,10 +14,10 @@ const Footer = ({ handleNext, handleCheck, selectedOption, handlePrev, currentIn
             <div className="flex gap-4">
                 <button
                     onClick={handleCheck}
-                    disabled={selectedOption === null} // Disable if no option is selected
+                    disabled={selectedOption === null}
                     className={`px-4 py-2 rounded transition ${selectedOption === null
-                        ? "bg-gray-400 text-gray-300 cursor-not-allowed" // Disabled styles
-                        : "bg-green-500 text-white hover:bg-green-600" // Enabled styles
+                        ? "bg-gray-400 text-gray-300 cursor-not-allowed"
+                        : "bg-green-500 text-white hover:bg-green-600"
                         }`}
                 >
                     Check
