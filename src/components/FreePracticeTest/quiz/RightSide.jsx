@@ -1,4 +1,4 @@
-import { ClipboardPen, Zap } from "lucide-react";
+import { ClipboardPen, Zap, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import ReviewSection from "./ReviewSection";
 
@@ -25,14 +25,18 @@ const RightSide = ({
     }, [crossAble]);
 
     const handleOptionClick = (index) => {
+        if (!crossedOptions.includes(index)) {
+            changeOption(index); // Normal option selection if the option is not crossed
+        }
+    };
+
+    const handleCrossClick = (index) => {
         if (crossAble) {
             setCrossedOptions((prev) =>
                 prev.includes(index)
                     ? prev.filter((i) => i !== index) // Remove the option from crossed list
                     : [...prev, index] // Add the option to crossed list
             );
-        } else {
-            changeOption(index); // Normal option selection when crossAble is false
         }
     };
 
@@ -163,19 +167,38 @@ const RightSide = ({
                                 return "bg-white";
                             })();
 
-                            // Apply line-through to the entire option container
+                            // Apply line-through to the entire option container if crossed
                             const crossedOut = crossedOptions.includes(index)
-                                ? "line-through text-gray-500"
+                                ? "line-through text-gray-500 cursor-not-allowed"
                                 : "";
 
                             return (
                                 <div
                                     key={index}
                                     onClick={() => handleOptionClick(index)}
-                                    className={`flex items-center border rounded-lg p-3 cursor-pointer transition hover:bg-gray-100 ${bgColor} ${crossedOut}`}
+                                    className={`flex items-center justify-between border rounded-lg p-3 cursor-pointer transition hover:bg-gray-100 ${bgColor} ${crossedOut}`}
+                                    style={{
+                                        position: "relative",
+                                        overflow: "hidden",
+                                    }}
                                 >
-                                    <span className="font-bold text-indigo-600 mr-2">{name}</span>
-                                    <span className="text-gray-800">{option}</span>
+                                    <div className="flex items-center w-full">
+                                        <span className="font-bold text-indigo-600 mr-2">{name}</span>
+                                        <span className="text-gray-800 w-full">{option}</span>
+                                    </div>
+
+                                    {/* Cross Button */}
+                                    {crossAble && (
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation(); // Prevent triggering option click
+                                                handleCrossClick(index);
+                                            }}
+                                            className="text-gray-500 hover:text-red-600"
+                                        >
+                                            <X />
+                                        </button>
+                                    )}
                                 </div>
                             );
                         })}
