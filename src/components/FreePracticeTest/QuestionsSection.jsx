@@ -32,6 +32,17 @@ export default function QuestionsSection({ filters }) {
 
     const { bySubject, byChapter } = data;
 
+    // Check if there are no questions
+    const hasQuestions = bySubject && bySubject.some(subject => subject.questions.length > 0);
+
+    if (!hasQuestions) {
+        return (
+            <div className="text-center py-10">
+                <p className="text-lg font-medium text-gray-600">No questions available.</p>
+            </div>
+        );
+    }
+
     // Normalize and merge chapters
     const chapterNameMapping = {
         calulas: "calculas",
