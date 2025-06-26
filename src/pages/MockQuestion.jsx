@@ -8,7 +8,9 @@ export default function MockQuestion() {
     const { id } = useParams();
     const [mockQuestions, setMockQuestions] = useState();
     const fetchMockQuestions = async () => {
-
+        const response = await fetch("http://localhost:5000/api/mockquestions");
+        const result = await response.json();
+       
     }
     useEffect(() => {
         fetchMockQuestions();
@@ -17,7 +19,7 @@ export default function MockQuestion() {
     return (
         <div>
             <QuizHeader moduleName="English 1" initialMinutes={2} initialSeconds={0} />
-            <div className="grid grid-cols-2 ps-0 md:ps-15 mt-0 md:mt-15 space-x-3">
+            <div className="grid grid-cols-2 ps-0 md:ps-15 mt-42 space-x-3">
                 <QuizLeftSide />
                 <QuizRightSide />
             </div>
