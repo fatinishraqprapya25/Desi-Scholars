@@ -30,11 +30,30 @@ export default function MockQuestion() {
     useEffect(() => {
         fetchMockQuestions();
     }, []);
-    useEffect(() => {
-        if (mockQuestions) {
-            console.log("Updated Mock Questions:", mockQuestions);
+
+    const handleNext = () => {
+        if (mockQuestions.length === currentIndex + 1) {
+            alert("no more questions");
+        } else {
+
+            const englishModule = mockQuestions[currentIndex].moduleName;
+            const mathModule = mockQuestions[currentIndex + 1].moduleName;
+            if (englishModule === "English 2" && mathModule === "Math 1") {
+                alert('hi');
+            } else {
+                setCurrentIndex(currentIndex + 1);
+            }
+
         }
-    }, [mockQuestions]);
+    }
+
+    const handlePrev = () => {
+        if (currentIndex === 0) {
+            alert("no more previous questions");
+        } else {
+            setCurrentIndex(currentIndex - 1);
+        }
+    }
 
     return (
         <div>
@@ -48,7 +67,7 @@ export default function MockQuestion() {
             </div>
             <br />
             <br />
-            <QuizFooter />
+            <QuizFooter handleNext={handleNext} handlePrev={handlePrev} />
         </div>
     );
 }

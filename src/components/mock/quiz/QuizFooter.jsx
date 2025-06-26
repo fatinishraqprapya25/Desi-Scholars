@@ -1,4 +1,4 @@
-export default function QuizFooter() {
+export default function QuizFooter({ handleNext, handlePrev }) {
     return (
         <footer className="w-full bg-purple-100 py-4 px-4 sm:px-6 lg:px-8 flex items-center justify-between shadow-md rounded-b-lg">
             {/* Exit Button */}
@@ -20,10 +20,10 @@ export default function QuizFooter() {
 
             {/* Back and Next Buttons */}
             <div className="flex space-x-4">
-                <button className="bg-purple-300 text-white px-6 py-3 rounded-xl shadow-md hover:bg-purple-400 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-50">
+                <button onClick={handlePrev} className="bg-purple-300 text-white px-6 py-3 rounded-xl shadow-md hover:bg-purple-400 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-50">
                     Back
                 </button>
-                <button className="bg-purple-500 text-white px-6 py-3 rounded-xl shadow-md hover:bg-purple-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50">
+                <button onClick={handleNext} className="bg-purple-500 text-white px-6 py-3 rounded-xl shadow-md hover:bg-purple-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50">
                     Next
                 </button>
             </div>
