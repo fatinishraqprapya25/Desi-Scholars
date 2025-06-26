@@ -1,9 +1,9 @@
 import React from "react";
 
-const Footer = ({ handleNext, handleCheck, selectedOption }) => {
+const Footer = ({ handleNext, handleCheck, selectedOption, handlePrev }) => {
     return (
         <div className="w-full fixed bottom-0 bg-gray-100 py-4 px-6 flex items-center justify-between border-t border-gray-300">
-            <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+            <button onClick={handlePrev} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
                 Previous
             </button>
 

@@ -120,18 +120,17 @@ const RightSide = ({
                                 name = "D";
                             }
 
-                            // Determine the background color based on ansCorrect and selection state
                             const bgColor = (() => {
                                 if (sOption === index) {
                                     if (ansCorrect === null) {
-                                        return "bg-blue-400 border-blue-700"; // Selected but not evaluated yet
+                                        return "bg-blue-400 border-blue-700";
                                     } else if (ansCorrect) {
-                                        return "bg-green-500 border-green-700"; // Correct answer
+                                        return "bg-green-500 border-green-700";
                                     } else {
-                                        return "bg-red-500 border-red-700"; // Incorrect answer
+                                        return "bg-red-500 border-red-700";
                                     }
                                 }
-                                return "bg-white"; // Default for unselected options
+                                return "bg-white";
                             })();
 
                             return (
