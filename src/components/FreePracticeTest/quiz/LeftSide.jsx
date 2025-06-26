@@ -1,4 +1,4 @@
-export default function LeftSide() {
+export default function LeftSide({ question, length }) {
     return <div className="min-h-screen p-6">
         {/* Header Section */}
         <div className=" rounded-lg p-4">
@@ -24,15 +24,15 @@ export default function LeftSide() {
                 <div className="flex items-center gap-6">
                     <div className="flex flex-col text-gray-600 font-medium whitespace-nowrap">
                         <span className="font-bold text-gray-800">Total Questions:</span>
-                        <span>375</span>
+                        <span>{length && length}</span>
                     </div>
                     <div className="flex flex-col text-gray-600 font-medium whitespace-nowrap">
                         <span className="font-bold text-gray-800">Set Section:</span>
-                        <span>English</span>
+                        <span>{question && question.subject}</span>
                     </div>
                     <div className="flex flex-col text-gray-600 font-medium whitespace-nowrap">
                         <span className="font-bold text-gray-800">Set Difficulty:</span>
-                        <span>All</span>
+                        <span>{question && question.difficulty}</span>
                     </div>
                     <div className="flex flex-col text-gray-600 font-medium whitespace-nowrap">
                         <span className="font-bold text-gray-800">Set Active:</span>
@@ -40,14 +40,14 @@ export default function LeftSide() {
                     </div>
                     <div className="flex flex-col text-gray-600 font-medium whitespace-nowrap">
                         <span className="font-bold text-gray-800">Set Score Band:</span>
-                        <span>All</span>
+                        <span>{question && question.scoreBond}</span>
                     </div>
                 </div>
 
                 {/* Right Section */}
                 <div className="flex flex-col text-gray-600 font-medium whitespace-nowrap">
                     <span className="font-bold text-gray-800">Set Domain:</span>
-                    <span>Craft and St</span>
+                    <span>{question && question.chapter}</span>
                 </div>
             </div>
         </div>
@@ -55,10 +55,7 @@ export default function LeftSide() {
         {/* Question Section */}
         <div className="rounded-lg p-6">
             <p className="text-gray-700">
-                Following a Gullah technique that originated in West Africa, Dingle
-                skillfully winds a thin palm frond around a bunch of sweetgrass with
-                the help of a “sewing bone” to create the basket’s signature look that
-                no factory can reproduce.
+                {question.explanation}
             </p>
         </div>
     </div>

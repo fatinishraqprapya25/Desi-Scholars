@@ -53,7 +53,7 @@ export default function Quiz() {
         <>
             <Header />
             <div className="grid grid-cols-2" onMouseUp={handleTextSelection}>
-                <LeftSide />
+                <LeftSide length={questions.length} question={questions[currentIndex]} />
                 <RightSide question={questions[currentIndex]} markable={markable} onChangeMarkable={setMarkable} />
                 <Footer />
             </div>
