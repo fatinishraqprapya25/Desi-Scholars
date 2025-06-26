@@ -82,12 +82,6 @@ body {
 
 /* src/styles/globals.css (or similar path in your project) */
 
-/* Add this to your existing global Tailwind imports and base styles */
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* Custom reusable input styles */
 .input-label {
   @apply block text-sm font-semibold text-gray-700 mb-2 flex items-center;
@@ -112,4 +106,8 @@ body,
 body {
   background-color: #f8faff;
   /* A very light blue-gray for the body background to enhance glassmorphism */
+}
+
+.highlight {
+  background: yellow;
 }
