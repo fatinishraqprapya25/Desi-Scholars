@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom"
 import Header from "../common/Header";
 import LeftSide from "./quiz/LeftSide";
 import RightSide from "./quiz/RightSide";
+import Footer from "./quiz/Footer";
 
 export default function Quiz({ navigateData }) {
     const localtion = useLocation();
@@ -12,6 +13,7 @@ export default function Quiz({ navigateData }) {
             <div className="grid grid-cols-2">
                 <LeftSide />
                 <RightSide />
+                <Footer />
             </div>
         </>
     )

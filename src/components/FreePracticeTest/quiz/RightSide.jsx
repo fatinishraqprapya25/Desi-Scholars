@@ -1,6 +1,6 @@
 const RightSide = () => {
     return (
-        <div className="bg-white w-full h-fit rounded-lg px-8 py-6 mx-auto">
+        <div className="bg-white w-full h-fit rounded-lg px-8 py-2 mx-auto">
             {/* Question Header */}
             <div className="flex justify-between items-center border-b pb-3 mb-4">
                 <div>
