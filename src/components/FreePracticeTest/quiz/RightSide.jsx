@@ -124,11 +124,11 @@ const RightSide = ({
                             const bgColor = (() => {
                                 if (sOption === index) {
                                     if (ansCorrect === null) {
-                                        return "bg-blue-100 border-blue-500"; // Selected but not evaluated yet
+                                        return "bg-blue-400 border-blue-700"; // Selected but not evaluated yet
                                     } else if (ansCorrect) {
-                                        return "bg-green-100 border-green-500"; // Correct answer
+                                        return "bg-green-500 border-green-700"; // Correct answer
                                     } else {
-                                        return "bg-red-100 border-red-500"; // Incorrect answer
+                                        return "bg-red-500 border-red-700"; // Incorrect answer
                                     }
                                 }
                                 return "bg-white"; // Default for unselected options
