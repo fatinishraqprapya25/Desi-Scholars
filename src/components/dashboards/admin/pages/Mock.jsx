@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { PlusCircle } from "lucide-react"; // Lucide icon for "Create Mock"
 import UserDashboardContainer from "../../common/UserDashboardContainer";
 import { Link } from "react-router-dom";
+import MockCard from "../mock/MockCard";
 
 export default function Mock() {
     const [mocks, setMocks] = useState([]);
@@ -62,39 +63,7 @@ export default function Mock() {
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {mocks.map((mock, index) => (
-                        <div
-                            key={index}
-                            className="border rounded-lg shadow-md p-5 bg-white"
-                        >
-                            {/* Mock Details */}
-                            <div className="flex justify-between items-center mb-3">
-                                <span className="text-sm text-gray-500"># ID:</span>
-                                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
-                                    active
-                                </span>
-                            </div>
-                            <h3 className="text-lg font-semibold mb-2">
-                                {mock.name || "Unnamed Test"}
-                            </h3>
-                            <p className="text-sm text-gray-600 mb-4">
-                                {mock.description || "No description available."}
-                            </p>
-                            <div className="flex items-center text-sm text-gray-500 mb-4">
-                                <span className="mr-4">📋 {mock.questions || 0} Questions</span>
-                                <span>⏱ {mock.duration || 0} Mins</span>
-                            </div>
-                            <p className="text-sm text-gray-500 mb-4">
-                                📅 Created: {mock.createdAt || "Unknown"}
-                            </p>
-                            <div className="flex justify-between">
-                                <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-                                    Edit Test
-                                </button>
-                                <button className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
-                                    Delete
-                                </button>
-                            </div>
-                        </div>
+                        <MockCard mock={mock} index={index} />
                     ))}
                 </div>
             )}
