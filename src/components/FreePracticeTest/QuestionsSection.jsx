@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export default function QuestionsSection() {
+export default function QuestionsSection({ filters }) {
     const [data, setData] = useState(null);
 
     useEffect(() => {
@@ -9,7 +9,6 @@ export default function QuestionsSection() {
                 const response = await fetch("http://localhost:5000/api/mcq/questions/aggregated");
                 const result = await response.json();
                 setData(result.data);
-                console.log("Fetched Data:", result.data);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }

@@ -18,16 +18,19 @@ const slideInDown = {
 };
 
 function PracticeTests() {
-  // Create refs for each section to observe their visibility
   const headerRef = useRef(null);
   const filterBarRef = useRef(null);
   const questionsSectionRef = useRef(null);
 
-  // Use useInView hook to determine if an element is in view
-  // The 'once: true' option ensures the animation only plays once when it comes into view
-  const isHeaderInView = useInView(headerRef, { once: true, amount: 0.5 }); // Trigger when 50% of header is in view
-  const isFilterBarInView = useInView(filterBarRef, { once: true, amount: 0.3 }); // Trigger when 30% of filter bar is in view
-  const isQuestionsSectionInView = useInView(questionsSectionRef, { once: true, amount: 0.1 }); // Trigger when 10% of questions is in view
+  const isHeaderInView = useInView(headerRef, { once: true, amount: 0.5 });
+  const isFilterBarInView = useInView(filterBarRef, { once: true, amount: 0.3 });
+  const isQuestionsSectionInView = useInView(questionsSectionRef, { once: true, amount: 0.1 });
+
+  const [filters, setFilters] = useState({});
+
+  const handleFilter = (f) => {
+    setFilters(filters);
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 font-inter text-gray-800">
@@ -51,7 +54,7 @@ function PracticeTests() {
         // You can still add a slight delay here if you want items within the view to stagger
         transition={{ delay: 0.1 }}
       >
-        <FilterBar />
+        <FilterBar callFilter={handleFilter} />
       </motion.div>
 
       {/* QuestionsSection with scroll-triggered animation */}
@@ -63,7 +66,7 @@ function PracticeTests() {
         // Add a slight delay for this component relative to the FilterBar
         transition={{ delay: 0.2 }}
       >
-        <QuestionsSection />
+        <QuestionsSection filters={filters} />
       </motion.div>
       <FreeResources />
       <FAQSection />

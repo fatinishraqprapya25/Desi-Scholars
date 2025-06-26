@@ -1,8 +1,6 @@
 import React, { useState, useCallback } from 'react';
 
-// Main FilterBar component
-export default function FilterBar() {
-    // State for each filter category
+export default function FilterBar({ callFilter }) {
     const [activeQuestions, setActiveQuestions] = useState('All');
     const [version, setVersion] = useState('All');
     const [difficulty, setDifficulty] = useState('All');
@@ -100,14 +98,13 @@ export default function FilterBar() {
     const handleApply = useCallback(() => {
         const filters = {
             activeQuestions,
-            version,
+            // version,
             difficulty,
             scoreBand,
-            markedForReview,
-            answeredIncorrectly,
+            // markedForReview,
+            // answeredIncorrectly,
         };
-        console.log('Applying filters:', filters);
-        alert(`Applying filters: ${JSON.stringify(filters, null, 2)}`);
+        callFilter(filters);
     }, [activeQuestions, version, difficulty, scoreBand, markedForReview, answeredIncorrectly]);
 
 
