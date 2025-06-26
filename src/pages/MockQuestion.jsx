@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import QuizHeader from "../components/mock/quiz/QuizHeader";
 import QuizLeftSide from "../components/mock/quiz/QuizLeftSide";
+import QuizRightSide from "../components/mock/quiz/QuizRightSide";
 
 export default function MockQuestion() {
     const { id } = useParams();
@@ -16,8 +17,9 @@ export default function MockQuestion() {
     return (
         <div>
             <QuizHeader moduleName="English 1" initialMinutes={2} initialSeconds={0} />
-            <div className="grid grid-cols-2 ps-0 md:ps-15 mt-0 md:mt-15">
+            <div className="grid grid-cols-2 ps-0 md:ps-15 mt-0 md:mt-15 space-x-3">
                 <QuizLeftSide />
+                <QuizRightSide />
             </div>
         </div>
     )
