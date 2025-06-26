@@ -6,7 +6,13 @@ export default function QuestionsSection({ filters }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("http://localhost:5000/api/mcq/questions/aggregated");
+                const response = await fetch("http://localhost:5000/api/mcq/questions/aggregated", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "Application/json"
+                    },
+                    body: JSON.stringify(filters)
+                });
                 const result = await response.json();
                 setData(result.data);
             } catch (error) {
@@ -14,7 +20,7 @@ export default function QuestionsSection({ filters }) {
             }
         };
         fetchData();
-    }, []);
+    }, [filters]);
 
     if (!data) {
         return (

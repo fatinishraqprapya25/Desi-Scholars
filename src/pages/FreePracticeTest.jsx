@@ -29,18 +29,17 @@ function PracticeTests() {
   const [filters, setFilters] = useState({});
 
   const handleFilter = (f) => {
-    setFilters(filters);
+    setFilters(f);
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 font-inter text-gray-800">
 
-      {/* TestHeader with scroll-triggered animation */}
       <motion.div
-        ref={headerRef} // Attach the ref
-        variants={slideInDown} // Use defined animation variants
-        initial="hidden" // Start from the hidden state
-        animate={isHeaderInView ? "visible" : "hidden"} // Animate to visible if in view
+        ref={headerRef}
+        variants={slideInDown}
+        initial="hidden"
+        animate={isHeaderInView ? "visible" : "hidden"}
       >
         <TestHeader />
       </motion.div>
