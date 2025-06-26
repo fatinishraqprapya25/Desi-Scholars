@@ -16,6 +16,10 @@ export default function Quiz() {
     const [ansCorrect, setIsCorrct] = useState(null);
 
     useEffect(() => {
+        setIsCorrct(null);
+    }, [selectedOption]);
+
+    useEffect(() => {
         const fetchQuestions = async () => {
             try {
                 const response = await fetch(`http://localhost:5000/api/mcq?${new URLSearchParams(query)}`);
