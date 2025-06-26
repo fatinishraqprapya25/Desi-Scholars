@@ -55,7 +55,7 @@ export default function LeftSide({ question, length }) {
         {/* Question Section */}
         <div className="rounded-lg p-6">
             <p className="text-gray-700">
-                {question.explanation}
+                {question && question.explanation}
             </p>
         </div>
     </div>

@@ -10,6 +10,7 @@ export default function Quiz() {
     const query = location.state;
     const [questions, setQuestions] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [markable, setMarkable] = useState(false);
 
     useEffect(() => {
         const fetchQuestions = async () => {
@@ -28,7 +29,14 @@ export default function Quiz() {
         fetchQuestions();
     }, [query]);
 
-    const [markable, setMarkable] = useState(false);
+    const handleNext = () => {
+        if (questions.length === currentIndex + 1) {
+            alert("no more questions available");
+        } else {
+            setCurrentIndex(index => index + 1);
+        }
+
+    };
 
     const handleTextSelection = () => {
         if (!markable) return;
@@ -55,7 +63,7 @@ export default function Quiz() {
             <div className="grid grid-cols-2" onMouseUp={handleTextSelection}>
                 <LeftSide length={questions.length} question={questions[currentIndex]} />
                 <RightSide question={questions[currentIndex]} markable={markable} onChangeMarkable={setMarkable} />
-                <Footer />
+                <Footer handleNext={handleNext} />
             </div>
         </>
     );

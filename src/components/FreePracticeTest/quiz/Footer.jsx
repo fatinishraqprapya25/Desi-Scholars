@@ -1,6 +1,6 @@
 import React from "react";
 
-const Footer = () => {
+const Footer = ({ handleNext }) => {
     return (
         <div className="w-full fixed bottom-0 bg-gray-100 py-4 px-6 flex items-center justify-between border-t border-gray-300">
             <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
@@ -15,7 +15,7 @@ const Footer = () => {
                 <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
                     Check
                 </button>
-                <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                <button onClick={handleNext} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
                     Next
                 </button>
             </div>
