@@ -2,6 +2,7 @@ import { ClipboardPen } from "lucide-react";
 import { useState } from "react";
 
 const RightSide = ({ markable, onChangeMarkable }) => {
+    const [flash, setFlash] = useState(false);
     return (
         <div
             className="bg-white w-full h-fit rounded-lg px-8 py-2 mx-auto"
@@ -13,13 +14,23 @@ const RightSide = ({ markable, onChangeMarkable }) => {
                     <p className="text-indigo-600 font-bold text-xl">#01371</p>
                 </div>
 
-                <button
-                    onClick={() => onChangeMarkable(!markable)} // Toggle markable mode
-                    className={`${markable ? "bg-yellow-500" : "bg-teal-500"
-                        } text-white p-2 rounded-full transition duration-300`}
-                >
-                    <ClipboardPen />
-                </button>
+                <div className="flex">
+                    <button
+                        onClick={() => onChangeMarkable(!markable)} // Toggle markable mode
+                        className={`${markable ? "bg-yellow-500" : "bg-teal-500"
+                            } text-white p-2 rounded-full transition duration-300`}
+                    >
+                        <ClipboardPen />
+                    </button>
+
+                    <button
+                        onClick={() => setFlash(!flash)}
+                        className={`${flash ? "bg-black text-white" : "bg-white text-black"
+                            } text-black border border-black p-2 rounded-full transition duration-300 ms-2`}
+                    >
+                        <ClipboardPen />
+                    </button>
+                </div>
             </div>
 
             {/* Content */}
