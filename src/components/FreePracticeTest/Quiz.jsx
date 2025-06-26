@@ -4,6 +4,7 @@ import LeftSide from "./quiz/LeftSide";
 import RightSide from "./quiz/RightSide";
 import Footer from "./quiz/Footer";
 import { useEffect, useState } from "react";
+import NavigationSection from "./quiz/NavigationSection";
 
 export default function Quiz() {
     const location = useLocation();
@@ -93,8 +94,19 @@ export default function Quiz() {
             <div className="grid grid-cols-2" onMouseUp={handleTextSelection}>
                 <LeftSide meta={showMeta} changeMeta={setShowMeta} length={questions.length} question={questions[currentIndex]} />
                 <RightSide crossAble={crossAble} handleCross={handleCross} currentIndex={currentIndex} ansCorrect={ansCorrect} sOption={selectedOption} changeOption={setSelectedOption} meta={showMeta} question={questions[currentIndex]} markable={markable} onChangeMarkable={setMarkable} />
-                <Footer currentIndex={currentIndex} totalQuestions={questions.length} selectedOption={selectedOption} handleCheck={handleCheck} handleNext={handleNext} handlePrev={handlePrev} />
+
             </div>
+
+            <br />
+            <NavigationSection />
+            <br />
+            <br />
+            <br />
+            <br />
+         
+            <Footer currentIndex={currentIndex} totalQuestions={questions.length} selectedOption={selectedOption} handleCheck={handleCheck} handleNext={handleNext} handlePrev={handlePrev} />
+
+
         </>
     );
 }
