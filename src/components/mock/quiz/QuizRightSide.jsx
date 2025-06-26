@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const QuizRightSide = ({ question, currentIndex }) => {
     const [selectedOption, setSelectedOption] = useState(null);
+
+    // Reset selected option when the question changes
+    useEffect(() => {
+        setSelectedOption(null);
+    }, [question]);
 
     // Handle option selection
     const handleOptionClick = (optionIndex) => {

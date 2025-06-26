@@ -1,8 +1,11 @@
+import { useNavigate } from "react-router-dom";
+
 export default function QuizFooter({ handleNext, handlePrev, length, currentIndex }) {
+    const navigate = useNavigate();
     return (
         <footer className="w-full bg-purple-100 py-4 px-4 sm:px-6 lg:px-8 flex items-center justify-between shadow-md rounded-b-lg">
             {/* Exit Button */}
-            <button className="flex items-center bg-red-400 text-white px-6 py-3 rounded-xl shadow-md hover:bg-red-500 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+            <button onClick={() => navigate("/mock")} className="flex items-center bg-red-400 text-white px-6 py-3 rounded-xl shadow-md hover:bg-red-500 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414L7.5 8.586 5.707 6.793a1 1 0 00-1.414 1.414L6.086 10l-1.793 1.793a1 1 0 101.414 1.414L7.5 11.414l1.793 1.793a1 1 0 001.414-1.414L8.914 10l1.793-1.793z" clipRule="evenodd" />
                 </svg>
