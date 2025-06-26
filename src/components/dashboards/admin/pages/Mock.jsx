@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { PlusCircle } from "lucide-react"; // Lucide icon for "Create Mock"
 import UserDashboardContainer from "../../common/UserDashboardContainer";
+import { Link } from "react-router-dom";
 
 export default function Mock() {
     const [mocks, setMocks] = useState([]);
@@ -42,10 +43,10 @@ export default function Mock() {
                     className="border border-gray-300 rounded-lg px-4 py-2 w-full max-w-md text-gray-700 focus:outline-none focus:ring focus:ring-purple-300"
                 />
                 {/* Create Mock Button */}
-                <button className="flex items-center bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 ml-4">
+                <Link to="/admin/mock/create"><button className="flex items-center bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 ml-4">
                     <PlusCircle className="h-5 w-5 mr-2" />
                     Create Mock
-                </button>
+                </button></Link>
             </div>
 
             {/* Content Section */}
