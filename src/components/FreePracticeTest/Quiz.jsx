@@ -9,6 +9,7 @@ export default function Quiz() {
     const location = useLocation();
     const query = location.state;
     const [questions, setQuestions] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
         const fetchQuestions = async () => {
@@ -53,7 +54,7 @@ export default function Quiz() {
             <Header />
             <div className="grid grid-cols-2" onMouseUp={handleTextSelection}>
                 <LeftSide />
-                <RightSide markable={markable} onChangeMarkable={setMarkable} />
+                <RightSide question={questions[currentIndex]} markable={markable} onChangeMarkable={setMarkable} />
                 <Footer />
             </div>
         </>

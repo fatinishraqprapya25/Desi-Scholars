@@ -1,7 +1,8 @@
 import { ClipboardPen } from "lucide-react";
 import { useState } from "react";
 
-const RightSide = ({ markable, onChangeMarkable }) => {
+const RightSide = ({ markable, onChangeMarkable, question }) => {
+    console.log(question);
     const [flash, setFlash] = useState(false);
     return (
         <div
@@ -10,8 +11,8 @@ const RightSide = ({ markable, onChangeMarkable }) => {
             {/* Header */}
             <div className="flex justify-between items-center border-b pb-3 mb-4">
                 <div>
-                    <h1 className="text-lg font-bold text-gray-800">Question ID</h1>
-                    <p className="text-indigo-600 font-bold text-xl">#01371</p>
+                    <h1 className="text-lg font-bold text-gray-800">Question ID:</h1>
+                    <p className="text-indigo-600 font-bold text-xl">{question && question._id}</p>
                 </div>
 
                 <div className="flex">
@@ -36,22 +37,27 @@ const RightSide = ({ markable, onChangeMarkable }) => {
             {/* Content */}
             <div className="border-t pt-3">
                 <p className="text-gray-800 font-medium mb-4">
-                    As used in the text, what does the phrase "a singular" most nearly mean?
+                    {question && question.question}
                 </p>
 
                 <div className="space-y-3">
-                    <div className="flex items-center border rounded-lg p-3 cursor-pointer hover:bg-gray-100">
-                        <span className="font-bold text-indigo-600 mr-2">A</span>
-                        <span className="text-gray-800">indicated by</span>
-                    </div>
-                    <div className="flex items-center border rounded-lg p-3 cursor-pointer hover:bg-gray-100">
-                        <span className="font-bold text-indigo-600 mr-2">B</span>
-                        <span className="text-gray-800">handmade from</span>
-                    </div>
-                    <div className="flex items-center border rounded-lg p-3 cursor-pointer hover:bg-gray-100">
-                        <span className="font-bold text-indigo-600 mr-2">C</span>
-                        <span className="text-gray-800">represented by</span>
-                    </div>
+                    {question && question.options.map((option, index) => {
+                        let name = "A";
+                        if (index === 0) {
+                            name === "A";
+                        } else if (index === 1) {
+                            name = "B"
+                        } else if (index === 2) {
+                            name = "C";
+                        } else {
+                            name = "D"
+                        }
+                        return <div className="flex items-center border rounded-lg p-3 cursor-pointer hover:bg-gray-100">
+                            <span className="font-bold text-indigo-600 mr-2">{name}</span>
+                            <span className="text-gray-800">{option}</span>
+                        </div>
+                    })}
+
                 </div>
             </div>
         </div>
