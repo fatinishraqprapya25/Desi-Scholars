@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import QuizHeader from "../components/mock/quiz/QuizHeader";
 import QuizLeftSide from "../components/mock/quiz/QuizLeftSide";
 import QuizRightSide from "../components/mock/quiz/QuizRightSide";
+import QuizFooter from "../components/mock/quiz/QuizFooter";
 
 export default function MockQuestion() {
     const { id } = useParams();
@@ -10,7 +11,7 @@ export default function MockQuestion() {
     const fetchMockQuestions = async () => {
         const response = await fetch("http://localhost:5000/api/mockquestions");
         const result = await response.json();
-       
+
     }
     useEffect(() => {
         fetchMockQuestions();
@@ -23,6 +24,9 @@ export default function MockQuestion() {
                 <QuizLeftSide />
                 <QuizRightSide />
             </div>
+            <br />
+            <br />
+            <QuizFooter />
         </div>
     )
 }
