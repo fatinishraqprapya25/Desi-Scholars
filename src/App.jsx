@@ -61,6 +61,7 @@ import CombinedCalculator from "./pages/CombinedCalculator";
 import ProtectedStudent from "./components/dashboards/student/pages/ProtectedStudent";
 import TeacherLogin from "./components/dashboards/teacher/pages/TeacherLogin";
 import Quiz from "./components/FreePracticeTest/Quiz";
+import Mock from "./components/dashboards/admin/pages/Mock";
 function App() {
   return (
     <>
@@ -172,6 +173,14 @@ function App() {
           element={
             <ProtectedAdmin>
               <PracticeTest />
+            </ProtectedAdmin>
+          }
+        />
+        <Route
+          path="/admin/mock"
+          element={
+            <ProtectedAdmin>
+              <Mock />
             </ProtectedAdmin>
           }
         />
