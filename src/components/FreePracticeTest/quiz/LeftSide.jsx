@@ -1,10 +1,13 @@
+import { useNavigate } from "react-router-dom"
+
 export default function LeftSide({ question, length, meta, changeMeta }) {
+    const navigate = useNavigate("");
     return <div className="min-h-screen p-6">
         {/* Header Section */}
         <div className=" rounded-lg p-4">
             <h1 className="text-2xl font-bold text-gray-800 mb-2">SAT Suite Question Bank</h1>
             <div className="flex items-center mt-[-10px]">
-                <button className="text-purple-700 font-medium hover:underline">
+                <button onClick={() => navigate("/practice-test")} className="text-purple-700 font-medium hover:underline">
                     Back to Question Bank
                 </button>
                 <div className="flex gap-2 ms-5">
