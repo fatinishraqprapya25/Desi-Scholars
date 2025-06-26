@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function QuestionsSection({ filters }) {
     const [data, setData] = useState(null);
+    const navigate = useNavigate(); // useNavigate hook
 
     useEffect(() => {
         const fetchData = async () => {
@@ -66,6 +68,10 @@ export default function QuestionsSection({ filters }) {
 
     const uniqueChapters = Object.values(normalizedChapters);
 
+    const handleNavigate = (navigateData) => {
+        navigate("/test", { state: navigateData }); 
+    };
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
             {bySubject.map((subject, subjectIndex) => (
@@ -79,9 +85,11 @@ export default function QuestionsSection({ filters }) {
                             <span className="text-gray-500 text-lg font-bold">
                                 {subjectIndex + 1}.
                             </span>
-                            <h2 className="text-2xl font-bold text-gray-800">
-                                {subject._id}
-                            </h2>
+                            <button onClick={() => handleNavigate({ subject: subject._id })}>
+                                <h2 className="text-2xl font-bold text-gray-800">
+                                    {subject._id}
+                                </h2>
+                            </button>
                         </div>
                         <span className="bg-purple-700 text-white text-sm font-medium px-3 py-1 rounded-full">
                             {subject.count}
@@ -105,9 +113,11 @@ export default function QuestionsSection({ filters }) {
                                             <span className="text-gray-500 text-md font-bold">
                                                 {chapterIndex + 1}.
                                             </span>
-                                            <h3 className="text-lg font-semibold text-gray-700">
-                                                {chapter._id}
-                                            </h3>
+                                            <button onClick={() => handleNavigate({ subject: subject._id, chapter: chapter._id })}>
+                                                <h3 className="text-lg font-semibold text-gray-700">
+                                                    {chapter._id}
+                                                </h3>
+                                            </button>
                                         </div>
                                         <span className="bg-pink-500 text-white text-sm font-medium px-3 py-1 rounded-full">
                                             {chapter.count}
@@ -125,9 +135,11 @@ export default function QuestionsSection({ filters }) {
                                                     <span className="text-gray-500 text-sm font-bold">
                                                         {questionIndex + 1}.
                                                     </span>
-                                                    <h4 className="text-gray-800 text-sm font-medium">
-                                                        {question.topic}
-                                                    </h4>
+                                                    <button onClick={() => handleNavigate({ subject: subject._id, chapter: chapter._id, topic: question.topic })}>
+                                                        <h4 className="text-gray-800 text-sm font-medium">
+                                                            {question.topic}
+                                                        </h4>
+                                                    </button>
                                                 </div>
                                                 <span className="bg-teal-700 text-white text-xs font-medium px-2 py-1 rounded-full">
                                                     {question.difficulty}
