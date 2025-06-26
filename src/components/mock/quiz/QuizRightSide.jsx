@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from 'react';
 
-const QuizRightSide = ({ question, currentIndex }) => {
+const QuizRightSide = ({ question, currentIndex, setIsMarking, isMarking }) => {
     const [selectedOption, setSelectedOption] = useState(null);
 
-    // Reset selected option when the question changes
     useEffect(() => {
         setSelectedOption(null);
     }, [question]);
 
-    // Handle option selection
     const handleOptionClick = (optionIndex) => {
         setSelectedOption(optionIndex);
     };
 
+    // Toggle marking mode
+    const handleEditToggle = () => {
+        setIsMarking(!isMarking);
+    };
+
+
     return (
-        <div className="p-6 bg-white rounded-lg mt-[-30px] max-w-6xl mx-auto my-8 shadow-md">
+        <div
+            className={`p-6 bg-white rounded-lg mt-[-30px] max-w-6xl mx-auto my-8 shadow-md`}
+        // Trigger highlight on mouse up
+        >
             {/* Header with question number and action buttons */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-4">
@@ -32,7 +39,7 @@ const QuizRightSide = ({ question, currentIndex }) => {
                     </button>
                 </div>
                 {/* Edit Button (Pencil Icon) */}
-                <button className="text-purple-600 hover:text-purple-800">
+                <button className="text-purple-600 hover:text-purple-800" onClick={handleEditToggle}>
                     <svg
                         className="w-5 h-5"
                         fill="none"

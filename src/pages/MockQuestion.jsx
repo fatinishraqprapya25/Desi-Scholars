@@ -11,6 +11,7 @@ export default function MockQuestion() {
     const [mockQuestions, setMockQuestions] = useState();
     const [breakStatus, setBreakStatus] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [isMarking, setIsMarking] = useState(false);
 
     const fetchMockQuestions = async () => {
         try {
@@ -47,6 +48,19 @@ export default function MockQuestion() {
         }
     };
 
+    const highlightText = (event) => {
+        if (isMarking) {
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                const span = document.createElement('span');
+                span.style.backgroundColor = 'yellow';
+                range.surroundContents(span);
+                selection.removeAllRanges();
+            }
+        }
+    };
+
     const handlePrev = () => {
         if (currentIndex === 0) {
             alert("no more previous questions");
@@ -66,14 +80,14 @@ export default function MockQuestion() {
         ) : (
             <div>
                 <QuizHeader moduleName="English 1" initialMinutes={2} initialSeconds={0} />
-                <div className="grid grid-cols-2 ps-0 md:ps-15 mt-42 space-x-3">
+                <div onMouseUp={highlightText} className="grid grid-cols-2 ps-0 md:ps-15 mt-42 space-x-3">
                     {/* Adjust the grid column span for QuizLeftSide and QuizRightSide */}
                     <div className="col-span-1">
                         <QuizLeftSide />
                     </div>
                     <div className="">
                         {mockQuestions && (
-                            <QuizRightSide currentIndex={currentIndex} question={mockQuestions[currentIndex]} />
+                            <QuizRightSide setIsMarking={setIsMarking} isMarking={isMarking} currentIndex={currentIndex} question={mockQuestions[currentIndex]} />
                         )}
                     </div>
                 </div>
