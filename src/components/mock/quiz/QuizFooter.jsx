@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-export default function QuizFooter({ handleNext, handlePrev, length, currentIndex }) {
+export default function QuizFooter({ handleNext, handlePrev, length, currentIndex, modal, setModal }) {
     const navigate = useNavigate();
     return (
         <footer className="fixed bottom-0 left-0 w-full bg-purple-100 py-4 px-4 sm:px-6 lg:px-8 flex items-center justify-between shadow-md rounded-t-lg">
@@ -15,7 +15,7 @@ export default function QuizFooter({ handleNext, handlePrev, length, currentInde
             </button>
 
             {/* Question Counter */}
-            <div className="bg-gray-800 text-white px-8 py-3 rounded-xl shadow-md flex items-center">
+            <div onClick={() => setModal(!modal)} className="bg-gray-800 text-white px-8 py-3 rounded-xl shadow-md flex items-center">
                 <span className="font-semibold text-lg">Question {currentIndex + 1} of {length}</span>
                 {/* Up arrow icon */}
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">

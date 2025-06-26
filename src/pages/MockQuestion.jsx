@@ -5,13 +5,16 @@ import QuizLeftSide from "../components/mock/quiz/QuizLeftSide";
 import QuizRightSide from "../components/mock/quiz/QuizRightSide";
 import QuizFooter from "../components/mock/quiz/QuizFooter";
 import App from "../components/mock/Break";
+import QuestionModal from "../components/mock/quiz/QuestionModal";
 
 export default function MockQuestion() {
     const { id } = useParams();
-    const [mockQuestions, setMockQuestions] = useState();
+    const [mockQuestions, setMockQuestions] = useState([]);
     const [breakStatus, setBreakStatus] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isMarking, setIsMarking] = useState(false);
+    const [currentModuleName, setCurrentModuleName] = useState('');
+    const [constShowQuestionModal, setShowQuestionModal] = useState(false);
 
     const fetchMockQuestions = async () => {
         try {
@@ -33,6 +36,20 @@ export default function MockQuestion() {
     useEffect(() => {
         fetchMockQuestions();
     }, []);
+
+    useEffect(() => {
+        if (mockQuestions.length > 0) {
+            setCurrentModuleName(mockQuestions[currentIndex].moduleName);
+        }
+    }, [currentIndex, mockQuestions]);
+
+    // Function to get sorted questions by current module name
+    const getSortedQuestionsByCurrentModule = () => {
+        return mockQuestions.filter(question => question.moduleName === currentModuleName);
+    };
+
+    const thisModulesQuestionsCount = getSortedQuestionsByCurrentModule();
+    console.log(thisModulesQuestionsCount)
 
     const handleNext = () => {
         if (mockQuestions.length === currentIndex + 1) {
@@ -79,21 +96,38 @@ export default function MockQuestion() {
             <App handleResumeFromBreak={handleResumeFromBreak} />
         ) : (
             <div>
-                <QuizHeader moduleName="English 1" initialMinutes={2} initialSeconds={0} />
+                <QuizHeader moduleName={currentModuleName} initialMinutes={2} initialSeconds={0} />
                 <div onMouseUp={highlightText} className="grid grid-cols-2 ps-0 md:ps-15 mt-42 space-x-3">
                     {/* Adjust the grid column span for QuizLeftSide and QuizRightSide */}
                     <div className="col-span-1">
                         <QuizLeftSide />
                     </div>
                     <div className="">
-                        {mockQuestions && (
-                            <QuizRightSide setIsMarking={setIsMarking} isMarking={isMarking} currentIndex={currentIndex} question={mockQuestions[currentIndex]} />
+                        {mockQuestions.length > 0 && (
+                            <QuizRightSide
+                                setIsMarking={setIsMarking}
+                                isMarking={isMarking}
+                                currentIndex={currentIndex}
+                                question={mockQuestions[currentIndex]}
+
+                            />
                         )}
                     </div>
                 </div>
                 <br />
                 <br />
-                <QuizFooter handleNext={handleNext} handlePrev={handlePrev} currentIndex={currentIndex} length={mockQuestions ? mockQuestions.length : 0} />
+                <QuizFooter
+                    handleNext={handleNext}
+                    handlePrev={handlePrev}
+                    currentIndex={currentIndex}
+                    length={mockQuestions.length}
+                    modal={constShowQuestionModal}
+                    setModal={setShowQuestionModal}
+                />
+
+                {constShowQuestionModal && <QuestionModal currentIndex={currentIndex} length={thisModulesQuestionsCount ? thisModulesQuestionsCount.length : 0} setShowQuestionModal={setShowQuestionModal}
+                    mockQuestions={mockQuestions}
+                />}
             </div>
         )
     );
