@@ -12,6 +12,8 @@ export default function Quiz() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [markable, setMarkable] = useState(false);
     const [showMeta, setShowMeta] = useState(true);
+    const [selectedOption, setSelectedOption] = useState(null);
+    const [ansCorrect, setIsCorrct] = useState(null);
 
     useEffect(() => {
         const fetchQuestions = async () => {
@@ -34,6 +36,7 @@ export default function Quiz() {
         if (questions.length === currentIndex + 1) {
             alert("no more questions available");
         } else {
+            setIsCorrct(null);
             setCurrentIndex(index => index + 1);
         }
 
@@ -58,13 +61,22 @@ export default function Quiz() {
         }
     };
 
+    const handleCheck = () => {
+        const writeAnswers = questions[currentIndex].correctAnswers;
+        if (writeAnswers.includes(selectedOption)) {
+            setIsCorrct(true);
+        } else {
+            setIsCorrct(false);
+        }
+    }
+
     return (
         <>
             <Header />
             <div className="grid grid-cols-2" onMouseUp={handleTextSelection}>
                 <LeftSide meta={showMeta} changeMeta={setShowMeta} length={questions.length} question={questions[currentIndex]} />
-                <RightSide meta={showMeta} question={questions[currentIndex]} markable={markable} onChangeMarkable={setMarkable} />
-                <Footer handleNext={handleNext} />
+                <RightSide ansCorrect={ansCorrect} sOption={selectedOption} changeOption={setSelectedOption} meta={showMeta} question={questions[currentIndex]} markable={markable} onChangeMarkable={setMarkable} />
+                <Footer selectedOption={selectedOption} handleCheck={handleCheck} handleNext={handleNext} />
             </div>
         </>
     );
