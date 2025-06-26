@@ -7,33 +7,29 @@ export default function CreateMock() {
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
 
+    const createMock = async (mockDetails) => {
+        const adminToken = localStorage.getItem("ASDFDKFFJF");
+        const response = await fetch("http://localhost:5000/api/mock", {
+            method: "POST",
+            headers: {
+                "Content-Type": "Application/json",
+                "Authorization": `Bearer ${adminToken}`
+            },
+            body: JSON.stringify(mockDetails)
+        });
+        const result = await response.json();
+        alert(result.message);
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log({
+        const mockDetails = {
             name,
             duration,
             description,
             price,
-        });
-
-        // In a real application, you would send this data to a backend server
-        // For example:
-        // fetch('/api/create-mock', {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify({ name, duration, description, price }),
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //   console.log('Success:', data);
-        //   // Optionally clear form or show success message
-        // })
-        // .catch((error) => {
-        //   console.error('Error:', error);
-        //   // Optionally show error message
-        // });
+        };
+        createMock(mockDetails);
 
         setName('');
         setDuration('');
