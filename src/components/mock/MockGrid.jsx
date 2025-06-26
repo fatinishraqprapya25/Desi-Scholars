@@ -1,9 +1,7 @@
-// src/components/MockGrid.jsx
 import { motion } from "framer-motion";
-import { FaBook, FaClock, FaPlayCircle, FaLightbulb, FaChartLine, FaPuzzlePiece, FaLaptopCode, FaFlask } from 'react-icons/fa'; // Added FaFlask for new test example
+import { FaBook, FaClock, FaPlayCircle, FaLightbulb, FaChartLine, FaPuzzlePiece, FaLaptopCode, FaFlask } from 'react-icons/fa';
 import { useNavigate, Link } from 'react-router-dom';
 
-// Define COLORS or import from a centralized file for consistency
 const COLORS = {
     primary: '#3B82F6', // blue-500
     primaryDarker: '#2563EB', // blue-600
@@ -17,7 +15,6 @@ const COLORS = {
     border: '#E5E7EB', // gray-200
 };
 
-// Default mockTests data (can be removed if always passed as a prop from parent)
 const defaultMockTests = [
     {
         id: 'general-aptitude-1',
@@ -75,6 +72,34 @@ const defaultMockTests = [
     },
 ];
 
+
+// Framer Motion variants for staggered animation of cards
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1,
+            delayChildren: 0.2
+        }
+    }
+};
+
+const cardVariants = {
+    hidden: { opacity: 0, y: 50, scale: 0.9 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+            type: "spring",
+            stiffness: 100,
+            damping: 12,
+            duration: 0.6
+        }
+    }
+};
+
 export default function MockGrid({ mockTests: propMockTests }) {
     const currentMockTests = propMockTests || defaultMockTests;
     const navigate = useNavigate();
@@ -83,32 +108,6 @@ export default function MockGrid({ mockTests: propMockTests }) {
         navigate(`/quiz/${testId}`);
     };
 
-    // Framer Motion variants for staggered animation of cards
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1,
-                delayChildren: 0.2
-            }
-        }
-    };
-
-    const cardVariants = {
-        hidden: { opacity: 0, y: 50, scale: 0.9 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            transition: {
-                type: "spring",
-                stiffness: 100,
-                damping: 12,
-                duration: 0.6
-            }
-        }
-    };
 
     return (
         <section id="mock-tests-section" className="bg-gray-50 py-16 sm:py-20 rounded-3xl shadow-inner mb-12 sm:mb-16">
@@ -125,7 +124,7 @@ export default function MockGrid({ mockTests: propMockTests }) {
                 </motion.h2>
             </div>
 
-            {/* The grid container now spans full width but maintains horizontal padding */}
+
             <motion.div
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 px-4 sm:px-6 lg:px-8" // Removed max-width and added padding
                 variants={containerVariants}
@@ -133,45 +132,53 @@ export default function MockGrid({ mockTests: propMockTests }) {
                 animate="visible"
             >
                 {currentMockTests.map((test, index) => (
-                    <Link to={`/mock/${test.id}`}>
+                    <Link to={`/mock/${test._id}`} key={test._id}>
                         <motion.div
-                            key={test.id}
-                            className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 flex flex-col items-center text-center relative overflow-hidden group transform transition-all duration-300 hover:shadow-2xl hover:scale-105"
+                            className="relative bg-white rounded-3xl shadow-xl border border-gray-100 flex flex-col items-center text-center overflow-hidden group transform transition-all duration-400 hover:shadow-2xl hover:-translate-y-2 hover:border-blue-300 cursor-pointer"
                             variants={cardVariants}
-                            whileHover={{ y: -5 }}
-                            onClick={() => handleSelectTest(test.id)}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => handleSelectTest(test._id)} // Changed to test._id for consistency
                         >
-                            {/* Animated Border Glow on Hover */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl -z-10 blur-sm"></div>
-                            <div className="absolute inset-0 bg-white rounded-2xl -z-10"></div>
+                            {/* Dynamic Background Overlay for Hover Effect */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-700 opacity-0 group-hover:opacity-20 transition-opacity duration-400 rounded-3xl -z-10 blur-md"></div>
+                            {/* Static White Background */}
+                            <div className="absolute inset-0 bg-white rounded-3xl -z-20"></div>
 
-                            {/* Icon Container with Background Blur/Light */}
-                            <div className="mb-6 text-6xl transform transition-transform duration-300 group-hover:scale-110 p-3 rounded-full bg-blue-50 bg-opacity-70 backdrop-blur-sm border border-blue-100 shadow-md">
-                                {test.icon}
-                            </div>
+                            {/* Card Content */}
+                            <div className="p-7 flex flex-col items-center justify-between h-full w-full">
+                                <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-3 leading-tight tracking-tight group-hover:text-blue-700 transition-colors duration-300">
+                                    {test.name}
+                                </h3>
+                                <p className="text-gray-600 text-base mb-5 flex-grow px-3 leading-relaxed max-h-24 overflow-hidden">
+                                    {test.description}
+                                </p>
 
-                            <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 leading-tight">
-                                {test.title}
-                            </h3>
-                            <p className="text-gray-600 text-sm mb-4 flex-grow px-2 leading-relaxed">
-                                {test.description}
-                            </p>
-                            <div className="text-base font-semibold text-gray-700 mb-4 space-y-1">
-                                <span className="flex items-center justify-center gap-2">
-                                    <FaBook className="text-blue-500 text-lg" /> {test.totalQuestions} Questions
-                                </span>
-                                <span className="flex items-center justify-center gap-2 mt-1">
-                                    <FaClock className="text-indigo-500 text-lg" /> {test.timeLimit / 60} Minutes
-                                </span>
+                                {/* Test Details */}
+                                <div className="text-base font-semibold text-gray-700 mb-6 space-y-2">
+                                    <span className="flex items-center justify-center gap-3">
+                                        <FaBook className="text-blue-500 text-xl" />{" "}
+                                        <span className="font-bold">
+                                            {test.totalQuestions || 6} Questions
+                                        </span>
+                                    </span>
+                                    <span className="flex items-center justify-center gap-3">
+                                        <FaClock className="text-indigo-500 text-xl" />{" "}
+                                        <span className="font-bold">{test.duration} Minutes</span>
+                                    </span>
+                                </div>
+
+                                {/* Call to Action Button */}
+                                <motion.button
+                                    className="mt-auto px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full text-lg font-bold shadow-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 flex items-center gap-2 transform group-hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                                    whileHover={{ y: -3 }}
+                                    whileTap={{ scale: 0.96 }}
+                                >
+                                    <FaPlayCircle className="text-xl" /> Start Test
+                                </motion.button>
                             </div>
-                            <motion.button
-                                className="mt-auto px-7 py-3 bg-blue-600 text-white rounded-full text-lg font-bold shadow-md hover:bg-blue-700 transition-colors duration-300 flex items-center gap-2 transform group-hover:scale-105 active:scale-95"
-                                whileHover={{ y: -2 }}
-                                whileTap={{ scale: 0.98 }}
-                            >
-                                <FaPlayCircle /> Start Test
-                            </motion.button>
-                        </motion.div></Link>
+                        </motion.div>
+                    </Link>
                 ))}
             </motion.div>
         </section>
