@@ -37,7 +37,7 @@ const RightSide = ({ markable, onChangeMarkable, question }) => {
             <div className="overflow-x-auto">
                 <div className="flex items-center bg-gray-100 p-4 rounded-lg shadow-md min-w-max">
                     {/* Question Bank ID */}
-                    <div className="flex items-center space-x-2">
+                    <div className="flex flex-col space-x-2">
                         <span className="font-semibold text-gray-600">Question Bank ID</span>
                         <span className="font-bold text-gray-800">359902ae</span>
                     </div>
@@ -46,7 +46,7 @@ const RightSide = ({ markable, onChangeMarkable, question }) => {
                     <div className="mx-4 w-px h-6 bg-gray-300"></div>
 
                     {/* Section */}
-                    <div className="flex items-center space-x-2">
+                    <div className="flex flex-col space-x-2">
                         <span className="font-semibold text-gray-600">Section</span>
                         <span className="font-bold text-gray-800">{question && question.subject}</span>
                     </div>
@@ -55,7 +55,7 @@ const RightSide = ({ markable, onChangeMarkable, question }) => {
                     <div className="mx-4 w-px h-6 bg-gray-300"></div>
 
                     {/* Score Band */}
-                    <div className="flex items-center space-x-2">
+                    <div className="flex flex-col space-x-2">
                         <span className="font-semibold text-gray-600">Score Band</span>
                         <span className="font-bold text-gray-800">{question && question.scoreBond}</span>
                     </div>
@@ -64,7 +64,7 @@ const RightSide = ({ markable, onChangeMarkable, question }) => {
                     <div className="mx-4 w-px h-6 bg-gray-300"></div>
 
                     {/* Domain */}
-                    <div className="flex items-center space-x-2">
+                    <div className="flex flex-col space-x-2">
                         <span className="font-semibold text-gray-600">Domain</span>
                         <span className="font-bold text-gray-800">{question && question.chapter}</span>
                     </div>
@@ -73,7 +73,7 @@ const RightSide = ({ markable, onChangeMarkable, question }) => {
                     <div className="mx-4 w-px h-6 bg-gray-300"></div>
 
                     {/* Skill */}
-                    <div className="flex items-center space-x-2">
+                    <div className="flex flex-col space-x-2">
                         <span className="font-semibold text-gray-600">Skill</span>
                         <span className="font-bold text-gray-800">{question && question.topic}</span>
                     </div>
