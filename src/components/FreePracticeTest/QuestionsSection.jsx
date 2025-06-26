@@ -69,7 +69,7 @@ export default function QuestionsSection({ filters }) {
     const uniqueChapters = Object.values(normalizedChapters);
 
     const handleNavigate = (navigateData) => {
-        navigate("/test", { state: navigateData }); 
+        navigate("/test", { state: navigateData });
     };
 
     return (

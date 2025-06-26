@@ -1,13 +1,31 @@
-import { useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom";
 import Header from "../common/Header";
 import LeftSide from "./quiz/LeftSide";
 import RightSide from "./quiz/RightSide";
 import Footer from "./quiz/Footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function Quiz({ navigateData }) {
-    const localtion = useLocation();
+export default function Quiz() {
+    const location = useLocation();
     const query = location.state;
+    const [questions, setQuestions] = useState([]);
+
+    useEffect(() => {
+        const fetchQuestions = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/mcq?${new URLSearchParams(query)}`);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch questions.");
+                }
+                const data = await response.json();
+                setQuestions(data.data || []);
+            } catch (err) {
+                alert(err.message);
+            }
+        };
+
+        fetchQuestions();
+    }, [query]);
 
     const [markable, setMarkable] = useState(false);
 
@@ -20,17 +38,16 @@ export default function Quiz({ navigateData }) {
         if (selectedText) {
             const range = selection.getRangeAt(0);
             const span = document.createElement("span");
-            span.className = "highlight"; // Add highlight class
+            span.className = "highlight";
             span.textContent = selectedText;
 
-            // Replace the selected text with the highlighted span
             range.deleteContents();
             range.insertNode(span);
 
-            // Clear the selection after marking
             selection.removeAllRanges();
         }
     };
+
     return (
         <>
             <Header />
@@ -40,5 +57,5 @@ export default function Quiz({ navigateData }) {
                 <Footer />
             </div>
         </>
-    )
+    );
 }
