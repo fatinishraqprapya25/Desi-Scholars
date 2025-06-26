@@ -73,13 +73,13 @@ export default function MockQuestion() {
                     </div>
                     <div className="">
                         {mockQuestions && (
-                            <QuizRightSide question={mockQuestions[currentIndex]} currentIndex={currentIndex} />
+                            <QuizRightSide currentIndex={currentIndex} question={mockQuestions[currentIndex]} />
                         )}
                     </div>
                 </div>
                 <br />
                 <br />
-                <QuizFooter handleNext={handleNext} handlePrev={handlePrev} />
+                <QuizFooter handleNext={handleNext} handlePrev={handlePrev} currentIndex={currentIndex} length={mockQuestions ? mockQuestions.length : 0} />
             </div>
         )
     );

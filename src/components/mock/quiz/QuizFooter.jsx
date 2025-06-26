@@ -1,4 +1,4 @@
-export default function QuizFooter({ handleNext, handlePrev }) {
+export default function QuizFooter({ handleNext, handlePrev, length, currentIndex }) {
     return (
         <footer className="w-full bg-purple-100 py-4 px-4 sm:px-6 lg:px-8 flex items-center justify-between shadow-md rounded-b-lg">
             {/* Exit Button */}
@@ -11,7 +11,7 @@ export default function QuizFooter({ handleNext, handlePrev }) {
 
             {/* Question Counter */}
             <div className="bg-gray-800 text-white px-8 py-3 rounded-xl shadow-md flex items-center">
-                <span className="font-semibold text-lg">Question 1 of 27</span>
+                <span className="font-semibold text-lg">Question {currentIndex + 1} of {length}</span>
                 {/* Up arrow icon */}
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd" />
