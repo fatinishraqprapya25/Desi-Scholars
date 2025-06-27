@@ -1,30 +1,39 @@
-import React from "react";
+import { LogOut } from 'lucide-react';
 
 const Footer = ({ handleNext, handleCheck, selectedOption, handlePrev, currentIndex, totalQuestions }) => {
     return (
-        <div className="w-full fixed bottom-0 bg-gray-100 py-4 px-6 flex items-center justify-between border-t border-gray-300">
-            <button onClick={handlePrev} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-                Previous
+        <div className="w-full fixed bottom-0 bg-white py-4 px-6 flex items-center justify-between border-t border-gray-200 shadow-md">
+            <button
+                className="bg-red-500 text-white px-4 py-1 rounded-md flex items-center gap-2 hover:bg-red-600 transition duration-300 ease-in-out text-md font-medium"
+            >
+                <LogOut size={17} />
+                Exit
             </button>
 
-            <div className="text-gray-700 font-medium">
-                <span>{currentIndex + 1}/{totalQuestions}</span>
+            <div className="bg-gray-800 text-white px-4 py-2 rounded-full text-md font-semibold shadow-sm">
+                <span>Question {currentIndex + 1} of {totalQuestions}</span>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-2">
+                <button
+                    onClick={handlePrev}
+                    className="bg-purple-300 text-gray-800 px-4 py-1 rounded-md hover:bg-purple-400 transition duration-300 ease-in-out text-md font-medium"
+                >
+                    Back
+                </button>
                 <button
                     onClick={handleCheck}
                     disabled={selectedOption === null}
-                    className={`px-4 py-2 rounded transition ${selectedOption === null
-                        ? "bg-gray-400 text-gray-300 cursor-not-allowed"
-                        : "bg-green-500 text-white hover:bg-green-600"
+                    className={`px-4 py-1 rounded-md transition duration-300 ease-in-out text-md font-medium ${selectedOption === null
+                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        : "bg-purple-500 text-white hover:bg-purple-600"
                         }`}
                 >
                     Check
                 </button>
                 <button
                     onClick={handleNext}
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+                    className="bg-purple-600 text-white px-4 py-1 rounded-md hover:bg-purple-700 transition duration-300 ease-in-out text-lg font-medium"
                 >
                     Next
                 </button>
