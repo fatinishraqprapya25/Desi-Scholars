@@ -49,6 +49,10 @@ export default function Quiz() {
         fetchTestHistory();
     }, [query]);
 
+    useEffect(() => {
+        setSelectedOption(null);
+    }, [currentIndex]);
+
     const handleNext = () => {
         if (questions.length === currentIndex + 1) {
             alert("no more questions available");
@@ -86,14 +90,15 @@ export default function Quiz() {
         }
     };
 
-    const saveHistory = async (question) => {
+    const saveHistory = async (question, isCorrect) => {
         const checkUser = await validateToken();
         if (checkUser && question) {
             const payload = {
                 userId: checkUser.id,
                 questionId: question._id,
-                status: ansCorrect ? "Correct" : "Incorrect"
+                status: isCorrect ? "Correct" : "Incorrect"
             }
+
             const response = await fetch("http://localhost:5000/api/test-history", {
                 method: "POST",
                 headers: {
@@ -101,19 +106,17 @@ export default function Quiz() {
                 },
                 body: JSON.stringify(payload)
             });
-            await response.json();
+            const result = await response.json();
+            console.log(result);
         }
     }
 
     const handleCheck = () => {
         const question = questions[currentIndex];
         const writeAnswers = question.correctAnswers;
-        if (writeAnswers.includes(selectedOption)) {
-            setIsCorrct(true);
-        } else {
-            setIsCorrct(false);
-        }
-        saveHistory(question);
+        const isCorrect = writeAnswers.includes(selectedOption);
+        setIsCorrct(isCorrect);
+        saveHistory(question, isCorrect);
     }
 
     const handleCross = () => {
