@@ -30,7 +30,7 @@ function TopAchieversSection({ leaderboardData }) {
                 animate="visible"
             >
                 {leaderboardData.slice(0, 3).map((student, index) => (
-                    <TopAchieverCard key={student.id} student={student} index={index} />
+                    <TopAchieverCard key={student._id} student={student} index={index} />
                 ))}
             </motion.div>
         </>

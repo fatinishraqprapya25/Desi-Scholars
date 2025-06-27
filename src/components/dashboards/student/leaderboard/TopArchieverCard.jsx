@@ -32,24 +32,26 @@ const getRankBgColor = (rank) => {
     }
 };
 
+const placeholder = "https://placehold.co/40x40/E0F2F7/2196F3?text=AJ";
+
 function TopAchieverCard({ student, index }) {
     return (
         <motion.div
-            key={student.id}
+            key={index + 1}
             className={`p-6 rounded-md shadow-md border-2
-                        ${getRankBgColor(student.rank)}
+                        ${getRankBgColor(index + 1)}
                         flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300
-                        ${student.rank === 1 ? 'border-yellow-300' : student.rank === 2 ? 'border-gray-300' : student.rank === 3 ? 'border-amber-300' : ''}`}
+                        ${index + 1 === 1 ? 'border-yellow-300' : student.rank === 2 ? 'border-gray-300' : student.rank === 3 ? 'border-amber-300' : ''}`}
             variants={cardVariants}
             transition={{ delay: index * 0.1 }}
         >
-            {student.rank === 1 && <Crown className="h-10 w-10 text-yellow-500 fill-yellow-500 mb-3" />}
-            {student.rank === 2 && <Trophy className="h-10 w-10 text-gray-400 fill-gray-400 mb-3" />}
-            {student.rank === 3 && <Trophy className="h-10 w-10 text-amber-600 fill-amber-600 mb-3" />}
-            <img src={student.avatar} alt={student.name} className="w-20 h-20 rounded-full mb-4 border-4 border-white shadow-md" />
+            {index + 1 === 1 && <Crown className="h-10 w-10 text-yellow-500 fill-yellow-500 mb-3" />}
+            {index + 1 === 2 && <Trophy className="h-10 w-10 text-gray-400 fill-gray-400 mb-3" />}
+            {index + 1 === 3 && <Trophy className="h-10 w-10 text-amber-600 fill-amber-600 mb-3" />}
+            <img src={placeholder} alt={student.name} className="w-20 h-20 rounded-full mb-4 border-4 border-white shadow-md" />
             <p className="text-2xl font-bold text-gray-900 mb-1">{student.name}</p>
-            <p className={`text-xl font-semibold ${getRankColor(student.rank)} mb-2`}>Rank {student.rank}</p>
-            <p className="text-xl font-bold text-blue-700">{student.score} points</p>
+            <p className={`text-xl font-semibold ${getRankColor(student.rank)} mb-2`}>Rank {index + 1}</p>
+            <p className="text-xl font-bold text-blue-700">{student.totalScore} points</p>
         </motion.div>
     );
 }
