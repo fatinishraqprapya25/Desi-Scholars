@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import NavigationSection from "./quiz/NavigationSection";
 import validateToken from "../../utils/ValidateToken";
 import QuizHeader from "./quiz/QuizHeader";
-import QuizMetabar from "./quiz/QuizMetaBar";
 
 export default function Quiz() {
     const location = useLocation();
@@ -21,7 +20,6 @@ export default function Quiz() {
     const [crossAble, setCrossAble] = useState(false);
     const [testHistory, setTestHistory] = useState([]);
 
-    // Inside Quiz component (top of the function)
     const [time, setTime] = useState(0);
     const [isRunning, setIsRunning] = useState(true);
 
@@ -36,11 +34,6 @@ export default function Quiz() {
 
         return () => clearInterval(interval);
     }, [isRunning]);
-
-    const toggleTimer = () => {
-        setIsRunning(prev => !prev);
-    };
-
 
     useEffect(() => {
         setIsCorrct(null);
@@ -165,10 +158,10 @@ export default function Quiz() {
 
     return (
         <>
-            <QuizHeader />
+            <QuizHeader time={time} />
             <div className="grid grid-cols-2" onMouseUp={handleTextSelection}>
                 <LeftSide meta={showMeta} changeMeta={setShowMeta} length={questions.length} question={questions[currentIndex]} />
-                <RightSide time={time} isRunning={isRunning} toggleTimer={toggleTimer} crossAble={crossAble} handleCross={handleCross} currentIndex={currentIndex} ansCorrect={ansCorrect} sOption={selectedOption} changeOption={setSelectedOption} meta={showMeta} question={questions[currentIndex]} markable={markable} onChangeMarkable={setMarkable} />
+                <RightSide crossAble={crossAble} handleCross={handleCross} currentIndex={currentIndex} ansCorrect={ansCorrect} sOption={selectedOption} changeOption={setSelectedOption} meta={showMeta} question={questions[currentIndex]} markable={markable} onChangeMarkable={setMarkable} />
 
             </div>
 

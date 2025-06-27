@@ -2,14 +2,20 @@ import { useState } from "react";
 import { ChevronUp, ChevronDown, BookOpen, Bot } from "lucide-react";
 import QuizMetabar from "./QuizMetaBar";
 
-export default function Header() {
+export default function Header({ time }) {
     const [infoOpen, setInfoOpen] = useState(true);
+
+    const formatTime = (totalSeconds) => {
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    };
 
     return (
         <>
             <div className="bg-purple-50 px-4 py-3 flex items-center justify-between custom-dashed-border">
                 {/* Left Section */}
-                <div className="">
+                <div>
                     <h1 className="text-xl font-semibold text-gray-800">Reading and Writing</h1>
                     <button
                         onClick={() => setInfoOpen(!infoOpen)}
@@ -20,9 +26,9 @@ export default function Header() {
                 </div>
 
                 {/* Middle Section */}
-                <div className="">
-                    <div className="text-2xl font-bold text-gray-900">1:09</div>
-                    <button className="border border-gray-400 px-2 rounded-full text-[13px] hover:bg-gray-100">
+                <div className="text-center">
+                    <div className="text-2xl font-bold text-gray-900">{formatTime(time)}</div>
+                    <button className="border border-gray-400 px-2 rounded-full text-[13px] hover:bg-gray-100 mt-1">
                         Hide
                     </button>
                 </div>
