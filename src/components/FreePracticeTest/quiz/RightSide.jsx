@@ -17,6 +17,8 @@ const RightSide = ({
     const [flash, setFlash] = useState(false);
     const [crossedOptions, setCrossedOptions] = useState([]);
 
+    const [marker, setMarker] = useState(false);
+
     useEffect(() => {
         if (!crossAble) {
             setCrossedOptions([]);
@@ -69,9 +71,9 @@ const RightSide = ({
                         </div>
 
                         {/* Mark Button */}
-                        <button className="flex items-center text-white py-1 rounded-full px-3 text-sm bg-purple-600 hover:bg-purple-700 transition duration-200">
+                        <button onClick={() => setMarker(!marker)} className="flex items-center text-white py-1 rounded-full px-3 text-sm bg-purple-600 hover:bg-purple-700 transition duration-200">
                             <Bookmark size={16} />
-                            <span className="ps-1">Mark</span>
+                            <span className="ps-1">{marker ? "Marked" : "Mark"}</span>
                         </button>
                     </div>
 
