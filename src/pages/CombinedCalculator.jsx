@@ -52,7 +52,7 @@ const CombinedCalculator = () => {
     return (
         <div className="bg-gray-100 p-2">
             {/* Calculator Tabs */}
-            <div className="flex flex-wrap justify-center gap-2 mb-6">
+            {/* <div className="flex flex-wrap justify-center gap-2 mb-6">
                 {Object.entries(calculators).map(([name, { icon: Icon }]) => (
                     <button
                         key={name}
@@ -69,11 +69,12 @@ const CombinedCalculator = () => {
                         <span className="sr-only">{name} Calculator</span>
                     </button>
                 ))}
-            </div>
+            </div> */}
 
             {/* Render Active Calculator */}
             <div className="bg-white shadow-md">
-                <ActiveCalculatorComponent />
+                {/* <ActiveCalculatorComponent /> */}
+                <GraphingCalculator />
             </div>
         </div>
     );
