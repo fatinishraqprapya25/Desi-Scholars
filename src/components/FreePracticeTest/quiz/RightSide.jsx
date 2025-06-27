@@ -17,7 +17,6 @@ const RightSide = ({
     const [flash, setFlash] = useState(false);
     const [crossedOptions, setCrossedOptions] = useState([]);
 
-    // Clear crossed options when crossAble becomes false
     useEffect(() => {
         if (!crossAble) {
             setCrossedOptions([]);
@@ -26,7 +25,7 @@ const RightSide = ({
 
     const handleOptionClick = (index) => {
         if (!crossedOptions.includes(index)) {
-            changeOption(index); // Normal option selection if the option is not crossed
+            changeOption(index); 
         }
     };
 
@@ -34,8 +33,8 @@ const RightSide = ({
         if (crossAble) {
             setCrossedOptions((prev) =>
                 prev.includes(index)
-                    ? prev.filter((i) => i !== index) // Remove the option from crossed list
-                    : [...prev, index] // Add the option to crossed list
+                    ? prev.filter((i) => i !== index)
+                    : [...prev, index]
             );
         }
     };
