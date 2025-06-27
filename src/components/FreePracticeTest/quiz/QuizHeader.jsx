@@ -15,7 +15,20 @@ export default function Header({ time, setShowMetaBar, showMetaBar }) {
 
     return (
         <>
-            <div className="bg-purple-50 px-4 py-3 flex items-center justify-between custom-dashed-border noto">
+            <div
+                className="bg-purple-50 px-4 py-3 flex items-center justify-between custom-dashed-border noto"
+                style={{
+                    position: 'fixed', // Add this to fix the header
+                    top: 0, // Position it at the top
+                    left: 0, // Position it at the left
+                    width: '100%', // Make it span the full width
+                    zIndex: 10, // Ensure it stays on top of other content
+                    borderBottom: '1px solid transparent',
+                    borderImage: `repeating-linear-gradient(to right, currentColor 0, currentColor var(--custom-dash-pattern, 15px), transparent var(--custom-dash-pattern, 15px), transparent calc(var(--custom-dash-pattern, 15px) + var(--custom-gap-pattern, 7px))) 1`,
+                    borderWidth: '2px',
+                    borderStyle: 'solid'
+                }}
+            >
                 {/* Left Section */}
                 <div>
                     <h1 className="text-xl font-semibold text-gray-800">Reading and Writing</h1>

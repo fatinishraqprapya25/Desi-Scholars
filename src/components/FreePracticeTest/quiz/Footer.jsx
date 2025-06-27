@@ -2,7 +2,14 @@ import { LogOut } from 'lucide-react';
 
 const Footer = ({ handleNext, handleCheck, selectedOption, handlePrev, currentIndex, totalQuestions }) => {
     return (
-        <div className="w-full fixed bottom-0 bg-white py-4 px-6 flex items-center justify-between border-t border-gray-200 shadow-md">
+        <div
+            className="w-full fixed bottom-0 bg-white py-4 px-6 flex items-center justify-between border-t border-gray-200 shadow-md"
+            style={{
+                borderImage: `repeating-linear-gradient(to right, currentColor 0, currentColor var(--custom-dash-pattern, 10px), transparent var(--custom-dash-pattern, 10px), transparent calc(var(--custom-dash-pattern, 10px) + var(--custom-gap-pattern, 5px))) 1`,
+                borderWidth: '2px', // Ensure a border-width is set for border-image to apply
+                borderStyle: 'solid' // border-image overrides border-style, but it's good practice to have it
+            }}
+        >
             <button
                 className="bg-red-500 text-white px-4 py-1 rounded-md flex items-center gap-2 hover:bg-red-600 transition duration-300 ease-in-out text-md font-medium"
             >

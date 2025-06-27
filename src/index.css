@@ -11,6 +11,13 @@ body {
   font-family: "Noto Serif", serif;
 }
 
+:root {
+  --custom-dash-pattern: 10px;
+  /* Adjust this value for dash length */
+  --custom-gap-pattern: 5px;
+  /* Adjust this value for gap length */
+}
+
 @keyframes blob-alt {
   0% {
     transform: translate(0px, 0px) scale(1);
