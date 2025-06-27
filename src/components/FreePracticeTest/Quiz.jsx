@@ -133,7 +133,6 @@ export default function Quiz() {
                 body: JSON.stringify(payload)
             });
             const result = await response.json();
-            console.log(result);
         }
     }
 
@@ -161,7 +160,7 @@ export default function Quiz() {
 
     return (
         <>
-            <QuizHeader showMetaBar={showMetaBar} setShowMetaBar={setShowMetaBar} time={time} chapterName={questions && questions[currentIndex] && questions[currentIndex].chapter && questions[currentIndex].chapter} />
+            <QuizHeader moduleName={questions && questions[currentIndex] && questions[currentIndex].subject && questions[currentIndex].subject} showMetaBar={showMetaBar} setShowMetaBar={setShowMetaBar} time={time} chapterName={questions && questions[currentIndex] && questions[currentIndex].chapter && questions[currentIndex].chapter} />
 
             <div className="grid grid-cols-2 bg-white noto mt-10" onMouseUp={handleTextSelection}>
                 <LeftSide meta={showMeta} changeMeta={setShowMeta} length={questions.length} question={questions[currentIndex]} />
