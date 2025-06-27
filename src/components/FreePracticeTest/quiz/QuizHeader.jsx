@@ -4,6 +4,7 @@ import QuizMetabar from "./QuizMetaBar";
 
 export default function Header({ time }) {
     const [infoOpen, setInfoOpen] = useState(true);
+    const [hideTime, setHideTime] = useState(false); // NEW STATE
 
     const formatTime = (totalSeconds) => {
         const minutes = Math.floor(totalSeconds / 60);
@@ -13,7 +14,7 @@ export default function Header({ time }) {
 
     return (
         <>
-            <div className="bg-purple-50 px-4 py-3 flex items-center justify-between custom-dashed-border">
+            <div className="bg-purple-50 px-4 py-3 flex items-center justify-between custom-dashed-border noto">
                 {/* Left Section */}
                 <div>
                     <h1 className="text-xl font-semibold text-gray-800">Reading and Writing</h1>
@@ -27,8 +28,13 @@ export default function Header({ time }) {
 
                 {/* Middle Section */}
                 <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-900">{formatTime(time)}</div>
-                    <button className="border border-gray-400 px-2 rounded-full text-[13px] hover:bg-gray-100 mt-1">
+                    <div className="text-2xl font-bold text-gray-900">
+                        {hideTime ? "*:*" : formatTime(time)}
+                    </div>
+                    <button
+                        onClick={() => setHideTime(!hideTime)}
+                        className="border border-gray-400 px-2 rounded-full text-[13px] hover:bg-gray-100 mt-1"
+                    >
                         Hide
                     </button>
                 </div>

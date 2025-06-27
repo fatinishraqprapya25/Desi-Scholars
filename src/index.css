@@ -1,9 +1,14 @@
 @import "tailwindcss";
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
 
 body {
   font-family: "Inter", sans-serif;
+}
+
+.noto {
+  font-family: "Noto Serif", serif;
 }
 
 @keyframes blob-alt {
@@ -123,4 +128,23 @@ body {
 
 .custom-dashed-border {
   border-bottom: 2px dashed #4e4182;
+}
+
+@keyframes flash {
+  0% {
+    background-color: transparent;
+  }
+
+  20% {
+    background-color: rgba(144, 238, 144, 0.4);
+    /* Light green */
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}
+
+.flash-animation {
+  animation: flash 0.7s ease-out;
 }

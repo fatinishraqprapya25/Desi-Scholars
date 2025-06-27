@@ -159,7 +159,7 @@ export default function Quiz() {
     return (
         <>
             <QuizHeader time={time} />
-            <div className="grid grid-cols-2" onMouseUp={handleTextSelection}>
+            <div className="grid grid-cols-2 bg-white noto" onMouseUp={handleTextSelection}>
                 <LeftSide meta={showMeta} changeMeta={setShowMeta} length={questions.length} question={questions[currentIndex]} />
                 <RightSide crossAble={crossAble} handleCross={handleCross} currentIndex={currentIndex} ansCorrect={ansCorrect} sOption={selectedOption} changeOption={setSelectedOption} meta={showMeta} question={questions[currentIndex]} markable={markable} onChangeMarkable={setMarkable} />
 
