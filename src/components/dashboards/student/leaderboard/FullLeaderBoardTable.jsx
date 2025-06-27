@@ -35,9 +35,12 @@ function FullLeaderboardTable({ leaderboardData }) {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
-                        {leaderboardData.map((student, index) => (
-                            <LeaderboardTableRow key={student.id} student={student} index={index} />
-                        ))}
+                        {leaderboardData.map((student, index) => {
+                            let serial = 0;
+                            serial++;
+                            return <LeaderboardTableRow key={serial} id={serial} student={student} index={index} />
+                        }
+                        )}
                     </tbody>
                 </table>
             </motion.div>
