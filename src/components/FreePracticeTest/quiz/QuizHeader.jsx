@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { ChevronUp, ChevronDown, BookOpen, Bot } from "lucide-react";
 import QuizMetabar from "./QuizMetaBar";
+import { motion, AnimatePresence } from "framer-motion"; // Import motion and AnimatePresence
 
-export default function Header({ time }) {
+export default function Header({ time, setShowMetaBar, showMetaBar }) {
     const [infoOpen, setInfoOpen] = useState(true);
-    const [hideTime, setHideTime] = useState(false); // NEW STATE
+    const [hideTime, setHideTime] = useState(false);
 
     const formatTime = (totalSeconds) => {
         const minutes = Math.floor(totalSeconds / 60);
@@ -19,7 +20,10 @@ export default function Header({ time }) {
                 <div>
                     <h1 className="text-xl font-semibold text-gray-800">Reading and Writing</h1>
                     <button
-                        onClick={() => setInfoOpen(!infoOpen)}
+                        onClick={() => {
+                            setInfoOpen(!infoOpen)
+                            setShowMetaBar(!showMetaBar);
+                        }}
                         className="text-sm text-gray-600 flex items-center gap-1 mt-1 cursor-pointer"
                     >
                         Information {infoOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -32,7 +36,10 @@ export default function Header({ time }) {
                         {hideTime ? "*:*" : formatTime(time)}
                     </div>
                     <button
-                        onClick={() => setHideTime(!hideTime)}
+                        onClick={() => {
+                            setHideTime(!hideTime);
+                            setShowMetaBar(!showMetaBar);
+                        }}
                         className="border border-gray-400 px-2 rounded-full text-[13px] hover:bg-gray-100 mt-1"
                     >
                         Hide
@@ -52,7 +59,19 @@ export default function Header({ time }) {
                 </div>
             </div>
 
-            <QuizMetabar />
+            <AnimatePresence>
+                {showMetaBar && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        style={{ overflow: 'hidden' }}
+                    >
+                        <QuizMetabar />
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </>
     );
 }

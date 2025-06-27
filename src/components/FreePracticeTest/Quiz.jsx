@@ -20,6 +20,9 @@ export default function Quiz() {
     const [crossAble, setCrossAble] = useState(false);
     const [testHistory, setTestHistory] = useState([]);
 
+    const [showMetaBar, setShowMetaBar] = useState(true);
+    console.log(showMetaBar);
+
     const [time, setTime] = useState(0);
     const [isRunning, setIsRunning] = useState(true);
 
@@ -158,7 +161,7 @@ export default function Quiz() {
 
     return (
         <>
-            <QuizHeader time={time} />
+            <QuizHeader showMetaBar={showMetaBar} setShowMetaBar={setShowMetaBar} time={time} />
             <div className="grid grid-cols-2 bg-white noto" onMouseUp={handleTextSelection}>
                 <LeftSide meta={showMeta} changeMeta={setShowMeta} length={questions.length} question={questions[currentIndex]} />
                 <RightSide crossAble={crossAble} handleCross={handleCross} currentIndex={currentIndex} ansCorrect={ansCorrect} sOption={selectedOption} changeOption={setSelectedOption} meta={showMeta} question={questions[currentIndex]} markable={markable} onChangeMarkable={setMarkable} />
