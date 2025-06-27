@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Bookmark, Clock } from "lucide-react";
 
 const ReviewSection = ({ questionNumber, handleCross }) => {
-    const [time, setTime] = useState(5); // Initial timer value in seconds
+    const [time, setTime] = useState(0); // Initial timer value in seconds
     const [isRunning, setIsRunning] = useState(true); // State to track if the timer is running
 
     useEffect(() => {
@@ -10,7 +10,7 @@ const ReviewSection = ({ questionNumber, handleCross }) => {
 
         if (isRunning) {
             interval = setInterval(() => {
-                setTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+                setTime(prevTime => prevTime + 1)
             }, 1000);
         }
 

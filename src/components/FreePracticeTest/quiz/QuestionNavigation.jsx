@@ -7,10 +7,10 @@ const QuestionNavigation = ({ questions }) => {
                     let statusClass = "";
                     switch (question.status) {
                         case "correct":
-                            statusClass = "bg-green-500 text-white border-green-700";
+                            statusClass = "bg-pink-100 text-white border-green-700";
                             break;
                         case "incorrect":
-                            statusClass = "bg-red-500 text-white border-red-700";
+                            statusClass = "bg-sky-100 text-white border-red-700";
                             break;
                         case "review":
                             statusClass = "bg-yellow-500 text-white border-yellow-700";
@@ -26,7 +26,7 @@ const QuestionNavigation = ({ questions }) => {
                     return (
                         <button
                             key={index}
-                            className={`cursor-pointer w-6 h-6 border rounded-lg flex items-center justify-center font-bold transition hover:scale-105 ${statusClass}`}
+                            className={`px-4 py-2 bg-sky-50 border-2 border-sky-600 rounded`}
                         >
                             {index + 1}
                         </button>

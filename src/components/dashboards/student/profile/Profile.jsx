@@ -161,13 +161,6 @@ export default function Profile() {
                 )}
             </div>
 
-            <button
-                onClick={handleMessageInstructor}
-                className="w-full bg-indigo-600 text-white py-3 px-5 rounded-lg hover:bg-indigo-700 transition-colors duration-200 text-lg font-medium flex items-center justify-center shadow-md"
-            >
-                <MessageSquare className="mr-2 h-5 w-5" /> Message Instructor
-            </button>
-
             {/* Message Instructor Modal */}
             {showModal && (
                 <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">

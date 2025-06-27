@@ -49,7 +49,7 @@ export default function PracticeTestPromo() {
                         In today’s world, opportunities like full scholarships to top U.S. colleges should not be limited to students from elite institutions in Dhaka or those who can afford private coaching.
                     </motion.p>
                     <motion.a
-                        href="/practice-tests" // Changed to a more meaningful link
+                        href="/practice-test" // Changed to a more meaningful link
                         className="inline-flex items-center justify-center bg-white text-indigo-700 font-bold px-8 py-4 rounded-full shadow-xl hover:bg-gray-100 hover:scale-105 transition-all duration-300 ease-in-out transform"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
