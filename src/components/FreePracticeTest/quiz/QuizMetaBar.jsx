@@ -2,7 +2,7 @@ import { ChevronDown } from "lucide-react";
 
 export default function QuizMetabar() {
     return (
-        <div className="bg-purple-500 max-w-6xl mx-auto text-white px-6 py-1 rounded-b-3xl flex items-center justify-between">
+        <div className="max-w-6xl mx-auto text-white px-6 py-1 rounded-b-3xl flex items-center justify-between" style={{ backgroundColor: "oklch(0.5 0.19 304.98)" }}>
             {/* Info grid */}
             <div className="grid grid-cols-5 gap-6 text-sm w-full max-w-5xl">
                 <div>
