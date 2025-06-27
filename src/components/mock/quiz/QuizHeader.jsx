@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 export default function QuizHeader({ moduleName, initialMinutes, initialSeconds }) {
     const [minutes, setMinutes] = useState(initialMinutes);
     const [seconds, setSeconds] = useState(initialSeconds);
-    const [isTimerHidden, setIsTimerHidden] = useState(false); // State to control timer visibility
+    const [isTimerHidden, setIsTimerHidden] = useState(false);
 
     useEffect(() => {
         const timer = setInterval(() => {

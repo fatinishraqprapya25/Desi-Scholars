@@ -120,3 +120,9 @@ body {
   /* Light gray color */
   border-image: repeating-linear-gradient(to right, #d1d5db 0, #d1d5db 10px, transparent 10px, transparent 20px) 1;
 }
+
+.custom-dashed-border {
+  border-bottom: dashed #c4b5fd;
+  border-bottom-width: 2px;
+  /* Adjust width and color */
+}

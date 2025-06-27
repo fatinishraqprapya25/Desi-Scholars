@@ -6,6 +6,7 @@ import Footer from "./quiz/Footer";
 import { useEffect, useState } from "react";
 import NavigationSection from "./quiz/NavigationSection";
 import validateToken from "../../utils/ValidateToken";
+import QuizHeader from "./quiz/QuizHeader";
 
 export default function Quiz() {
     const location = useLocation();
@@ -163,7 +164,7 @@ export default function Quiz() {
 
     return (
         <>
-            <Header />
+            <QuizHeader />
             <div className="grid grid-cols-2" onMouseUp={handleTextSelection}>
                 <LeftSide meta={showMeta} changeMeta={setShowMeta} length={questions.length} question={questions[currentIndex]} />
                 <RightSide time={time} isRunning={isRunning} toggleTimer={toggleTimer} crossAble={crossAble} handleCross={handleCross} currentIndex={currentIndex} ansCorrect={ansCorrect} sOption={selectedOption} changeOption={setSelectedOption} meta={showMeta} question={questions[currentIndex]} markable={markable} onChangeMarkable={setMarkable} />
