@@ -1,4 +1,4 @@
-import { LogOut } from 'lucide-react';
+import { ChevronUp, LogOut } from 'lucide-react';
 
 const Footer = ({
     handleNext,
@@ -26,9 +26,15 @@ const Footer = ({
             </button>
 
             {/* Centered Question Count */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-md text-md font-semibold shadow-sm">
-                <span>Question {currentIndex + 1} of {totalQuestions}</span>
-            </div>
+            {/*
+                Removed the absolute positioning from the inner div and applied flexbox to the parent button
+                to achieve proper vertical and horizontal centering.
+            */}
+            <button className="cursor-pointer flex items-center justify-center">
+                <div className="bg-gray-800 text-white px-4 py-2 rounded-md text-md font-semibold shadow-sm flex items-center space-x-2">
+                    <span>Question {currentIndex + 1} of {totalQuestions} </span> <ChevronUp size={19} />
+                </div>
+            </button>
 
             {/* Navigation Buttons */}
             <div className="flex gap-2">
