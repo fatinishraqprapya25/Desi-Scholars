@@ -7,6 +7,7 @@ import FullLeaderboardTable from '../leaderboard/FullLeaderBoardTable';
 import ViewFullLeaderboardButton from '../leaderboard/ViewFullLeaderBoardButton';
 import { useEffect, useState } from 'react';
 import validateToken from "../../../../utils/ValidateToken";
+import StudentLeaderboardSummary from '../leaderboard/LeaderboardSummery';
 
 function LeaderBoard() {
     const [leaderboardData, setLeaderboardData] = useState([]);
@@ -48,7 +49,7 @@ function LeaderBoard() {
     return (
         <UserDashboardContainer>
             <motion.section
-                className="mb-10 font-sans"
+                className="mb-10"
                 variants={sectionVariants}
                 initial="hidden"
                 animate="visible"
@@ -57,6 +58,8 @@ function LeaderBoard() {
 
                 {/* Your Rank Card */}
                 <CurrentUserRankCard userRank={userRank} />
+
+                <StudentLeaderboardSummary />
 
                 {/* Top Achievers Section */}
                 <TopAchieversSection leaderboardData={leaderboardData} />
