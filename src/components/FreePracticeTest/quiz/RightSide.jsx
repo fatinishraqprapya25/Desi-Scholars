@@ -57,28 +57,33 @@ const RightSide = ({
         <div className="bg-white w-full h-fit rounded-lg px-8 py-2 mx-auto">
 
             <div className="pt-3">
-                <p className="text-gray-800 font-medium mb-4 text-lg">
+                <p className="text-gray-800 font-medium mb-4 text-xl">
                     {question && question.question}
                 </p>
 
                 <div className="flex items-center justify-between mb-5">
 
                     <div className="flex items-center space-x-2">
-                        {/* Unattempted Status */}
-                        <div className="flex text-white items-center rounded-full w-fit px-3 py-1 text-sm bg-red-500">
-                            <LocateOff size={16} />
+                        <div className="flex text-white items-center rounded-full w-fit px-3 py-1 text-base bg-red-500">
+                            <LocateOff size={18} />
                             <span className="ps-1">Unattempted</span>
                         </div>
 
-                        {/* Mark Button */}
-                        <button onClick={() => setMarker(!marker)} className="flex items-center text-white py-1 rounded-full px-3 text-sm bg-purple-600 hover:bg-purple-700 transition duration-200">
-                            <Bookmark size={16} />
-                            <span className="ps-1">{marker ? "Marked" : "Mark"}</span>
+                        <button
+                            onClick={() => setMarker(!marker)}
+                            className={`flex items-center py-1 rounded-full px-3 text-base transition duration-200
+        ${marker
+                                    ? 'bg-purple-600 text-white hover:bg-purple-700'
+                                    : 'bg-purple-100 text-black border border-purple-600 hover:bg-purple-200'
+                                }
+    `}
+                        >
+                            <Bookmark size={18} />
+                            <span className="ps-1">{marker ? "Marked" : "Mark For Review"}</span>
                         </button>
                     </div>
 
                     <div className="flex items-center space-x-2">
-                        {/* Markable/Pen Button */}
                         <button
                             onClick={() => !crossAble && onChangeMarkable(!markable)}
                             className={`
@@ -89,13 +94,12 @@ const RightSide = ({
                             disabled={crossAble}
                             aria-label="Toggle Markable"
                         >
-                            <Pen color={markable ? "tomato" : "oklch(0.5 0.19 304.98)"} size={20} />
+                            <Pen color={markable ? "tomato" : "oklch(0.5 0.19 304.98)"} size={22} />
                         </button>
 
-                        {/* Cross-out (ABE) Button */}
                         <button
                             onClick={handleCross}
-                            className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium rounded-full group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300">
+                            className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-base font-medium rounded-full group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300">
                             <span className={`relative px-3 py-1 transition-all ease-in duration-75 rounded-full group-hover:bg-opacity-0
                                 ${crossAble ? "bg-purple-500 text-white" : "bg-white text-gray-800"}
                             `}>
@@ -105,7 +109,7 @@ const RightSide = ({
                     </div>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-3">
                     {question &&
                         question.options.map((option, index) => {
                             let name = String.fromCharCode(65 + index); // A, B, C, D
@@ -117,7 +121,7 @@ const RightSide = ({
 
                             const getOptionClasses = () => {
                                 let classes = `
-                                    flex items-center justify-between border rounded-xl p-4 cursor-pointer transition-all duration-300 ease-in-out {/* Changed rounded-lg to rounded-xl */}
+                                    flex items-center border rounded-xl px-3 py-2 cursor-pointer transition-all duration-300 ease-in-out
                                     ${isCrossed ? "opacity-60 pointer-events-none" : "hover:scale-[1.01] hover:bg-gray-100"}
                                     ${flash && isCorrectAnswer ? 'flash-animation' : ''}
                                 `;
@@ -145,52 +149,54 @@ const RightSide = ({
                             };
 
                             return (
-                                <div
-                                    key={index}
-                                    onClick={() => handleOptionClick(index)}
-                                    className={getOptionClasses()}
-                                    style={{ position: "relative", overflow: "hidden" }}
-                                >
-                                    <div className="flex items-center w-full">
-                                        <span className="font-extrabold text-lg mr-3 w-6 flex-shrink-0 text-center">{name}</span>
-                                        <span className="text-gray-800 w-full text-md">
-                                            {option}
-                                        </span>
+                                <div key={index} className="flex items-center">
+                                    <div
+                                        onClick={() => handleOptionClick(index)}
+                                        className={`${getOptionClasses()} flex-grow`}
+                                        style={{ position: "relative", overflow: "hidden" }}
+                                    >
+                                        <div className="flex items-center w-full">
+                                            {/* Modified this span to remove background and add border */}
+                                            <span className={`font-extrabold text-xl mr-3 w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-full transition-colors duration-300 border-2 ${isSelected
+                                                ? "border-blue-500 text-blue-800" // Selected: blue border, blue text
+                                                : "border-gray-400 text-gray-800" // Default: gray border, gray text
+                                                }`}>
+                                                {name}
+                                            </span>
+                                            <span className="text-gray-800 w-full text-lg">
+                                                {option}
+                                            </span>
+                                        </div>
+
+                                        {ansCorrect !== null && isSelected && ansCorrect && (
+                                            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-green-600">
+                                                <Zap size={22} />
+                                            </span>
+                                        )}
+                                        {ansCorrect !== null && isSelected && !ansCorrect && (
+                                            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-red-600">
+                                                <X size={22} />
+                                            </span>
+                                        )}
                                     </div>
 
-                                    {/* Cross Button */}
                                     {crossAble && (
                                         <button
                                             onClick={(e) => {
-                                                e.stopPropagation(); // Prevent triggering option click
+                                                e.stopPropagation();
                                                 handleCrossClick(index);
                                             }}
-                                            className="ml-2 p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
+                                            className="ml-3 p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200 flex-shrink-0"
                                             aria-label={`Cross out option ${name}`}
                                         >
-                                            <X size={18} className="text-gray-500 hover:text-red-600" />
+                                            <X size={20} className="text-gray-500 hover:text-red-600" />
                                         </button>
                                     )}
-
-                                    {/* Checkmark or Xmark for feedback if answered */}
-                                    {ansCorrect !== null && isSelected && ansCorrect && (
-                                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-green-600">
-                                            <Zap size={20} /> {/* Checkmark */}
-                                        </span>
-                                    )}
-                                    {ansCorrect !== null && isSelected && !ansCorrect && (
-                                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-red-600">
-                                            <X size={20} /> {/* X-mark */}
-                                        </span>
-                                    )}
-
                                 </div>
                             );
                         })}
                 </div>
             </div>
-            {/* You might want to pass these props to ReviewSection if it's part of the flow */}
-            {/* <ReviewSection {...{ currentIndex, question, meta, ansCorrect }} /> */}
         </div>
     );
 };
