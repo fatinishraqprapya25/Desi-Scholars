@@ -155,3 +155,29 @@ body {
 .flash-animation {
   animation: flash 0.7s ease-out;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+  /* Hides the scrollbar entirely */
+  width: 0;
+  /* Ensures no width is reserved */
+  height: 0;
+  /* Ensures no height is reserved for horizontal scrollbar */
+}
+
+/* For Firefox */
+.no-scrollbar {
+  scrollbar-width: none;
+  /* Hides the scrollbar in Firefox */
+}
+
+/* For Internet Explorer and older Edge (legacy support, less commonly needed now) */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* Hides the scrollbar in IE/Edge */
+}
+
+/* Optional: To prevent horizontal scroll on the entire body if content overflows */
+body {
+  overflow-x: hidden;
+}
