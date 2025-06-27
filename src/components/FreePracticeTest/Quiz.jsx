@@ -63,6 +63,9 @@ export default function Quiz() {
         if (checkUser) {
             const response = await fetch(`http://localhost:5000/api/test-history/${checkUser.id}`);
             const result = await response.json();
+            if (result.success) {
+                setTestHistory(result.data);
+            }
         }
     }
 
@@ -149,6 +152,15 @@ export default function Quiz() {
         setCrossAble(!crossAble);
     }
 
+    const handleHistoryQuestionIndex = (id) => {
+        questions.map(question => {
+            if (question._id === id) {
+                const findIndex = questions.indexOf(question);
+                setCurrentIndex(findIndex);
+            }
+        });
+    }
+
     return (
         <>
             <Header />
@@ -159,7 +171,9 @@ export default function Quiz() {
             </div>
 
             <br />
-            <NavigationSection />
+            <NavigationSection history={testHistory} handleHistoryQuestionIndex={handleHistoryQuestionIndex}
+                questions={questions}
+            />
             <br />
             <br />
             <br />

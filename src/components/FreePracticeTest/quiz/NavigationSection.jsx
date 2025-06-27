@@ -1,7 +1,7 @@
 import { useState } from "react";
 import QuestionNavigation from "./QuestionNavigation";
 
-const NavigationSection = () => {
+const NavigationSection = ({ history, handleHistoryQuestionIndex, questions }) => {
     const [showNavigation, setShowNavigation] = useState(true);
     return (
         <>
@@ -59,7 +59,7 @@ const NavigationSection = () => {
                 </div>
             </div>
 
-            {showNavigation && <QuestionNavigation />}
+            {showNavigation && <QuestionNavigation handleHistoryQuestionIndex={handleHistoryQuestionIndex} history={history} questions={questions} />}
         </>
     );
 };
