@@ -289,12 +289,11 @@ export default function Quiz() {
                 <div
                     style={{
                         width: rightWidth,
-                        minWidth: isLeftPanelCollapsed ? '100%' : '10%', // Min width to prevent collapsing during drag
-                        transition: isResizing ? 'none' : 'width 0.3s ease' // No transition during drag, smooth otherwise
+                        minWidth: isLeftPanelCollapsed ? '100%' : '10%', 
+                        transition: isResizing ? 'none' : 'width 0.3s ease'
                     }}
-                    className="relative no-scrollbar" // Apply no-scrollbar class
+                    className="relative no-scrollbar" 
                 >
-                    {/* Inner wrapper to apply scrollbar hiding for vertical content */}
                     <div className="h-full overflow-y-auto no-scrollbar pr-2">
                         <RightSide
                             crossAble={crossAble}
