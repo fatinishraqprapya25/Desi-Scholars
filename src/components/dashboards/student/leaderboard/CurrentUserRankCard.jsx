@@ -13,6 +13,8 @@ const cardVariants = {
     }
 };
 
+const placeholder = "https://placehold.co/40x40/D1C4E9/673AB7?text=ME";
+
 function CurrentUserRankCard({ userRank }) {
     return (
         <motion.div
@@ -20,7 +22,7 @@ function CurrentUserRankCard({ userRank }) {
             variants={cardVariants}
         >
             <div className="flex items-center">
-                <img src={userRank.avatar} alt="Your Avatar" className="w-12 h-12 rounded-full mr-4 border-2 border-blue-400" />
+                <img src={placeholder} alt="Your Avatar" className="w-12 h-12 rounded-full mr-4 border-2 border-blue-400" />
                 <div>
                     <p className="text-lg font-semibold text-gray-800">Your Current Rank</p>
                     <p className="text-sm text-gray-600">Keep climbing!</p>
@@ -28,7 +30,7 @@ function CurrentUserRankCard({ userRank }) {
             </div>
             <div className="text-right">
                 <p className="text-4xl font-bold text-blue-700">{userRank.rank}</p>
-                <p className="text-lg font-semibold text-gray-700">{userRank.score} points</p>
+                <p className="text-lg font-semibold text-gray-700">{userRank.totalScore} points</p>
             </div>
         </motion.div>
     );
