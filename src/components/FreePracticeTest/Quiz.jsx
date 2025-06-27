@@ -8,6 +8,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import NavigationSection from "./quiz/NavigationSection";
 import validateToken from "../../utils/ValidateToken"; // Assuming validateToken is correctly implemented
 import QuizHeader from "./quiz/QuizHeader";
+import App from "./quiz/PopUp";
 
 export default function Quiz() {
     const location = useLocation();
@@ -23,6 +24,7 @@ export default function Quiz() {
 
     const [showMetaBar, setShowMetaBar] = useState(true);
     // console.log(showMetaBar);
+    const [showPopUp, setShowPopUp] = useState(false);
 
     const [time, setTime] = useState(0);
     const [isRunning, setIsRunning] = useState(true);
@@ -54,14 +56,11 @@ export default function Quiz() {
 
     const fetchQuestions = async () => {
         try {
-            // Updated to reflect the current date and location context, if this data is time-sensitive.
-            // If the questions are static, no change is needed here.
             const response = await fetch(`http://localhost:5000/api/mcq?${new URLSearchParams(query)}`);
             if (!response.ok) {
                 throw new Error("Failed to fetch questions.");
             }
             const data = await response.json();
-            // console.log(data);
             setQuestions(data.data || []);
         } catch (err) {
             // Using a custom message box instead of alert()
@@ -238,7 +237,7 @@ export default function Quiz() {
 
     return (
         <>
-            {/* QuizHeader displays module and chapter name from the current question */}
+            {showPopUp && <App questions={questions} handleHistoryQuestionIndex={handleHistoryQuestionIndex} history={testHistory} setShowPopUp={setShowPopUp} />}
             <QuizHeader
                 moduleName={questions?.[currentIndex]?.subject}
                 showMetaBar={showMetaBar}
@@ -250,7 +249,7 @@ export default function Quiz() {
             <div
                 ref={containerRef}
                 // Use 'flex' for layout, 'overflow-hidden' on the container to prevent any main scrollbars
-                className="flex bg-white noto mt-10 overflow-hidden"
+                className="flex bg-white noto mt-18 overflow-hidden"
                 onMouseUp={handleTextSelection} // This is for highlighting text, not resizing
                 // A fixed height is often necessary for inner scrolling to work correctly
                 style={{ height: 'calc(100vh - 200px)' }}
@@ -289,10 +288,10 @@ export default function Quiz() {
                 <div
                     style={{
                         width: rightWidth,
-                        minWidth: isLeftPanelCollapsed ? '100%' : '10%', 
+                        minWidth: isLeftPanelCollapsed ? '100%' : '10%',
                         transition: isResizing ? 'none' : 'width 0.3s ease'
                     }}
-                    className="relative no-scrollbar" 
+                    className="relative no-scrollbar"
                 >
                     <div className="h-full overflow-y-auto no-scrollbar pr-2">
                         <RightSide
@@ -311,16 +310,7 @@ export default function Quiz() {
                 </div>
             </div>
 
-            <br />
-            <NavigationSection
-                history={testHistory}
-                handleHistoryQuestionIndex={handleHistoryQuestionIndex}
-                questions={questions}
-            />
-            <br />
-            <br />
-            <br />
-            <br />
+
 
             <Footer
                 currentIndex={currentIndex}
@@ -329,6 +319,8 @@ export default function Quiz() {
                 handleCheck={handleCheck}
                 handleNext={handleNext}
                 handlePrev={handlePrev}
+                showPopUp={showPopUp}
+                setShowPopUp={setShowPopUp}
             />
         </>
     );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 function App({ setShowPopUp, history, questions, handleHistoryQuestionIndex }) {
     const [questionStates, setQuestionStates] = useState({});
@@ -7,11 +7,10 @@ function App({ setShowPopUp, history, questions, handleHistoryQuestionIndex }) {
         if (Array.isArray(history) && Array.isArray(questions)) {
             const states = {};
 
-            // Build map of questionId -> question number
             const idToNumber = {};
             questions.forEach((q, index) => {
                 idToNumber[q._id] = index + 1;
-                states[index + 1] = "unattempted"; // default
+                states[index + 1] = "unattempted";
             });
 
             history.forEach((entry) => {
@@ -133,14 +132,17 @@ function App({ setShowPopUp, history, questions, handleHistoryQuestionIndex }) {
 
                 {/* Question Grid */}
                 <div className="grid grid-cols-5 sm:grid-cols-10 gap-1">
-                    {questions.map((q, index) => {
+                    {questions && questions.map((q, index) => {
                         const number = index + 1;
                         const state = questionStates[number] || "unattempted";
 
                         return (
                             <button
                                 key={q._id}
-                                onClick={() => handleHistoryQuestionIndex(q._id)}
+                                onClick={() => {
+                                    setShowPopUp(false);
+                                    handleHistoryQuestionIndex(q._id)
+                                }}
                                 className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg border font-medium text-sm sm:text-base transition-all duration-200 ease-in-out hover:shadow-md ${getButtonClasses(
                                     state
                                 )}`}

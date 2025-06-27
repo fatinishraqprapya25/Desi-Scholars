@@ -7,6 +7,7 @@ const Footer = ({
     handlePrev,
     currentIndex,
     totalQuestions,
+    setShowPopUp
 }) => {
     return (
         <div
@@ -25,12 +26,7 @@ const Footer = ({
                 Exit
             </button>
 
-            {/* Centered Question Count */}
-            {/*
-                Removed the absolute positioning from the inner div and applied flexbox to the parent button
-                to achieve proper vertical and horizontal centering.
-            */}
-            <button className="cursor-pointer flex items-center justify-center">
+            <button onClick={() => setShowPopUp(true)} className="cursor-pointer flex items-center justify-center">
                 <div className="bg-gray-800 text-white px-4 py-2 rounded-md text-md font-semibold shadow-sm flex items-center space-x-2">
                     <span>Question {currentIndex + 1} of {totalQuestions} </span> <ChevronUp size={19} />
                 </div>

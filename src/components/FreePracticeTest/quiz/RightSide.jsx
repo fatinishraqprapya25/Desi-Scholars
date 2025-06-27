@@ -1,9 +1,10 @@
 import { ClipboardPen, Zap, X, Pen, PencilLine, LocateOff, Bookmark } from "lucide-react";
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion"; // Import motion from framer-motion
 import ReviewSection from "./ReviewSection"; // Assuming this component is relevant
 
 const RightSide = ({
-    currentIndex,
+    currentIndex, // We'll watch this prop
     markable,
     onChangeMarkable,
     question,
@@ -16,8 +17,10 @@ const RightSide = ({
 }) => {
     const [flash, setFlash] = useState(false);
     const [crossedOptions, setCrossedOptions] = useState([]);
-
     const [marker, setMarker] = useState(false);
+
+    // State to trigger the vibrate animation
+    const [vibrateKey, setVibrateKey] = useState(0);
 
     useEffect(() => {
         if (!crossAble) {
@@ -35,6 +38,11 @@ const RightSide = ({
             return () => clearTimeout(timer);
         }
     }, [ansCorrect]);
+
+    // Trigger vibrate animation when currentIndex changes
+    useEffect(() => {
+        setVibrateKey(prevKey => prevKey + 1); // Increment key to force re-render and animation
+    }, [currentIndex]);
 
 
     const handleOptionClick = (index) => {
@@ -149,14 +157,20 @@ const RightSide = ({
                             };
 
                             return (
-                                <div key={index} className="flex items-center">
+                                // Wrap the option div with motion.div
+                                <motion.div
+                                    key={`${index}-${vibrateKey}`} // Use vibrateKey to re-trigger animation on currentIndex change
+                                    className="flex items-center"
+                                    initial={{ x: 0 }}
+                                    animate={{ x: [0, -5, 5, -5, 5, 0] }} // Vibrate effect
+                                    transition={{ duration: 0.3, type: "spring", stiffness: 500, damping: 20 }}
+                                >
                                     <div
                                         onClick={() => handleOptionClick(index)}
                                         className={`${getOptionClasses()} flex-grow`}
                                         style={{ position: "relative", overflow: "hidden" }}
                                     >
                                         <div className="flex items-center w-full">
-                                            {/* Modified this span to remove background and add border */}
                                             <span className={`font-extrabold text-xl mr-3 w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-full transition-colors duration-300 border-2 ${isSelected
                                                 ? "border-blue-500 text-blue-800" // Selected: blue border, blue text
                                                 : "border-gray-400 text-gray-800" // Default: gray border, gray text
@@ -192,7 +206,7 @@ const RightSide = ({
                                             <X size={20} className="text-gray-500 hover:text-red-600" />
                                         </button>
                                     )}
-                                </div>
+                                </motion.div>
                             );
                         })}
                 </div>
