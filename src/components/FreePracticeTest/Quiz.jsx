@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import NavigationSection from "./quiz/NavigationSection";
 import validateToken from "../../utils/ValidateToken";
 import QuizHeader from "./quiz/QuizHeader";
+import QuizMetabar from "./quiz/QuizMetaBar";
 
 export default function Quiz() {
     const location = useLocation();
