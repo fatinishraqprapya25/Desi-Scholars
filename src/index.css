@@ -122,7 +122,5 @@ body {
 }
 
 .custom-dashed-border {
-  border-bottom: dashed #c4b5fd;
-  border-bottom-width: 2px;
-  /* Adjust width and color */
+  border-bottom: 2px dashed #4e4182;
 }
