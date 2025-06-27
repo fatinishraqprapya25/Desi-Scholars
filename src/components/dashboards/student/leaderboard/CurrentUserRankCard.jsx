@@ -25,7 +25,7 @@ function CurrentUserRankCard({ userRank }) {
                 <img src={placeholder} alt="Your Avatar" className="w-12 h-12 rounded-full mr-4 border-2 border-blue-400" />
                 <div>
                     <p className="text-lg font-semibold text-gray-800">Your Current Rank</p>
-                    <p className="text-sm text-gray-600">Keep climbing!</p>
+                    <p className="text-sm text-gray-600">Avarage Time: {userRank.averageTime}</p>
                 </div>
             </div>
             <div className="text-right">
