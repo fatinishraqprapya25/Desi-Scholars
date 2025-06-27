@@ -5,6 +5,7 @@ import RightSide from "./quiz/RightSide";
 import Footer from "./quiz/Footer";
 import { useEffect, useState } from "react";
 import NavigationSection from "./quiz/NavigationSection";
+import validateToken from "../../utils/ValidateToken";
 
 export default function Quiz() {
     const location = useLocation();
@@ -16,26 +17,36 @@ export default function Quiz() {
     const [selectedOption, setSelectedOption] = useState(null);
     const [ansCorrect, setIsCorrct] = useState(null);
     const [crossAble, setCrossAble] = useState(false);
+    const [testHistory, setTestHistory] = useState([]);
 
     useEffect(() => {
         setIsCorrct(null);
     }, [selectedOption]);
 
-    useEffect(() => {
-        const fetchQuestions = async () => {
-            try {
-                const response = await fetch(`http://localhost:5000/api/mcq?${new URLSearchParams(query)}`);
-                if (!response.ok) {
-                    throw new Error("Failed to fetch questions.");
-                }
-                const data = await response.json();
-                setQuestions(data.data || []);
-            } catch (err) {
-                alert(err.message);
+    const fetchQuestions = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/mcq?${new URLSearchParams(query)}`);
+            if (!response.ok) {
+                throw new Error("Failed to fetch questions.");
             }
-        };
+            const data = await response.json();
+            setQuestions(data.data || []);
+        } catch (err) {
+            alert(err.message);
+        }
+    };
 
+    const fetchTestHistory = async () => {
+        const checkUser = await validateToken();
+        if (checkUser) {
+            const response = await fetch(`http://localhost:5000/api/test-history/${checkUser.id}`);
+            const result = await response.json();
+        }
+    }
+
+    useEffect(() => {
         fetchQuestions();
+        fetchTestHistory();
     }, [query]);
 
     const handleNext = () => {
@@ -75,13 +86,34 @@ export default function Quiz() {
         }
     };
 
+    const saveHistory = async (question) => {
+        const checkUser = await validateToken();
+        if (checkUser && question) {
+            const payload = {
+                userId: checkUser.id,
+                questionId: question._id,
+                status: ansCorrect ? "Correct" : "Incorrect"
+            }
+            const response = await fetch("http://localhost:5000/api/test-history", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload)
+            });
+            await response.json();
+        }
+    }
+
     const handleCheck = () => {
-        const writeAnswers = questions[currentIndex].correctAnswers;
+        const question = questions[currentIndex];
+        const writeAnswers = question.correctAnswers;
         if (writeAnswers.includes(selectedOption)) {
             setIsCorrct(true);
         } else {
             setIsCorrct(false);
         }
+        saveHistory(question);
     }
 
     const handleCross = () => {
@@ -103,7 +135,7 @@ export default function Quiz() {
             <br />
             <br />
             <br />
-         
+
             <Footer currentIndex={currentIndex} totalQuestions={questions.length} selectedOption={selectedOption} handleCheck={handleCheck} handleNext={handleNext} handlePrev={handlePrev} />
 
 
