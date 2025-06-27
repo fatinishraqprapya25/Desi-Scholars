@@ -13,6 +13,9 @@ const RightSide = ({
     changeOption,
     handleCross,
     crossAble,
+    time,
+    toggleTimer,
+    isRunning
 }) => {
     const [flash, setFlash] = useState(false);
     const [crossedOptions, setCrossedOptions] = useState([]);
@@ -25,7 +28,7 @@ const RightSide = ({
 
     const handleOptionClick = (index) => {
         if (!crossedOptions.includes(index)) {
-            changeOption(index); 
+            changeOption(index);
         }
     };
 
@@ -131,7 +134,7 @@ const RightSide = ({
                 </div>
             )}
 
-            <ReviewSection handleCross={handleCross} questionNumber={currentIndex + 1} />
+            <ReviewSection time={time} toggleTimer={toggleTimer} isRunning={isRunning} handleCross={handleCross} questionNumber={currentIndex + 1} />
 
             {/* Content */}
             <div className="pt-3">

@@ -19,6 +19,27 @@ export default function Quiz() {
     const [crossAble, setCrossAble] = useState(false);
     const [testHistory, setTestHistory] = useState([]);
 
+    // Inside Quiz component (top of the function)
+    const [time, setTime] = useState(0);
+    const [isRunning, setIsRunning] = useState(true);
+
+    useEffect(() => {
+        let interval;
+
+        if (isRunning) {
+            interval = setInterval(() => {
+                setTime(prev => prev + 1);
+            }, 1000);
+        }
+
+        return () => clearInterval(interval);
+    }, [isRunning]);
+
+    const toggleTimer = () => {
+        setIsRunning(prev => !prev);
+    };
+
+
     useEffect(() => {
         setIsCorrct(null);
     }, [selectedOption]);
@@ -30,6 +51,7 @@ export default function Quiz() {
                 throw new Error("Failed to fetch questions.");
             }
             const data = await response.json();
+            console.log(data);
             setQuestions(data.data || []);
         } catch (err) {
             alert(err.message);
@@ -51,6 +73,8 @@ export default function Quiz() {
 
     useEffect(() => {
         setSelectedOption(null);
+        setIsRunning(true);
+        setTime(0);
     }, [currentIndex]);
 
     const handleNext = () => {
@@ -96,7 +120,8 @@ export default function Quiz() {
             const payload = {
                 userId: checkUser.id,
                 questionId: question._id,
-                status: isCorrect ? "Correct" : "Incorrect"
+                status: isCorrect ? "Correct" : "Incorrect",
+                time
             }
 
             const response = await fetch("http://localhost:5000/api/test-history", {
@@ -116,6 +141,7 @@ export default function Quiz() {
         const writeAnswers = question.correctAnswers;
         const isCorrect = writeAnswers.includes(selectedOption);
         setIsCorrct(isCorrect);
+        setIsRunning(false);
         saveHistory(question, isCorrect);
     }
 
@@ -128,7 +154,7 @@ export default function Quiz() {
             <Header />
             <div className="grid grid-cols-2" onMouseUp={handleTextSelection}>
                 <LeftSide meta={showMeta} changeMeta={setShowMeta} length={questions.length} question={questions[currentIndex]} />
-                <RightSide crossAble={crossAble} handleCross={handleCross} currentIndex={currentIndex} ansCorrect={ansCorrect} sOption={selectedOption} changeOption={setSelectedOption} meta={showMeta} question={questions[currentIndex]} markable={markable} onChangeMarkable={setMarkable} />
+                <RightSide time={time} isRunning={isRunning} toggleTimer={toggleTimer} crossAble={crossAble} handleCross={handleCross} currentIndex={currentIndex} ansCorrect={ansCorrect} sOption={selectedOption} changeOption={setSelectedOption} meta={showMeta} question={questions[currentIndex]} markable={markable} onChangeMarkable={setMarkable} />
 
             </div>
 
