@@ -39,6 +39,11 @@ function LeaderboardTableRow({ id, student, index }) {
                     <span>{student.name}</span>
                 </div>
             </td>
+            <td className="py-4 px-6 text-left text-sm font-medium text-gray-800 whitespace-nowrap">
+                <div className="flex items-center">
+                    <span>{student.averageTime}</span>
+                </div>
+            </td>
             <td className="py-4 px-6 text-left text-lg font-bold text-blue-700">{student.totalScore}</td>
         </motion.tr>
     );

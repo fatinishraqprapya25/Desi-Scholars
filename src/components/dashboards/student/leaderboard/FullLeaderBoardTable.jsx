@@ -31,6 +31,7 @@ function FullLeaderboardTable({ leaderboardData }) {
                         <tr>
                             <th className="py-4 px-6 text-left text-xs font-bold text-gray-600 uppercase tracking-wider rounded-tl-xl">Rank</th>
                             <th className="py-4 px-6 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Student</th>
+                            <th className="py-4 px-6 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Average Time</th>
                             <th className="py-4 px-6 text-left text-xs font-bold text-gray-600 uppercase tracking-wider rounded-tr-xl">Score</th>
                         </tr>
                     </thead>
