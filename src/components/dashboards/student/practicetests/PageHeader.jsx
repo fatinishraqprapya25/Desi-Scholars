@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 
-const Header = () => {
-    const [activeSubject, setActiveSubject] = useState('Math');
-
-    const handleSubjectClick = (subject) => {
-        setActiveSubject(subject);
-    };
+const Header = ({ activeSubject, handleSubjectClick }) => {
 
     return (
         <header className="flex items-center justify-between p-4 bg-white shadow-sm">

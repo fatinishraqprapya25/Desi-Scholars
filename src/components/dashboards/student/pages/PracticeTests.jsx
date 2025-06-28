@@ -21,10 +21,15 @@ const sectionVariants = {
 };
 
 function PracticeTestPage() {
+    const [activeSubject, setActiveSubject] = useState('Math');
+
+    const handleSubjectClick = (subject) => {
+        setActiveSubject(subject);
+    };
     const [practiceTestsData, setPracticeTestsData] = useState([]);
     useEffect(() => {
         const fetchPracticeTestData = async () => {
-            const response = await fetch("http://localhost:5000/api/tests");
+            const response = await fetch("http://localhost:5000/api/mcq/");
             const result = await response.json();
             result.data.forEach(test => {
                 test.description = textShortener(test.description, 150);
@@ -42,7 +47,7 @@ function PracticeTestPage() {
                 initial="hidden"
                 animate="visible"
             >
-                <PageHeader />
+                <PageHeader activeSubject={activeSubject} setActiveSubject={setActiveSubject} handleSubjectClick={handleSubjectClick} />
 
                 {/* Test Cards Grid */}
                 <motion.div
