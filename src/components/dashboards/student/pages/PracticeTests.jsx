@@ -50,7 +50,6 @@ function PracticeTestPage() {
                 }
 
                 const result = await response.json();
-                console.log(result)
                 setPracticeTestsData(result.data);
             } catch (e) {
                 console.error('Error fetching data:', e);
@@ -98,7 +97,7 @@ function PracticeTestPage() {
                     handleSubjectClick={handleSubjectClick}
                     // Assuming PageHeader can also receive available subjects for navigation
                     availableSubjects={practiceTestsData.bySubject?.map(s => s._id) || []}
-                />d 
+                />d
 
                 <div className="mt-8 space-y-6 px-4">
                     {isLoading && (
