@@ -1,10 +1,10 @@
-import { ClipboardPen, Zap, X, Pen, PencilLine, LocateOff, Bookmark } from "lucide-react";
+import { Zap, X, Pen, LocateOff, Bookmark } from "lucide-react";
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion"; // Import motion from framer-motion
-import ReviewSection from "./ReviewSection"; // Assuming this component is relevant
+import { motion } from "framer-motion";
+import validateToken from "../../../utils/ValidateToken";
 
 const RightSide = ({
-    currentIndex, // We'll watch this prop
+    currentIndex,
     markable,
     onChangeMarkable,
     question,
@@ -19,7 +19,6 @@ const RightSide = ({
     const [crossedOptions, setCrossedOptions] = useState([]);
     const [marker, setMarker] = useState(false);
 
-    // State to trigger the vibrate animation
     const [vibrateKey, setVibrateKey] = useState(0);
 
     useEffect(() => {
@@ -27,6 +26,10 @@ const RightSide = ({
             setCrossedOptions([]);
         }
     }, [crossAble]);
+
+    useEffect(() => {
+        handleSetBookmark();
+    }, []);
 
     // Added for flash animation feedback
     useEffect(() => {
@@ -50,6 +53,53 @@ const RightSide = ({
             changeOption(index);
         }
     };
+
+    const handleSetBookmark = () => {
+        const fetchReq = async () => {
+            const checkUser = await validateToken();
+            const payload = { userId: checkUser.id, questionId: question._id }
+            if (checkUser) {
+                const response = await fetch("http://localhost:5000/api/review/user", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "Application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (result.success) {
+                    setMarker(true);
+                } else {
+                    setMarker(false);
+                }
+            }
+        }
+        fetchReq();
+    }
+
+    const handleBookmark = () => {
+        const addBookMark = async () => {
+            const checkUser = await validateToken();
+            const payload = {
+                userId: checkUser.id,
+                questionId: question._id
+            }
+
+            if (checkUser.id) {
+                const response = await fetch("http://localhost:5000/api/review", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "Application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                handleSetBookmark();
+            }
+
+        }
+        addBookMark();
+    }
 
     const handleCrossClick = (index) => {
         if (crossAble) {
@@ -78,7 +128,7 @@ const RightSide = ({
                         </div>
 
                         <button
-                            onClick={() => setMarker(!marker)}
+                            onClick={handleBookmark}
                             className={`flex items-center py-1 rounded-full px-3 text-base transition duration-200
         ${marker
                                     ? 'bg-purple-600 text-white hover:bg-purple-700'
