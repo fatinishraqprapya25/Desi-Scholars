@@ -34,7 +34,7 @@ export default function Header({ time, setShowMetaBar, showMetaBar, chapterName,
             >
                 {/* Left Section */}
                 <div>
-                    <h1 className="text-xl font-semibold text-gray-800">{chapterName}</h1>
+                    <h1 className="text-2xl font-semibold text-gray-800">{chapterName}</h1>
                     <button
                         onClick={() => {
                             setInfoOpen(!infoOpen)
@@ -48,7 +48,7 @@ export default function Header({ time, setShowMetaBar, showMetaBar, chapterName,
 
                 {/* Middle Section */}
                 <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-3xl font-bold text-gray-900">
                         {hideTime ? "*:*" : formatTime(time)}
                     </div>
                     <button
