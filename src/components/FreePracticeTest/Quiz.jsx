@@ -280,7 +280,7 @@ export default function Quiz() {
 
                     <div
                         ref={containerRef}
-                        className="flex bg-white noto mt-18 overflow-hidden"
+                        className="flex bg-white noto mt-24 overflow-hidden"
                         onMouseUp={handleTextSelection}
                         style={{ height: "calc(100vh - 200px)" }}
                     >

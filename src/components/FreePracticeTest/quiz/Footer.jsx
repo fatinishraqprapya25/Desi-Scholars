@@ -1,4 +1,5 @@
 import { ChevronUp, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Footer = ({
     handleNext,
@@ -9,6 +10,13 @@ const Footer = ({
     totalQuestions,
     setShowPopUp
 }) => {
+    const navigate = useNavigate();
+    const handlExit = () => {
+        location.reload();
+        setTimeout(() => {
+            navigate("/practice-test");
+        }, 50);
+    }
     return (
         <div
             className="w-full fixed bottom-0 bg-white py-4 px-6 flex items-center justify-between border-t border-gray-200 shadow-md"
@@ -19,7 +27,7 @@ const Footer = ({
             }}
         >
             {/* Exit Button */}
-            <button
+            <button onClick={handlExit}
                 className="bg-red-500 text-white px-4 py-1 rounded-md flex items-center gap-2 hover:bg-red-600 transition duration-300 ease-in-out text-md font-medium"
             >
                 <LogOut size={17} />
