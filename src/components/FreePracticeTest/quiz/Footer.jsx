@@ -54,7 +54,7 @@ const Footer = ({
                     onClick={handleNext}
                     className="bg-purple-600 text-white px-4 py-1 rounded-full hover:bg-purple-700 transition duration-300 ease-in-out text-md font-medium"
                 >
-                    Next
+                    {(currentIndex + 1) === totalQuestions ? "Finish" : "Next"}
                 </button>
             </div>
         </div>

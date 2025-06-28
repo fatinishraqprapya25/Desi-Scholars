@@ -9,6 +9,7 @@ import NavigationSection from "./quiz/NavigationSection";
 import validateToken from "../../utils/ValidateToken"; // Assuming validateToken is correctly implemented
 import QuizHeader from "./quiz/QuizHeader";
 import App from "./quiz/PopUp";
+import FinishStatus from "./quiz/FinishStatus";
 
 export default function Quiz() {
     const location = useLocation();
@@ -36,6 +37,7 @@ export default function Quiz() {
 
     // This state will manage if the left panel is fully collapsed
     const [isLeftPanelCollapsed, setIsLeftPanelCollapsed] = useState(false);
+    const [finished, setFinished] = useState(false);
 
 
     useEffect(() => {
@@ -93,9 +95,7 @@ export default function Quiz() {
 
     const handleNext = () => {
         if (questions.length === currentIndex + 1) {
-            // Using a custom message box instead of alert()
-            console.log("No more questions available.");
-            // You would typically show a custom modal or message here
+            setFinished(true);
         } else {
             setIsCorrct(null);
             setCurrentIndex(index => index + 1);
@@ -234,6 +234,10 @@ export default function Quiz() {
     const leftWidth = isLeftPanelCollapsed ? '0%' : `${leftPanelWidth}%`;
     const rightWidth = isLeftPanelCollapsed ? '100%' : `${100 - leftPanelWidth}%`;
 
+
+    if (finished) {
+        return <FinishStatus />
+    }
 
     return (
         <>
