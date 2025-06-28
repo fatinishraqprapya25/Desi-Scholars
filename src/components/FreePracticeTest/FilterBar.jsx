@@ -3,7 +3,6 @@ import React, { useState, useCallback } from 'react';
 export default function FilterBar({ callFilter }) {
     const [filters, setFilters] = useState({});
 
-    // Reusable Dropdown component for filter groups
     const DropdownFilter = ({ title, options, selected, onSelect }) => {
         const [isOpen, setIsOpen] = useState(false);
 
@@ -11,7 +10,7 @@ export default function FilterBar({ callFilter }) {
 
         const handleOptionClick = (value) => {
             onSelect(value);
-            setIsOpen(false); // Close dropdown after selection
+            setIsOpen(false);
         };
 
         const selectedOptionLabel = options.find(option => option.value === selected)?.label || 'All';
@@ -54,7 +53,6 @@ export default function FilterBar({ callFilter }) {
         );
     };
 
-    // Define options for each filter category
     const activeQuestionsOptions = [
         { label: 'All', value: 'All' },
         { label: 'Bluebook Only', value: 'Bluebook Only' },
@@ -106,27 +104,25 @@ export default function FilterBar({ callFilter }) {
             } else {
                 updatedFilters[key] = value;
             }
+            // IMPORTANT: Call callFilter here to update parent's state immediately
+            callFilter(updatedFilters);
             return updatedFilters;
         });
-    }, []);
+    }, [callFilter]); // callFilter must be in dependency array
 
     const handleResetAll = useCallback(() => {
-        setFilters({}); // Reset local state as well
+        setFilters({});
         callFilter({});
     }, [callFilter]);
 
-    const handleApply = useCallback(() => {
-        console.log('Filters applied:', filters);
-        callFilter(filters);
-    }, [filters, callFilter]);
+    // Remove handleApply if using immediate application.
+    // If you still want an "Apply" button, you'd keep handleApply and remove the callFilter from handleFilterChange.
 
     return (
         <div className="bg-white px-6 py-4 rounded-lg shadow-xl max-w-6xl mx-auto my-8 font-inter border border-gray-100">
-            {/* Filters Title */}
             <h2 className="text-2xl font-bold text-gray-800 mb-0 pb-2">Refine Your Search</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-3">
-                {/* Active Questions Filter */}
                 <DropdownFilter
                     title="Active Questions"
                     options={activeQuestionsOptions}
@@ -134,7 +130,6 @@ export default function FilterBar({ callFilter }) {
                     onSelect={(value) => handleFilterChange('activeQuestions', value)}
                 />
 
-                {/* Version Filter */}
                 <DropdownFilter
                     title="Version"
                     options={versionOptions}
@@ -142,7 +137,6 @@ export default function FilterBar({ callFilter }) {
                     onSelect={(value) => handleFilterChange('version', value)}
                 />
 
-                {/* Difficulty Filter */}
                 <DropdownFilter
                     title="Difficulty"
                     options={difficultyOptions}
@@ -150,7 +144,6 @@ export default function FilterBar({ callFilter }) {
                     onSelect={(value) => handleFilterChange('difficulty', value)}
                 />
 
-                {/* Score Band Filter */}
                 <DropdownFilter
                     title="Score Band"
                     options={scoreBandOptions}
@@ -158,7 +151,6 @@ export default function FilterBar({ callFilter }) {
                     onSelect={(value) => handleFilterChange('scoreBand', value)}
                 />
 
-                {/* Marked for Review Filter */}
                 <DropdownFilter
                     title="Marked for Review"
                     options={markedForReviewOptions}
@@ -166,7 +158,6 @@ export default function FilterBar({ callFilter }) {
                     onSelect={(value) => handleFilterChange('markedForReview', value)}
                 />
 
-                {/* Answered Incorrectly Filter */}
                 <DropdownFilter
                     title="Answered Incorrectly"
                     options={answeredIncorrectlyOptions}
@@ -175,7 +166,6 @@ export default function FilterBar({ callFilter }) {
                 />
             </div>
 
-            {/* Action Buttons */}
             <div className="flex justify-end gap-4 pt-2 mt-4 border-t border-gray-200">
                 <button
                     onClick={handleResetAll}
@@ -183,12 +173,13 @@ export default function FilterBar({ callFilter }) {
                 >
                     Reset All
                 </button>
-                <button
+                {/* If you implement immediate filter application, the "Apply Filters" button might be redundant */}
+                {/* <button
                     onClick={handleApply}
                     className="px-4 py-2 rounded-lg bg-blue-600 text-white shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 font-semibold"
                 >
                     Apply Filters
-                </button>
+                </button> */}
             </div>
         </div>
     );

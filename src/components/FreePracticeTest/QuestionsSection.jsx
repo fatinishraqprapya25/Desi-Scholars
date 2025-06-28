@@ -3,11 +3,18 @@ import { useNavigate } from "react-router-dom";
 
 export default function QuestionsSection({ filters }) {
     const [data, setData] = useState(null);
-    const navigate = useNavigate(); // useNavigate hook
+    const [loading, setLoading] = useState(true); // Add loading state
+    const [error, setError] = useState(null); // Add error state
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true); // Set loading to true before fetch
+            setError(null);   // Clear any previous errors
             try {
+                // Log filters to debug if they are changing on remount
+                console.log("Fetching data with filters:", filters);
+
                 const response = await fetch("http://localhost:5000/api/mcq/questions/aggregated", {
                     method: "POST",
                     headers: {
@@ -15,40 +22,69 @@ export default function QuestionsSection({ filters }) {
                     },
                     body: JSON.stringify(filters)
                 });
+
+                if (!response.ok) {
+                    // Handle HTTP errors
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+                }
+
                 const result = await response.json();
-                setData(result.data);
+                console.log("Fetched data result:", result); // Log the raw result
+
+                if (result.data) {
+                    setData(result.data);
+                } else {
+                    // If backend returns data: null, consider it no questions
+                    setData({ bySubject: [], byChapter: [] }); // Set to empty arrays to prevent crashes
+                }
+
             } catch (error) {
                 console.error("Error fetching data:", error);
+                setError("Failed to load questions. Please try again. " + error.message); // Set error message
+                setData(null); // Clear data on error
+            } finally {
+                setLoading(false); // Set loading to false after fetch completes (success or error)
             }
         };
-        fetchData();
-    }, [filters]);
 
-    if (!data) {
+        fetchData();
+    }, [filters]); // Dependency array: re-run useEffect when 'filters' changes
+
+    if (loading) {
         return (
             <div className="text-center py-10">
-                <p className="text-lg font-medium text-gray-600">Loading...</p>
+                <p className="text-lg font-medium text-gray-600">Loading questions...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="text-center py-10">
+                <p className="text-lg font-medium text-red-600">{error}</p>
+            </div>
+        );
+    }
+
+    // After loading and no error, check if data is available and has questions
+    const hasQuestions = data && data.bySubject && data.bySubject.some(subject => subject.questions.length > 0);
+
+    if (!data || !hasQuestions) {
+        return (
+            <div className="text-center py-10">
+                <p className="text-lg font-medium text-gray-600">No questions available for the selected filters.</p>
             </div>
         );
     }
 
     const { bySubject, byChapter } = data;
 
-    // Check if there are no questions
-    const hasQuestions = bySubject && bySubject.some(subject => subject.questions.length > 0);
-
-    if (!hasQuestions) {
-        return (
-            <div className="text-center py-10">
-                <p className="text-lg font-medium text-gray-600">No questions available.</p>
-            </div>
-        );
-    }
-
-    // Normalize and merge chapters
+    // Normalize and merge chapters (keep this logic as it seems intentional)
     const chapterNameMapping = {
         calulas: "calculas",
         calculas: "calculas",
+        // Add more mappings here if needed
     };
 
     const normalizedChapters = {};
