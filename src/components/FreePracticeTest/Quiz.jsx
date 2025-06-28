@@ -8,10 +8,12 @@ import validateToken from "../../utils/ValidateToken";
 import QuizHeader from "./quiz/QuizHeader";
 import App from "./quiz/PopUp";
 import FinishStatus from "./quiz/FinishStatus";
+import Starter from "./quiz/Starter";
 
 export default function Quiz() {
     const location = useLocation();
     const query = location.state;
+    const [hideQuiz, setHideQuiz] = useState(true);
     const [questions, setQuestions] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [markable, setMarkable] = useState(false);
@@ -262,81 +264,89 @@ export default function Quiz() {
                     setShowPopUp={setShowPopUp}
                 />
             )}
-            <QuizHeader
-                moduleName={questions?.[currentIndex]?.subject}
-                showMetaBar={showMetaBar}
-                setShowMetaBar={setShowMetaBar}
-                time={time}
-                chapterName={questions?.[currentIndex]?.chapter}
-            />
 
-            <div
-                ref={containerRef}
-                className="flex bg-white noto mt-18 overflow-hidden"
-                onMouseUp={handleTextSelection}
-                style={{ height: "calc(100vh - 200px)" }}
-            >
-                <div
-                    style={{
-                        width: leftWidth,
-                        minWidth: isLeftPanelCollapsed ? "0" : "10%",
-                        transition: isResizing ? "none" : "width 0.3s ease",
-                    }}
-                    className={`relative ${isLeftPanelCollapsed ? "hidden" : "block"
-                        } no-scrollbar`}
-                >
-                    <div className="h-full overflow-y-auto no-scrollbar pr-2">
-                        <LeftSide
-                            meta={showMeta}
-                            changeMeta={setShowMeta}
-                            length={questions.length}
-                            question={questions[currentIndex]}
-                        />
+            {hideQuiz && <Starter setHideQuiz={setHideQuiz} />}
+            <>
+                {!hideQuiz && <>
+
+
+                    <QuizHeader
+                        moduleName={questions?.[currentIndex]?.subject}
+                        showMetaBar={showMetaBar}
+                        setShowMetaBar={setShowMetaBar}
+                        time={time}
+                        chapterName={questions?.[currentIndex]?.chapter}
+                    />
+
+                    <div
+                        ref={containerRef}
+                        className="flex bg-white noto mt-18 overflow-hidden"
+                        onMouseUp={handleTextSelection}
+                        style={{ height: "calc(100vh - 200px)" }}
+                    >
+                        <div
+                            style={{
+                                width: leftWidth,
+                                minWidth: isLeftPanelCollapsed ? "0" : "10%",
+                                transition: isResizing ? "none" : "width 0.3s ease",
+                            }}
+                            className={`relative ${isLeftPanelCollapsed ? "hidden" : "block"
+                                } no-scrollbar`}
+                        >
+                            <div className="h-full overflow-y-auto no-scrollbar pr-2">
+                                <LeftSide
+                                    meta={showMeta}
+                                    changeMeta={setShowMeta}
+                                    length={questions.length}
+                                    question={questions[currentIndex]}
+                                />
+                            </div>
+                        </div>
+
+                        <div
+                            className="relative w-2 bg-gray-200 cursor-ew-resize flex items-center justify-center flex-shrink-0"
+                            onMouseDown={handleMouseDown}
+                        >
+                            <div className="absolute h-full w-0.5 bg-gray-400"></div>
+                        </div>
+
+                        <div
+                            style={{
+                                width: rightWidth,
+                                minWidth: isLeftPanelCollapsed ? "100%" : "10%",
+                                transition: isResizing ? "none" : "width 0.3s ease",
+                            }}
+                            className="relative no-scrollbar"
+                        >
+                            <div className="h-full overflow-y-auto no-scrollbar pr-2">
+                                <RightSide
+                                    crossAble={crossAble}
+                                    handleCross={handleCross}
+                                    currentIndex={currentIndex}
+                                    ansCorrect={ansCorrect}
+                                    sOption={selectedOption}
+                                    changeOption={setSelectedOption}
+                                    meta={showMeta}
+                                    question={questions[currentIndex]}
+                                    markable={markable}
+                                    onChangeMarkable={setMarkable}
+                                />
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div
-                    className="relative w-2 bg-gray-200 cursor-ew-resize flex items-center justify-center flex-shrink-0"
-                    onMouseDown={handleMouseDown}
-                >
-                    <div className="absolute h-full w-0.5 bg-gray-400"></div>
-                </div>
-
-                <div
-                    style={{
-                        width: rightWidth,
-                        minWidth: isLeftPanelCollapsed ? "100%" : "10%",
-                        transition: isResizing ? "none" : "width 0.3s ease",
-                    }}
-                    className="relative no-scrollbar"
-                >
-                    <div className="h-full overflow-y-auto no-scrollbar pr-2">
-                        <RightSide
-                            crossAble={crossAble}
-                            handleCross={handleCross}
-                            currentIndex={currentIndex}
-                            ansCorrect={ansCorrect}
-                            sOption={selectedOption}
-                            changeOption={setSelectedOption}
-                            meta={showMeta}
-                            question={questions[currentIndex]}
-                            markable={markable}
-                            onChangeMarkable={setMarkable}
-                        />
-                    </div>
-                </div>
-            </div>
-
-            <Footer
-                currentIndex={currentIndex}
-                totalQuestions={questions.length}
-                selectedOption={selectedOption}
-                handleCheck={handleCheck}
-                handleNext={handleNext}
-                handlePrev={handlePrev}
-                showPopUp={showPopUp}
-                setShowPopUp={setShowPopUp}
-            />
+                    <Footer
+                        currentIndex={currentIndex}
+                        totalQuestions={questions.length}
+                        selectedOption={selectedOption}
+                        handleCheck={handleCheck}
+                        handleNext={handleNext}
+                        handlePrev={handlePrev}
+                        showPopUp={showPopUp}
+                        setShowPopUp={setShowPopUp}
+                    />
+                </>}
+            </>
         </>
     );
 }
