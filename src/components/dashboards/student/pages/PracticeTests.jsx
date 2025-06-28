@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import UserDashboardContainer from '../../common/UserDashboardContainer';
 import PageHeader from '../practicetests/PageHeader'; // Assuming PageHeader is designed well
-import { FaBook, FaPuzzlePiece, FaCheckCircle } from 'react-icons/fa'; // Import icons
+import { FaBook, FaPuzzlePiece } from 'react-icons/fa'; // Only import icons actually used
 
 const sectionVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -95,15 +95,13 @@ function PracticeTestPage() {
                     activeSubject={activeSubject}
                     setActiveSubject={setActiveSubject}
                     handleSubjectClick={handleSubjectClick}
-                    // Assuming PageHeader can also receive available subjects for navigation
                     availableSubjects={practiceTestsData.bySubject?.map(s => s._id) || []}
-                />d
+                />
 
-                <div className="mt-8 space-y-6 px-4">
+                <div className="mt-8 space-y-8 px-4">
                     {isLoading && (
                         <div className="text-center py-10">
                             <p className="text-lg text-gray-600">Loading practice tests...</p>
-                            {/* You can add a spinner here */}
                             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mt-4"></div>
                         </div>
                     )}
@@ -123,30 +121,36 @@ function PracticeTestPage() {
                     {!isLoading && !error && Object.entries(chapterTopicMap).map(([chapter, topics]) => (
                         <motion.div
                             key={chapter}
-                            className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 max-w-[450px] flex justify-center"
+                            className="bg-white p-6 rounded-lg shadow-lg border border-gray-100"
                             variants={itemVariants}
                         >
-                            <div> <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-                                <FaBook className="text-indigo-500 mr-3" /> Chapter: {chapter}
+                            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                                <FaBook className="text-indigo-600 mr-3 text-3xl" /> Chapter: {chapter}
                             </h2>
-                                <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 ml-4">
-                                    {Object.entries(topics).map(([topic, count]) => (
-                                        <motion.li
-                                            key={topic}
-                                            className="flex items-center bg-gray-50 p-3 rounded-md text-gray-800 hover:bg-indigo-50 hover:text-indigo-700 transition-colors duration-200 cursor-pointer max-w-4xl"
-                                            variants={itemVariants}
-                                            whileHover={{ scale: 1.02 }}
-                                            whileTap={{ scale: 0.98 }}
-                                            // You might add an onClick handler here to navigate to a test for this topic
-                                            onClick={() => console.log(`Start test for ${topic} in ${chapter}`)}
-                                        >
-                                            <FaPuzzlePiece className="text-green-500 mr-2" />
-                                            <span className="font-medium mr-1">{topic}</span>
-                                            <span className="text-sm text-gray-600"> ({count} question{count > 1 ? 's' : ''})</span>
-                                            <FaCheckCircle className="text-blue-400 ml-auto" title="Start Test" />
-                                        </motion.li>
-                                    ))}
-                                </ul></div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                {Object.entries(topics).map(([topic, count]) => (
+                                    <motion.div
+                                        key={topic}
+                                        className="flex flex-col items-start bg-gray-50 p-5 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer border border-gray-100"
+                                        variants={itemVariants}
+                                        whileHover={{ scale: 1.03, boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)" }}
+                                        whileTap={{ scale: 0.98 }}
+                                        onClick={() => console.log(`Start test for ${topic} in ${chapter}`)}
+                                    >
+                                        <div className="flex items-center mb-3">
+                                            <FaPuzzlePiece className="text-green-600 mr-3 text-xl" />
+                                            <h3 className="text-lg font-semibold text-gray-900">{topic}</h3>
+                                        </div>
+                                        <p className="text-sm text-gray-600 mb-4">
+                                            {count} question{count > 1 ? 's' : ''} available
+                                        </p>
+                                        <button className="mt-auto flex items-center justify-center px-5 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200">
+                                            Start Test
+                                        </button>
+                                    </motion.div>
+                                ))}
+                            </div>
                         </motion.div>
                     ))}
                 </div>
