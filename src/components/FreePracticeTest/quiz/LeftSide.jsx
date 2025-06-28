@@ -1,4 +1,4 @@
-export default function LeftSide() {
+export default function LeftSide({ question }) {
     return <div className="min-h-screen p-6">
         <div className="rounded-lg p-6">
             <p className="text-gray-700 text-xl">

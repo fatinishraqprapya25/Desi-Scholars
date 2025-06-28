@@ -1,4 +1,4 @@
-import { Zap, X, Pen, LocateOff, Bookmark } from "lucide-react";
+import { Zap, X, Pen, PencilLine, LocateOff, Bookmark } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import validateToken from "../../../utils/ValidateToken";
@@ -19,6 +19,7 @@ const RightSide = ({
     const [crossedOptions, setCrossedOptions] = useState([]);
     const [marker, setMarker] = useState(false);
 
+    // State to trigger the vibrate animation
     const [vibrateKey, setVibrateKey] = useState(0);
 
     useEffect(() => {
@@ -62,7 +63,7 @@ const RightSide = ({
                 const response = await fetch("http://localhost:5000/api/review/user", {
                     method: "POST",
                     headers: {
-                        "Content-Type": "Application/json"
+                        "Content-Type": "application/json"
                     },
                     body: JSON.stringify(payload)
                 });
@@ -82,7 +83,8 @@ const RightSide = ({
             const checkUser = await validateToken();
             const payload = {
                 userId: checkUser.id,
-                questionId: question._id
+                questionId: question._id,
+                subject: question.subject
             }
 
             if (checkUser.id) {
