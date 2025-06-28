@@ -3,33 +3,53 @@ import React, { useState, useCallback } from 'react';
 export default function FilterBar({ callFilter }) {
     const [filters, setFilters] = useState({});
 
-    // Reusable component to render filter groups
-    const FilterGroup = ({ title, options, selected, onSelect }) => {
+    // Reusable Dropdown component for filter groups
+    const DropdownFilter = ({ title, options, selected, onSelect }) => {
+        const [isOpen, setIsOpen] = useState(false);
+
+        const toggleDropdown = () => setIsOpen(!isOpen);
+
+        const handleOptionClick = (value) => {
+            onSelect(value);
+            setIsOpen(false); // Close dropdown after selection
+        };
+
+        const selectedOptionLabel = options.find(option => option.value === selected)?.label || 'All';
+
         return (
-            <div className="mb-4">
+            <div className="mb-4 relative">
                 <h3 className="text-lg font-semibold text-gray-700 mb-1">{title}</h3>
-                <div className="flex flex-wrap gap-1">
-                    {options.map((option) => {
-                        const isSelected = selected === option.value;
-                        let buttonClasses = `px-3 py-1 rounded-lg transition-all duration-200 ease-in-out text-sm font-medium border`;
-
-                        if (isSelected) {
-                            buttonClasses += ` bg-blue-600 text-white border-blue-600 shadow-md`;
-                        } else {
-                            buttonClasses += ` bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200`;
-                        }
-
-                        return (
+                <button
+                    onClick={toggleDropdown}
+                    className="w-full px-4 py-2 text-left bg-gray-100 border border-gray-200 rounded-lg shadow-sm hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 flex justify-between items-center"
+                >
+                    <span className="text-gray-700 font-medium">{selectedOptionLabel}</span>
+                    <svg
+                        className={`w-4 h-4 text-gray-600 transform transition-transform duration-200 ${isOpen ? 'rotate-180' : 'rotate-0'}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                {isOpen && (
+                    <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                        {options.map((option) => (
                             <button
                                 key={option.value}
-                                onClick={() => onSelect(option.value)}
-                                className={buttonClasses}
+                                onClick={() => handleOptionClick(option.value)}
+                                className={`block w-full text-left px-4 py-2 text-sm transition-colors duration-150 ease-in-out ${selected === option.value
+                                    ? 'bg-blue-600 text-white font-semibold'
+                                    : 'text-gray-800 hover:bg-gray-100'
+                                    }`}
                             >
                                 {option.label}
                             </button>
-                        );
-                    })}
-                </div>
+                        ))}
+                    </div>
+                )}
             </div>
         );
     };
@@ -90,15 +110,14 @@ export default function FilterBar({ callFilter }) {
         });
     }, []);
 
-    // Reset all filters to their default state
     const handleResetAll = useCallback(() => {
+        setFilters({}); // Reset local state as well
         callFilter({});
-    }, []);
+    }, [callFilter]);
 
-    // Handle Apply button click (e.g., for fetching data)
     const handleApply = useCallback(() => {
         console.log('Filters applied:', filters);
-        callFilter(filters); // Send filters to the parent component
+        callFilter(filters);
     }, [filters, callFilter]);
 
     return (
@@ -106,9 +125,9 @@ export default function FilterBar({ callFilter }) {
             {/* Filters Title */}
             <h2 className="text-2xl font-bold text-gray-800 mb-0 pb-2">Refine Your Search</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-x-2 gap-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-3">
                 {/* Active Questions Filter */}
-                <FilterGroup
+                <DropdownFilter
                     title="Active Questions"
                     options={activeQuestionsOptions}
                     selected={filters.activeQuestions || 'All'}
@@ -116,7 +135,7 @@ export default function FilterBar({ callFilter }) {
                 />
 
                 {/* Version Filter */}
-                <FilterGroup
+                <DropdownFilter
                     title="Version"
                     options={versionOptions}
                     selected={filters.version || 'All'}
@@ -124,7 +143,7 @@ export default function FilterBar({ callFilter }) {
                 />
 
                 {/* Difficulty Filter */}
-                <FilterGroup
+                <DropdownFilter
                     title="Difficulty"
                     options={difficultyOptions}
                     selected={filters.difficulty || 'All'}
@@ -132,7 +151,7 @@ export default function FilterBar({ callFilter }) {
                 />
 
                 {/* Score Band Filter */}
-                <FilterGroup
+                <DropdownFilter
                     title="Score Band"
                     options={scoreBandOptions}
                     selected={filters.scoreBand || 'All'}
@@ -140,7 +159,7 @@ export default function FilterBar({ callFilter }) {
                 />
 
                 {/* Marked for Review Filter */}
-                <FilterGroup
+                <DropdownFilter
                     title="Marked for Review"
                     options={markedForReviewOptions}
                     selected={filters.markedForReview || 'All'}
@@ -148,7 +167,7 @@ export default function FilterBar({ callFilter }) {
                 />
 
                 {/* Answered Incorrectly Filter */}
-                <FilterGroup
+                <DropdownFilter
                     title="Answered Incorrectly"
                     options={answeredIncorrectlyOptions}
                     selected={filters.answeredIncorrectly || 'All'}
@@ -157,16 +176,16 @@ export default function FilterBar({ callFilter }) {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end gap-4 pt-2">
+            <div className="flex justify-end gap-4 pt-2 mt-4 border-t border-gray-200">
                 <button
                     onClick={handleResetAll}
-                    className="px-2 py-1 rounded-lg text-red-600 border border-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 font-semibold"
+                    className="px-4 py-2 rounded-lg text-red-600 border border-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 font-semibold"
                 >
                     Reset All
                 </button>
                 <button
                     onClick={handleApply}
-                    className="px-3 py-1 rounded-lg bg-blue-600 text-white shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 font-semibold"
+                    className="px-4 py-2 rounded-lg bg-blue-600 text-white shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 font-semibold"
                 >
                     Apply Filters
                 </button>
