@@ -1,9 +1,12 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Main App component
-const App = () => {
+const App = ({ localHistory }) => {
     const navigate = useNavigate();
-
+    useEffect(() => {
+        console.log(localHistory);
+    }, [])
     const handleBack = () => {
         navigate("/practice-test");
         setTimeout(() => {
@@ -13,7 +16,7 @@ const App = () => {
 
     return (
         <div className="min-h-screen bg-purple-50 flex flex-col items-center p-4 sm:p-6 lg:p-8 font-inter">
-            {/* Back to practice link */}
+            {/* Back Button */}
             <div className="w-full max-w-4xl mb-8">
                 <button
                     onClick={handleBack}
@@ -52,12 +55,24 @@ const App = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                    {/* First Attempt */}
-                    <StatCard color="green" iconPath="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" label="First Attempt" value="1" />
-                    {/* Eventually Correct */}
-                    <StatCard color="yellow" iconPath="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674..." label="Eventually Correct" value="2" />
-                    {/* Incorrect */}
-                    <StatCard color="red" iconPath="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" label="Incorrect" value="1" />
+                    <StatCard
+                        color="green"
+                        iconPath="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        label="First Attempt"
+                        value={localHistory && localHistory.questionsSolvedFirstAttempt}
+                    />
+                    <StatCard
+                        color="yellow"
+                        iconPath="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15h-1v-1h2v1h-1zm0-3h-1V7h2v7h-1z"
+                        label="Eventually Correct"
+                        value={localHistory && localHistory.questionsSolvedAfterMistake}
+                    />
+                    <StatCard
+                        color="red"
+                        iconPath="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        label="Incorrect"
+                        value={localHistory && localHistory.incorrectButUncorrected}
+                    />
                 </div>
 
                 <p className="text-center text-gray-500 text-sm">
@@ -67,22 +82,26 @@ const App = () => {
 
             {/* Analysis Sections */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
-                {/* Time Analysis */}
-                <AnalysisCard title="Time Analysis" data={[
-                    { label: "Total Time", value: "1m 7s" },
-                    { label: "Average Time per Question", value: ".33s" }
-                ]} />
-                {/* Attempt Analysis */}
-                <AnalysisCard title="Attempt Analysis" data={[
-                    { label: "Total Questions", value: "2" },
-                    { label: "Average Attempts per Question", value: "0.5" }
-                ]} />
+                <AnalysisCard
+                    title="Time Analysis"
+                    data={[
+                        { label: "Total Time", value: localHistory && localHistory.totalTimeNeeded },
+                        { label: "Average Time per Question", value: localHistory && (localHistory.totalTimeNeeded / localHistory.totalQuestionsSolved) }
+                    ]}
+                />
+                <AnalysisCard
+                    title="Attempt Analysis"
+                    data={[
+                        { label: "Total Questions", value: localHistory && localHistory.totalQuestionsSolved },
+                        { label: "Average Attempts per Question", value: "0.5" }
+                    ]}
+                />
             </div>
         </div>
     );
 };
 
-// Helper Components
+// Stat Card Component
 const StatCard = ({ color, iconPath, label, value }) => (
     <div className={`bg-${color}-100 p-4 rounded-lg flex flex-col items-center justify-center text-center`}>
         <div className={`text-${color}-600 mb-2`}>
@@ -95,6 +114,7 @@ const StatCard = ({ color, iconPath, label, value }) => (
     </div>
 );
 
+// Analysis Card Component
 const AnalysisCard = ({ title, data }) => (
     <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8">
         <h3 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">{title}</h3>

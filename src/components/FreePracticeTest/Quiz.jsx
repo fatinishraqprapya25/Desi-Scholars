@@ -1,12 +1,10 @@
 import { useLocation } from "react-router-dom";
-// Assuming these are standard imports from your project structure
-// import Header from "../common/Header";
 import LeftSide from "./quiz/LeftSide";
 import RightSide from "./quiz/RightSide";
 import Footer from "./quiz/Footer";
 import { useEffect, useState, useRef, useCallback } from "react";
 import NavigationSection from "./quiz/NavigationSection";
-import validateToken from "../../utils/ValidateToken"; // Assuming validateToken is correctly implemented
+import validateToken from "../../utils/ValidateToken";
 import QuizHeader from "./quiz/QuizHeader";
 import App from "./quiz/PopUp";
 import FinishStatus from "./quiz/FinishStatus";
@@ -21,31 +19,35 @@ export default function Quiz() {
     const [selectedOption, setSelectedOption] = useState(null);
     const [ansCorrect, setIsCorrct] = useState(null);
     const [crossAble, setCrossAble] = useState(false);
-    const [testHistory, setTestHistory] = useState([]);
 
     const [showMetaBar, setShowMetaBar] = useState(true);
-    // console.log(showMetaBar);
     const [showPopUp, setShowPopUp] = useState(false);
 
     const [time, setTime] = useState(0);
     const [isRunning, setIsRunning] = useState(true);
 
-    // State for controlling the layout with the divider
-    const [leftPanelWidth, setLeftPanelWidth] = useState(50); // Initial percentage width for left panel
+    const [leftPanelWidth, setLeftPanelWidth] = useState(50);
     const [isResizing, setIsResizing] = useState(false);
     const containerRef = useRef(null);
 
-    // This state will manage if the left panel is fully collapsed
+    const [localHistory, setLocalHistory] = useState({
+        totalQuestionsSolved: 0,
+        questionsSolvedFirstAttempt: 0,
+        questionsSolvedAfterMistake: 0,
+        incorrectButUncorrected: 0, // New field to track
+        totalTimeNeeded: 0,
+        questionAttempts: {}, // Tracks attempts and correctness for each question ID
+    });
+
     const [isLeftPanelCollapsed, setIsLeftPanelCollapsed] = useState(false);
     const [finished, setFinished] = useState(false);
-
 
     useEffect(() => {
         let interval;
 
         if (isRunning) {
             interval = setInterval(() => {
-                setTime(prev => prev + 1);
+                setTime((prev) => prev + 1);
             }, 1000);
         }
 
@@ -58,33 +60,21 @@ export default function Quiz() {
 
     const fetchQuestions = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/mcq?${new URLSearchParams(query)}`);
+            const response = await fetch(
+                `http://localhost:5000/api/mcq?${new URLSearchParams(query)}`
+            );
             if (!response.ok) {
                 throw new Error("Failed to fetch questions.");
             }
             const data = await response.json();
             setQuestions(data.data || []);
         } catch (err) {
-            // Using a custom message box instead of alert()
             console.error(err.message);
-            // You would typically show a custom modal or message here
         }
     };
 
-    const fetchTestHistory = async () => {
-        const checkUser = await validateToken();
-        if (checkUser) {
-            const response = await fetch(`http://localhost:5000/api/test-history/${checkUser.id}`);
-            const result = await response.json();
-            if (result.success) {
-                setTestHistory(result.data);
-            }
-        }
-    }
-
     useEffect(() => {
         fetchQuestions();
-        fetchTestHistory();
     }, [query]);
 
     useEffect(() => {
@@ -98,20 +88,18 @@ export default function Quiz() {
             setFinished(true);
         } else {
             setIsCorrct(null);
-            setCurrentIndex(index => index + 1);
+            setCurrentIndex((index) => index + 1);
         }
     };
 
     const handlePrev = () => {
         if (currentIndex === 0) {
-            // Using a custom message box instead of alert()
             console.log("No previous questions.");
-            // You would typically show a custom modal or message here
         } else {
             setIsCorrct(null);
-            setCurrentIndex(index => index - 1);
+            setCurrentIndex((index) => index - 1);
         }
-    }
+    };
 
     const handleTextSelection = () => {
         if (!markable) return;
@@ -132,27 +120,58 @@ export default function Quiz() {
         }
     };
 
-    const saveHistory = async (question, isCorrect) => {
-        const checkUser = await validateToken();
-        if (checkUser && question) {
-            const payload = {
-                userId: checkUser.id,
-                questionId: question._id,
-                status: isCorrect ? "Correct" : "Incorrect",
-                time
-            }
+    const updateLocalHistory = useCallback(
+        (questionId, isCorrect, timeSpent) => {
+            setLocalHistory((prev) => {
+                const currentQuestionAttempt = prev.questionAttempts[questionId] || {
+                    attempts: 0,
+                    correct: false,
+                    firstAttemptCorrect: false,
+                    wasIncorrect: false, // Track if it was ever answered incorrectly
+                };
 
-            const response = await fetch("http://localhost:5000/api/test-history", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload)
+                const newQuestionAttempts = {
+                    ...prev.questionAttempts,
+                    [questionId]: {
+                        ...currentQuestionAttempt,
+                        attempts: currentQuestionAttempt.attempts + 1,
+                        correct: isCorrect || currentQuestionAttempt.correct,
+                        firstAttemptCorrect:
+                            currentQuestionAttempt.attempts === 0 && isCorrect
+                                ? true
+                                : currentQuestionAttempt.firstAttemptCorrect,
+                        wasIncorrect: currentQuestionAttempt.wasIncorrect || !isCorrect, // Mark as incorrect if current attempt is incorrect
+                    },
+                };
+
+                const totalQuestionsSolved = Object.values(newQuestionAttempts).filter(
+                    (q) => q.correct
+                ).length;
+                const questionsSolvedFirstAttempt = Object.values(
+                    newQuestionAttempts
+                ).filter((q) => q.firstAttemptCorrect).length;
+                const questionsSolvedAfterMistake = Object.values(
+                    newQuestionAttempts
+                ).filter((q) => q.correct && !q.firstAttemptCorrect).length;
+
+                // Calculate incorrect but uncorrected
+                const incorrectButUncorrected = Object.values(newQuestionAttempts).filter(
+                    (q) => q.wasIncorrect && !q.correct
+                ).length;
+
+                return {
+                    ...prev,
+                    totalQuestionsSolved,
+                    questionsSolvedFirstAttempt,
+                    questionsSolvedAfterMistake,
+                    incorrectButUncorrected, // Update the new field
+                    totalTimeNeeded: prev.totalTimeNeeded + timeSpent,
+                    questionAttempts: newQuestionAttempts,
+                };
             });
-            // const result = await response.json();
-            // Handle response if needed, e.g., check for success.
-        }
-    }
+        },
+        []
+    );
 
     const handleCheck = () => {
         const question = questions[currentIndex];
@@ -160,88 +179,89 @@ export default function Quiz() {
         const isCorrect = writeAnswers.includes(selectedOption);
         setIsCorrct(isCorrect);
         setIsRunning(false);
-        saveHistory(question, isCorrect);
-    }
+        updateLocalHistory(question._id, isCorrect, time);
+    };
 
     const handleCross = () => {
         setCrossAble(!crossAble);
-    }
+    };
 
     const handleHistoryQuestionIndex = (id) => {
-        const findIndex = questions.findIndex(question => question._id === id);
+        const findIndex = questions.findIndex((question) => question._id === id);
         if (findIndex !== -1) {
             setCurrentIndex(findIndex);
         }
-    }
+    };
 
-    // Resizing logic for the panels
     const handleMouseDown = useCallback(() => {
         setIsResizing(true);
-        // Add a class to body to prevent text selection during drag
-        document.body.style.userSelect = 'none';
-        document.body.style.cursor = 'ew-resize'; // Set cursor to resize
+        document.body.style.userSelect = "none";
+        document.body.style.cursor = "ew-resize";
     }, []);
 
-    const handleMouseMove = useCallback((e) => {
-        if (!isResizing || !containerRef.current) return;
+    const handleMouseMove = useCallback(
+        (e) => {
+            if (!isResizing || !containerRef.current) return;
 
-        const containerRect = containerRef.current.getBoundingClientRect();
-        // Calculate new width based on mouse X position relative to container's left edge
-        const newLeftPanelWidth = ((e.clientX - containerRect.left) / containerRect.width) * 100;
+            const containerRect = containerRef.current.getBoundingClientRect();
+            const newLeftPanelWidth =
+                ((e.clientX - containerRect.left) / containerRect.width) * 100;
 
-        // Prevent panels from becoming too small
-        if (newLeftPanelWidth > 10 && newLeftPanelWidth < 90) {
-            setLeftPanelWidth(newLeftPanelWidth);
-            setIsLeftPanelCollapsed(false); // Uncollapse if user is resizing
-        }
-    }, [isResizing]);
+            if (newLeftPanelWidth > 10 && newLeftPanelWidth < 90) {
+                setLeftPanelWidth(newLeftPanelWidth);
+                setIsLeftPanelCollapsed(false);
+            }
+        },
+        [isResizing]
+    );
 
     const handleMouseUp = useCallback(() => {
         setIsResizing(false);
-        document.body.style.userSelect = ''; // Reset user-select
-        document.body.style.cursor = ''; // Reset cursor
+        document.body.style.userSelect = "";
+        document.body.style.cursor = "";
     }, []);
 
     useEffect(() => {
         if (isResizing) {
-            document.addEventListener('mousemove', handleMouseMove);
-            document.addEventListener('mouseup', handleMouseUp);
+            document.addEventListener("mousemove", handleMouseMove);
+            document.addEventListener("mouseup", handleMouseUp);
         } else {
-            document.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('mouseup', handleMouseUp);
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("mouseup", handleMouseUp);
         }
 
         return () => {
-            document.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('mouseup', handleMouseUp);
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("mouseup", handleMouseUp);
         };
     }, [isResizing, handleMouseMove, handleMouseUp]);
 
-    // Function to toggle collapse/expand (kept for completeness, but buttons removed)
     const handleToggleCollapse = () => {
         if (isLeftPanelCollapsed) {
-            // Restore to 50% or a sensible default
             setLeftPanelWidth(50);
             setIsLeftPanelCollapsed(false);
         } else {
-            // Collapse left panel (make its width 0)
             setLeftPanelWidth(0);
             setIsLeftPanelCollapsed(true);
         }
     };
 
-    // Calculate dynamic widths for the panels
-    const leftWidth = isLeftPanelCollapsed ? '0%' : `${leftPanelWidth}%`;
-    const rightWidth = isLeftPanelCollapsed ? '100%' : `${100 - leftPanelWidth}%`;
-
+    const leftWidth = isLeftPanelCollapsed ? "0%" : `${leftPanelWidth}%`;
+    const rightWidth = isLeftPanelCollapsed ? "100%" : `${100 - leftPanelWidth}%`;
 
     if (finished) {
-        return <FinishStatus />
+        return <FinishStatus localHistory={localHistory} />;
     }
 
     return (
         <>
-            {showPopUp && <App questions={questions} handleHistoryQuestionIndex={handleHistoryQuestionIndex} history={testHistory} setShowPopUp={setShowPopUp} />}
+            {showPopUp && (
+                <App
+                    questions={questions}
+                    handleHistoryQuestionIndex={handleHistoryQuestionIndex}
+                    setShowPopUp={setShowPopUp}
+                />
+            )}
             <QuizHeader
                 moduleName={questions?.[currentIndex]?.subject}
                 showMetaBar={showMetaBar}
@@ -252,23 +272,20 @@ export default function Quiz() {
 
             <div
                 ref={containerRef}
-                // Use 'flex' for layout, 'overflow-hidden' on the container to prevent any main scrollbars
                 className="flex bg-white noto mt-18 overflow-hidden"
-                onMouseUp={handleTextSelection} // This is for highlighting text, not resizing
-                // A fixed height is often necessary for inner scrolling to work correctly
-                style={{ height: 'calc(100vh - 200px)' }}
+                onMouseUp={handleTextSelection}
+                style={{ height: "calc(100vh - 200px)" }}
             >
-                {/* Left Side Panel */}
                 <div
                     style={{
                         width: leftWidth,
-                        minWidth: isLeftPanelCollapsed ? '0' : '10%', // Min width to prevent collapsing during drag
-                        transition: isResizing ? 'none' : 'width 0.3s ease' // No transition during drag, smooth otherwise
+                        minWidth: isLeftPanelCollapsed ? "0" : "10%",
+                        transition: isResizing ? "none" : "width 0.3s ease",
                     }}
-                    className={`relative ${isLeftPanelCollapsed ? 'hidden' : 'block'} no-scrollbar`} // Hide content if collapsed, apply no-scrollbar class
+                    className={`relative ${isLeftPanelCollapsed ? "hidden" : "block"
+                        } no-scrollbar`}
                 >
-                    {/* Inner wrapper to apply scrollbar hiding for vertical content */}
-                    <div className="h-full overflow-y-auto no-scrollbar pr-2"> {/* Add padding-right to account for hidden scrollbar area */}
+                    <div className="h-full overflow-y-auto no-scrollbar pr-2">
                         <LeftSide
                             meta={showMeta}
                             changeMeta={setShowMeta}
@@ -278,22 +295,18 @@ export default function Quiz() {
                     </div>
                 </div>
 
-                {/* Divider - This is the key part for dragging */}
                 <div
                     className="relative w-2 bg-gray-200 cursor-ew-resize flex items-center justify-center flex-shrink-0"
-                    onMouseDown={handleMouseDown} // Attach onMouseDown here to enable dragging
+                    onMouseDown={handleMouseDown}
                 >
-                    {/* Visual line in the middle */}
                     <div className="absolute h-full w-0.5 bg-gray-400"></div>
                 </div>
 
-
-                {/* Right Side Panel */}
                 <div
                     style={{
                         width: rightWidth,
-                        minWidth: isLeftPanelCollapsed ? '100%' : '10%',
-                        transition: isResizing ? 'none' : 'width 0.3s ease'
+                        minWidth: isLeftPanelCollapsed ? "100%" : "10%",
+                        transition: isResizing ? "none" : "width 0.3s ease",
                     }}
                     className="relative no-scrollbar"
                 >
@@ -313,8 +326,6 @@ export default function Quiz() {
                     </div>
                 </div>
             </div>
-
-
 
             <Footer
                 currentIndex={currentIndex}
